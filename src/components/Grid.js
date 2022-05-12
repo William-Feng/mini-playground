@@ -1,17 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import Letter from "./Letter";
 
 function Grid() {
-  const gridDefault = [
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-  ];
-  const [grid, setGrid] = useState(gridDefault);
-
   return (
     <div className="grid">
       <div className="row">

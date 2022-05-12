@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../App";
 
 function Letter({ attemptNum, letterPos }) {
-  return <div className="letter">W</div>;
+  const { grid } = useContext(AppContext);
+  const letter = grid[attemptNum][letterPos];
+  return <div className="letter">{letter}</div>;
 }
 
 export default Letter;
