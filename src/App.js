@@ -17,6 +17,8 @@ function App() {
   const [grid, setGrid] = useState(gridDefault);
   const [curr, setCurr] = useState({ attempt: 0, letterPos: 0 });
 
+  const secret = "SUPER";
+
   const onLetter = (letter) => {
     if (curr.letterPos > 4) return;
     const newGrid = [...grid];
@@ -39,10 +41,19 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div>
       <h1>Wordle</h1>
       <AppContext.Provider
-        value={{ grid, setGrid, curr, setCurr, onLetter, onEnter, onDelete }}
+        value={{
+          grid,
+          setGrid,
+          curr,
+          setCurr,
+          onLetter,
+          onEnter,
+          onDelete,
+          secret,
+        }}
       >
         <Grid />
         <Keyboard />

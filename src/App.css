@@ -1,5 +1,8 @@
-.App {
+* {
+  background-color: #121213;
+  color: white;
   text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
@@ -26,7 +29,7 @@ h1 {
 
 .letter {
   display: grid;
-  border: 1px solid grey;
+  border: 2px solid #3a3a3c;
   font-size: 2rem;
   font-weight: bold;
   flex: 1;
@@ -52,9 +55,21 @@ h1 {
   place-items: center;
   border-radius: 4px;
   cursor: pointer;
-  border: 1px solid grey;
+  background-color: #808384;
 }
 
 #bigKey {
   width: 67px;
+}
+
+#correct {
+  background-color: #538d4e;
+}
+
+#partial {
+  background-color: #b59f3b;
+}
+
+#incorrect {
+  background-color: #3a3a3c;
 }
