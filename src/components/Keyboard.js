@@ -19,11 +19,11 @@ function Keyboard() {
         })}
       </div>
       <div className="row">
-        <Key val={"Enter"} special />
+        <Key val={"ENTER"} special />
         {row3.map((key) => {
           return <Key val={key} />;
         })}
-        <Key val={"Delete"} special />
+        <Key val={"DELETE"} special />
       </div>
     </div>
   );
