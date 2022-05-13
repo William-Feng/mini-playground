@@ -14,7 +14,7 @@ function Letter({ attemptNum, letterPos }) {
     let currCount = 0;
     for (let i = 0; i < letterPos; i++) {
       if (grid[attemptNum][i] === letter) {
-        currCount += 1;
+        currCount++;
       }
     }
     if (currCount < letterCount) {
@@ -26,7 +26,7 @@ function Letter({ attemptNum, letterPos }) {
     curr.attempt > attemptNum &&
     (correct ? "correct" : partial ? "partial" : "incorrect");
   return (
-    <div className="letter" id={letterState}>
+    <div className="letter" id={letterState ? letterState : undefined}>
       {letter}
     </div>
   );
