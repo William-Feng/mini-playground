@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { AppContext } from "../App";
 
-function Key({ val, special }) {
+function Key({ val, special, correct, partial, incorrect }) {
   const { onLetter, onEnter, onDelete } = useContext(AppContext);
 
   const updateGrid = () => {
@@ -15,7 +15,17 @@ function Key({ val, special }) {
   };
 
   return (
-    <div className="key" id={special && "bigKey"} onClick={updateGrid}>
+    <div
+      className="key"
+      id={
+        special
+          ? "bigKey"
+          : (correct && "correct") ||
+            (partial && "partial") ||
+            (incorrect && "incorrect")
+      }
+      onClick={updateGrid}
+    >
       {val}
     </div>
   );

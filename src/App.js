@@ -11,6 +11,9 @@ function App() {
   const [curr, setCurr] = useState({ attempt: 0, letterPos: 0 });
   const [wordbank, setWordbank] = useState(new Set());
   const [secret, setSecret] = useState("");
+  const [correctLetters, setCorrectLetters] = useState([]);
+  const [partialLetters, setPartialLetters] = useState([]);
+  const [incorrectLetters, setIncorrectLetters] = useState([]);
 
   useEffect(() => {
     generateWordbank().then((words) => {
@@ -69,6 +72,12 @@ function App() {
           onEnter,
           onDelete,
           secret,
+          correctLetters,
+          setCorrectLetters,
+          partialLetters,
+          setPartialLetters,
+          incorrectLetters,
+          setIncorrectLetters,
         }}
       >
         <Grid />

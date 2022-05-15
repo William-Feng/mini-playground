@@ -1,8 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AppContext } from "../App";
 
 function Letter({ attemptNum, letterPos }) {
-  const { grid, secret, curr } = useContext(AppContext);
+  const {
+    grid,
+    secret,
+    curr,
+    setCorrectLetters,
+    setPartialLetters,
+    setIncorrectLetters,
+  } = useContext(AppContext);
   const letter = grid[attemptNum][letterPos];
 
   const correct = secret[letterPos] === letter;
@@ -21,6 +28,12 @@ function Letter({ attemptNum, letterPos }) {
       partial = 1;
     }
   }
+
+  useEffect(() => {
+    if (correct) setCorrectLetters((prev) => [...prev, letter]);
+    else if (partial) setPartialLetters((prev) => [...prev, letter]);
+    else if (letter !== "") setIncorrectLetters((prev) => [...prev, letter]);
+  }, [curr.attempt]);
 
   const letterState =
     curr.attempt > attemptNum &&
