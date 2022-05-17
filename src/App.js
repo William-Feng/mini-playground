@@ -77,22 +77,26 @@ function App() {
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <div className="App" id={theme}>
-        <h1>Wordle</h1>
-        <ReactSwitch
-          onChange={toggleTheme}
-          checked={theme === "dark"}
-          onColor={"#027bff"}
-          uncheckedIcon={
-            <FaSun
-              style={{ width: "30px", paddingTop: "6px", color: "yellow" }}
+        <div className="navbar">
+          <h1>Wordle</h1>
+          <div className="switch">
+            <ReactSwitch
+              onChange={toggleTheme}
+              checked={theme === "dark"}
+              onColor={"#027bff"}
+              uncheckedIcon={
+                <FaSun
+                  style={{ width: "30px", paddingTop: "6px", color: "yellow" }}
+                />
+              }
+              checkedIcon={
+                <FaMoon
+                  style={{ width: "30px", paddingTop: "6px", color: "yellow" }}
+                />
+              }
             />
-          }
-          checkedIcon={
-            <FaMoon
-              style={{ width: "30px", paddingTop: "6px", color: "yellow" }}
-            />
-          }
-        />
+          </div>
+        </div>
         <AppContext.Provider
           value={{
             grid,

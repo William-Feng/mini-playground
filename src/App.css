@@ -23,10 +23,34 @@
   min-height: 100vh;
 }
 
+.navbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  height: 80px;
+  width: 100%;
+}
+
+#dark .navbar {
+  border-bottom: 1px solid #3a3a3c;
+}
+
+#light .navbar {
+  border-bottom: 1px solid #d4d6da;
+}
+
 h1 {
-  padding-top: 1em;
   font-size: 37px;
   font-weight: 700;
+}
+
+.switch {
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  right: 20px;
 }
 
 .grid {
