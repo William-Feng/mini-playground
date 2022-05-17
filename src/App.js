@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import "./App.css";
+import GameOver from "./components/GameOver";
 import Grid from "./components/Grid";
 import Keyboard from "./components/Keyboard";
 import { defaultGrid, generateWordbank } from "./components/Words";
@@ -14,6 +15,10 @@ function App() {
   const [correctLetters, setCorrectLetters] = useState([]);
   const [partialLetters, setPartialLetters] = useState([]);
   const [incorrectLetters, setIncorrectLetters] = useState([]);
+  const [gameOver, setGameOver] = useState({
+    gameOver: false,
+    guessedWord: false,
+  });
 
   useEffect(() => {
     generateWordbank().then((words) => {
@@ -42,12 +47,14 @@ function App() {
       setCurr({ attempt: curr.attempt + 1, letterPos: 0 });
     } else {
       alert("Not in word list");
+      return;
     }
 
     if (currWord === secret) {
-      alert("Well done!");
+      setGameOver({ gameOver: true, guessedWord: true });
+      return;
     } else if (curr.attempt === 5) {
-      alert("Unlucky, the correct word is " + secret);
+      setGameOver({ gameOver: true, guessedWord: false });
     }
   };
 
@@ -78,10 +85,12 @@ function App() {
           setPartialLetters,
           incorrectLetters,
           setIncorrectLetters,
+          gameOver,
+          setGameOver,
         }}
       >
         <Grid />
-        <Keyboard />
+        {gameOver.gameOver ? <GameOver /> : <Keyboard />}
       </AppContext.Provider>
     </div>
   );
