@@ -1,9 +1,11 @@
 import { createContext, useEffect, useState } from "react";
+import ReactSwitch from "react-switch";
 import "./App.css";
 import GameOver from "./components/GameOver";
 import Grid from "./components/Grid";
 import Keyboard from "./components/Keyboard";
 import { defaultGrid, generateWordbank } from "./components/Words";
+import { FaSun, FaMoon } from "react-icons/fa";
 
 export const ThemeContext = createContext();
 export const AppContext = createContext();
@@ -76,6 +78,21 @@ function App() {
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <div className="App" id={theme}>
         <h1>Wordle</h1>
+        <ReactSwitch
+          onChange={toggleTheme}
+          checked={theme === "dark"}
+          onColor={"#027bff"}
+          uncheckedIcon={
+            <FaSun
+              style={{ width: "30px", paddingTop: "6px", color: "yellow" }}
+            />
+          }
+          checkedIcon={
+            <FaMoon
+              style={{ width: "30px", paddingTop: "6px", color: "yellow" }}
+            />
+          }
+        />
         <AppContext.Provider
           value={{
             grid,
