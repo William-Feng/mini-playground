@@ -5,6 +5,7 @@ import Grid from "./components/Grid";
 import Keyboard from "./components/Keyboard";
 import { defaultGrid, generateWordbank } from "./components/Words";
 
+export const ThemeContext = createContext();
 export const AppContext = createContext();
 
 function App() {
@@ -19,6 +20,11 @@ function App() {
     gameOver: false,
     guessedWord: false,
   });
+
+  const [theme, setTheme] = useState("dark");
+  const toggleTheme = () => {
+    setTheme((curr) => (curr === "light" ? "dark" : "light"));
+  };
 
   useEffect(() => {
     generateWordbank().then((words) => {
@@ -67,32 +73,34 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>Wordle</h1>
-      <AppContext.Provider
-        value={{
-          grid,
-          setGrid,
-          curr,
-          setCurr,
-          onLetter,
-          onEnter,
-          onDelete,
-          secret,
-          correctLetters,
-          setCorrectLetters,
-          partialLetters,
-          setPartialLetters,
-          incorrectLetters,
-          setIncorrectLetters,
-          gameOver,
-          setGameOver,
-        }}
-      >
-        <Grid />
-        {gameOver.gameOver ? <GameOver /> : <Keyboard />}
-      </AppContext.Provider>
-    </div>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      <div className="App" id={theme}>
+        <h1>Wordle</h1>
+        <AppContext.Provider
+          value={{
+            grid,
+            setGrid,
+            curr,
+            setCurr,
+            onLetter,
+            onEnter,
+            onDelete,
+            secret,
+            correctLetters,
+            setCorrectLetters,
+            partialLetters,
+            setPartialLetters,
+            incorrectLetters,
+            setIncorrectLetters,
+            gameOver,
+            setGameOver,
+          }}
+        >
+          <Grid />
+          {gameOver.gameOver ? <GameOver /> : <Keyboard />}
+        </AppContext.Provider>
+      </div>
+    </ThemeContext.Provider>
   );
 }
 
