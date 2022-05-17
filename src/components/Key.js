@@ -19,10 +19,10 @@ function Key({ val, special, correct, partial, incorrect }) {
       className="key"
       id={
         special
-          ? "bigKey"
-          : (correct && "correct") ||
-            (partial && "partial") ||
-            (incorrect && "incorrect")
+          ? "big-key"
+          : (correct && "correct-key") ||
+            (partial && "partial-key") ||
+            (incorrect && "incorrect-key")
       }
       onClick={updateGrid}
     >

@@ -5,6 +5,7 @@
 .App {
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+  user-select: none;
 }
 
 .App#light {
@@ -137,8 +138,38 @@ h1 {
   background-color: #d4d6da;
 }
 
-#bigKey {
+#big-key {
   width: 67px;
+}
+
+#dark #correct-key {
+  background-color: #538d4e;
+  transition-delay: 1.5s;
+}
+
+#light #correct-key {
+  background-color: #6baa64;
+  transition-delay: 1.5s;
+}
+
+#dark #partial-key {
+  background-color: #b59f3b;
+  transition-delay: 1.5s;
+}
+
+#light #partial-key {
+  background-color: #cab458;
+  transition-delay: 1.5s;
+}
+
+#dark #incorrect-key {
+  background-color: #3a3a3c;
+  transition-delay: 1.5s;
+}
+
+#light #incorrect-key {
+  background-color: #787c7e;
+  transition-delay: 1.5s;
 }
 
 #dark #correct {
