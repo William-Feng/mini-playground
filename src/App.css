@@ -86,7 +86,22 @@ h1 {
 #light .letter {
   border: 2px solid #d4d6da;
   color: black;
-  /* Animations will turn the letter to white */
+}
+
+.letter:nth-child(2) {
+  animation-delay: 0.25s !important;
+}
+
+.letter:nth-child(3) {
+  animation-delay: 0.5s !important;
+}
+
+.letter:nth-child(4) {
+  animation-delay: 0.75s !important;
+}
+
+.letter:nth-child(5) {
+  animation-delay: 1s !important;
 }
 
 .keyboard {
@@ -127,25 +142,75 @@ h1 {
 }
 
 #dark #correct {
-  background-color: #538d4e;
+  --background-color: #538d4e;
+  animation: flip-dark 0.5s linear forwards;
 }
 
 #light #correct {
-  background-color: #6baa64;
+  --background-color: #6baa64;
+  animation: flip-light 0.5s linear forwards;
 }
 
 #dark #partial {
-  background-color: #b59f3b;
+  --background-color: #b59f3b;
+  animation: flip-dark 0.5s linear forwards;
 }
 
 #light #partial {
-  background-color: #cab458;
+  --background-color: #cab458;
+  animation: flip-light 0.5s linear forwards;
 }
 
 #dark #incorrect {
-  background-color: #3a3a3c;
+  --background-color: #3a3a3c;
+  animation: flip-dark 0.5s linear forwards;
 }
 
 #light #incorrect {
-  background-color: #787c7e;
+  --background-color: #787c7e;
+  animation: flip-light 0.5s linear forwards;
+}
+
+@keyframes flip-dark {
+  0% {
+    transform: rotateX(0);
+    background-color: #121213;
+  }
+  49% {
+    transform: rotateX(90deg);
+    background-color: #121213;
+  }
+  51% {
+    transform: rotateX(90deg);
+    background-color: var(--background-color);
+    border-color: var(--background-color);
+  }
+  100% {
+    transform: rotateX(0);
+    background-color: var(--background-color);
+    border-color: var(--background-color);
+  }
+}
+
+@keyframes flip-light {
+  0% {
+    transform: rotateX(0);
+    background-color: white;
+  }
+  49% {
+    transform: rotateX(90deg);
+    background-color: white;
+  }
+  51% {
+    transform: rotateX(90deg);
+    background-color: var(--background-color);
+    border-color: var(--background-color);
+    color: white;
+  }
+  100% {
+    transform: rotateX(0);
+    background-color: var(--background-color);
+    border-color: var(--background-color);
+    color: white;
+  }
 }
