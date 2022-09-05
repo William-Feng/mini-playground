@@ -1,0 +1,46 @@
+body {
+  margin: 0;
+}
+
+.container {
+  margin-top: 12em;
+  text-align: center;
+}
+
+.board {
+  margin: 3em 0;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(3, auto);
+}
+
+.cell {
+  width: 120px;
+  height: 120px;
+  border: 1px solid black;
+  align-items: center;
+  display: grid;
+  font-size: 5em;
+  cursor: pointer;
+}
+
+.cell:nth-child(1),
+.cell:nth-child(2),
+.cell:nth-child(3) {
+  border-top: none;
+}
+
+.cell:nth-child(3n + 1) {
+  border-left: none;
+}
+
+.cell:nth-child(3n + 3) {
+  border-right: none;
+}
+
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:nth-child(9) {
+  border-bottom: none;
+}
