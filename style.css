@@ -3,12 +3,12 @@ body {
 }
 
 .container {
-  margin-top: 12em;
+  margin-top: 10em;
   text-align: center;
 }
 
 .board {
-  margin: 3em 0;
+  margin: 3em 0 2em;
   display: grid;
   align-items: center;
   justify-content: center;
@@ -23,6 +23,7 @@ body {
   display: grid;
   font-size: 5em;
   cursor: pointer;
+  user-select: none;
 }
 
 .cell:nth-child(1),
@@ -43,4 +44,22 @@ body {
 .cell:nth-child(8),
 .cell:nth-child(9) {
   border-bottom: none;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+button {
+  background-color: white;
+  border: 1px solid black;
+  font-size: 1.5em;
+  margin-top: 1em;
+  padding: 0.25em 0.5em;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: lightgrey;
 }
