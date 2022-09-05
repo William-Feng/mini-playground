@@ -1,11 +1,10 @@
 const boardCells = document.querySelectorAll("[board-cell]");
-boardCells.forEach((cell) => {
-  cell.addEventListener("click", handleClick, { once: true });
-});
 const message = document.getElementById("message");
+const restart = document.getElementById("restart");
+restart.addEventListener("click", newGame);
 
-let xTurn = true;
-let gameOver = false;
+let xTurn;
+let gameOver;
 const WIN_STATES = [
   [0, 1, 2],
   [3, 4, 5],
@@ -16,6 +15,18 @@ const WIN_STATES = [
   [0, 4, 8],
   [2, 4, 6],
 ];
+newGame();
+
+function newGame() {
+  xTurn = true;
+  gameOver = false;
+  message.innerText = "";
+  boardCells.forEach((cell) => {
+    cell.classList.remove("nought", "cross");
+    cell.innerText = "";
+    cell.addEventListener("click", handleClick, { once: true });
+  });
+}
 
 function handleClick(e) {
   if (!gameOver) {

@@ -26,6 +26,10 @@ body {
   user-select: none;
 }
 
+.cell:not(.cross):not(.nought):hover {
+  background-color: lightgrey;
+}
+
 .cell:nth-child(1),
 .cell:nth-child(2),
 .cell:nth-child(3) {
@@ -46,6 +50,11 @@ body {
   border-bottom: none;
 }
 
+.cross:hover,
+.nought:hover {
+  cursor: not-allowed;
+}
+
 h1 {
   font-size: 3em;
 }
@@ -58,6 +67,7 @@ button {
   padding: 0.25em 0.5em;
   border-radius: 2px;
   cursor: pointer;
+  user-select: none;
 }
 
 button:hover {
