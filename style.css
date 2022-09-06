@@ -25,7 +25,7 @@ body {
   border-radius: 2px;
 }
 
-.cell:hover {
+.cell:not(.stable):hover {
   border: 2px solid black;
 }
 
@@ -82,4 +82,8 @@ button:hover {
 
 .hidden {
   background-color: lightgrey;
+}
+
+.stable {
+  cursor: not-allowed;
 }
