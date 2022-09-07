@@ -1,17 +1,27 @@
-const boardCells = document.querySelectorAll("[board-cell]");
+const boardCells = document.querySelectorAll(".cell");
+const turnMessage = document.getElementById("turns");
+const restart = document.getElementById("restart");
 
 const COLOUR_HIDDEN = "hidden";
 const CELL_STABLE = "stable";
+const WIN_NUM_MATCH = boardCells.length / 2;
 let previous;
 let lockBoard;
+let numTurns;
+let numMatching;
 
 newGame();
+restart.addEventListener("click", newGame);
 
 function newGame() {
   previous = null;
   lockBoard = false;
+  numTurns = 0;
+  numMatching = 0;
+  turnMessage.innerText = "Turns: 0";
   boardCells.forEach((cell) => {
     cell.classList.add(COLOUR_HIDDEN);
+    cell.classList.remove(CELL_STABLE);
     cell.addEventListener("click", handleClick);
   });
 }
@@ -41,6 +51,8 @@ function firstSelected(cell) {
 
 // Another cell was selected before in this turn so we need to check
 function secondSelected(cell) {
+  numTurns++;
+  turnMessage.innerText = "Turns: " + numTurns;
   if (previous == cell) {
     // If the user selects the same cell twice
     cell.classList.add(COLOUR_HIDDEN);
@@ -49,8 +61,9 @@ function secondSelected(cell) {
     // Do not allow the cells to be chosen again
     previous.classList.add(CELL_STABLE);
     cell.classList.add(CELL_STABLE);
-    // Check for win condition
     previous = null;
+    numMatching++;
+    checkWin();
   } else {
     // Show the colour of the cell for 1 second, then reset
     // Present user from selecting cells during this delay
@@ -72,4 +85,15 @@ function checkMatch(cell) {
     getComputedStyle(previous).backgroundColor ===
     getComputedStyle(cell).backgroundColor
   );
+}
+
+// Adjust the message if there is a win
+function checkWin() {
+  if (numMatching === WIN_NUM_MATCH) {
+    if (numTurns <= 30) {
+      turnMessage.innerText = "Well done! Turns: " + numTurns;
+    } else {
+      turnMessage.innerText = "You won! Turns: " + numTurns;
+    }
+  }
 }
