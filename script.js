@@ -13,12 +13,21 @@ let numMatching;
 newGame();
 restart.addEventListener("click", newGame);
 
+// Shuffle all the cells so the order is randomised
+function shuffle() {
+  boardCells.forEach((cell) => {
+    let position = Math.floor(Math.random() * boardCells.length);
+    cell.style.order = position;
+  });
+}
+
 function newGame() {
   previous = null;
   lockBoard = false;
   numTurns = 0;
   numMatching = 0;
   turnMessage.innerText = "Turns: 0";
+  shuffle();
   boardCells.forEach((cell) => {
     cell.classList.add(COLOUR_HIDDEN);
     cell.classList.remove(CELL_STABLE);
@@ -90,7 +99,7 @@ function checkMatch(cell) {
 // Adjust the message if there is a win
 function checkWin() {
   if (numMatching === WIN_NUM_MATCH) {
-    if (numTurns <= 30) {
+    if (numTurns <= 20) {
       turnMessage.innerText = "Well done! Turns: " + numTurns;
     } else {
       turnMessage.innerText = "You won! Turns: " + numTurns;
