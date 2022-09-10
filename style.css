@@ -1,0 +1,128 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  display: grid;
+  height: 100vh;
+  width: 100vw;
+  place-items: center;
+  text-align: center;
+  color: #776e65;
+}
+
+#board {
+  margin-top: 3em;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(4, auto);
+  grid-gap: 15px;
+  background-color: #bcac9f;
+  padding: 15px;
+  border-radius: 6px;
+  user-select: none;
+}
+
+.cell {
+  width: 107px;
+  height: 107px;
+  background-color: #ccc1b4;
+  font-size: 55px;
+  line-height: 107px;
+  font-weight: bold;
+  border-radius: 3px;
+}
+
+h1 {
+  font-size: 5em;
+  font-weight: bold;
+  color: #776e65;
+}
+
+.num2 {
+  background-color: #eee4da;
+  color: #776e65;
+}
+
+.num4 {
+  background-color: #eee1c9;
+  color: #776e65;
+}
+
+.num8 {
+  background-color: #f3b279;
+  color: #f9f6f2;
+}
+
+.num16 {
+  background-color: #f69564;
+  color: #f9f6f2;
+}
+
+.num32 {
+  background-color: #f77c5f;
+  color: #f9f6f2;
+}
+
+.num64 {
+  background-color: #f75f3c;
+  color: #f9f6f2;
+}
+
+.num128 {
+  background-color: #edd073;
+  color: #f9f6f2;
+  font-size: 45px;
+}
+
+.num256 {
+  background-color: #eecc62;
+  color: #f9f6f2;
+  font-size: 45px;
+}
+
+.num512 {
+  background-color: #edc950;
+  color: #f9f6f2;
+  font-size: 45px;
+}
+
+.num1024 {
+  background-color: #edc53f;
+  color: #f9f6f2;
+  font-size: 40px;
+}
+
+.num2048 {
+  background-color: #edc22e;
+  color: #f9f6f2;
+  font-size: 40px;
+}
+
+.num4096 {
+  background-color: #fe3d3d;
+  color: #f9f6f2;
+  font-size: 40px;
+}
+
+#score {
+  margin-top: 1em;
+}
+
+button {
+  background-color: #8f7a66;
+  border: none;
+  border-radius: 3px;
+  font-size: 1.5em;
+  margin-top: 1em;
+  padding: 0.25em 0.75em;
+  cursor: pointer;
+  user-select: none;
+  color: #f9f6f2;
+}
+
+button:hover {
+  background-color: #68584a;
+}
