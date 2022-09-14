@@ -4,7 +4,7 @@ const restart = document.getElementById("restart");
 
 const SIZE = 4;
 let board = [];
-let originalBoard = [];
+let prevBoard = [];
 let score;
 
 newGame();
@@ -13,9 +13,22 @@ restart.addEventListener("click", newGame);
 function newGame() {
   score = 0;
   board = [];
+
+  initaliseBoard();
+  scoreMessage.innerText = score;
+
+  generateCell();
+  generateCell();
+
+  prevBoard = cloneBoard(board);
+
+  document.addEventListener("keydown", shiftBoard);
+}
+
+// Initialise all cells within the 2D board to be empty
+function initaliseBoard() {
   let tempBoard = [];
 
-  // Initialise all cells within the 2D board to be empty
   cells.forEach((cell) => {
     cell.className = "cell";
     cell.innerText = "";
@@ -24,15 +37,6 @@ function newGame() {
   while (tempBoard.length) {
     board.push(tempBoard.splice(0, SIZE));
   }
-
-  scoreMessage.innerText = score;
-
-  generateCell();
-  generateCell();
-
-  originalBoard = cloneBoard(board);
-
-  document.addEventListener("keyup", shiftBoard);
 }
 
 // Generate a new number within the board
@@ -85,25 +89,25 @@ function shiftBoard(e) {
 
   // Invalid move if the board is the same after the arrow key is pressed
   generateIfValid();
-  originalBoard = cloneBoard(board);
+  prevBoard = cloneBoard(board);
 
   scoreMessage.innerText = score;
 }
 
 function generateIfValid() {
   // Check if the board before and after the arrow key was pressed is the same
-  console.log(originalBoard);
-  console.log(board);
   let equal = true;
   for (let i = 0; i < SIZE; i++) {
     for (let j = 0; j < SIZE; j++) {
-      if (originalBoard[i][j] != board[i][j]) {
+      if (prevBoard[i][j] != board[i][j]) {
         equal = false;
         break;
       }
     }
   }
-  if (!equal) generateCell();
+  if (!equal) {
+    generateCell();
+  }
 }
 
 function shiftLeft() {
@@ -165,7 +169,12 @@ function updateCell(row, column) {
   let num = board[row][column];
   cell.className = "cell";
   cell.innerText = num;
-  cell.classList.add("num" + num);
+  // All numbers over 2048 will have the 'num4096' class (black background)
+  if (num <= 2048) {
+    cell.classList.add("num" + num);
+  } else {
+    cell.classList.add("num4096");
+  }
 }
 
 // Main logic for shifting when the arrow keys are pressed
