@@ -11,8 +11,8 @@ newGame();
 restart.addEventListener("click", newGame);
 
 function newGame() {
-  score = 0;
   board = [];
+  score = 0;
 
   initaliseBoard();
   scoreMessage.innerText = score;
@@ -86,53 +86,62 @@ function shiftBoard(e) {
   } else if (e.key === "ArrowDown") {
     shiftDown();
   }
+  scoreMessage.innerText = score;
 
   // Invalid move if the board is the same after the arrow key is pressed
   generateIfValid();
-  prevBoard = cloneBoard(board);
 
-  scoreMessage.innerText = score;
+  checkGameOver();
+  prevBoard = cloneBoard(board);
 }
 
-function generateIfValid() {
-  // Check if the board before and after the arrow key was pressed is the same
+// Return true if both boards are equivalent
+function checkSame(boardA, boardB) {
   let equal = true;
   for (let i = 0; i < SIZE; i++) {
     for (let j = 0; j < SIZE; j++) {
-      if (prevBoard[i][j] != board[i][j]) {
+      if (boardA[i][j] != boardB[i][j]) {
         equal = false;
         break;
       }
     }
   }
-  if (!equal) {
+  return equal;
+}
+
+// Generate a cell if the board before and after are different
+function generateIfValid() {
+  if (!checkSame(prevBoard, board)) {
     generateCell();
   }
 }
 
+// Shift board when the left arrow key is pressed
 function shiftLeft() {
   for (let row = 0; row < SIZE; row++) {
     let boardRow = board[row];
-    board[row] = rowLeft(boardRow);
+    board[row] = rowLeft(boardRow, true);
     for (let column = 0; column < SIZE; column++) {
       updateCell(row, column);
     }
   }
 }
 
+// Shift board when the right arrow key is pressed
 function shiftRight() {
   for (let row = 0; row < SIZE; row++) {
     let boardRow = board[row];
     // If we have a row [0, 4, 4, 2]
     // This when shifted right, it should be [0, 0, 8, 2]
     // So we must reverse the column before and after the shifting
-    board[row] = rowLeft(boardRow.reverse()).reverse();
+    board[row] = rowLeft(boardRow.reverse(), true).reverse();
     for (let column = 0; column < SIZE; column++) {
       updateCell(row, column);
     }
   }
 }
 
+// Shift board when the up arrow key is pressed
 function shiftUp() {
   for (let column = 0; column < SIZE; column++) {
     // Each 'row' becomes the columns of the original board
@@ -140,7 +149,7 @@ function shiftUp() {
     for (let row = 0; row < SIZE; row++) {
       boardColumn.push(board[row][column]);
     }
-    boardColumn = rowLeft(boardColumn);
+    boardColumn = rowLeft(boardColumn, true);
     for (let row = 0; row < SIZE; row++) {
       board[row][column] = boardColumn[row];
       updateCell(row, column);
@@ -148,6 +157,7 @@ function shiftUp() {
   }
 }
 
+// Shift board when the down arrow key is pressed
 function shiftDown() {
   // Take the transpose of the board, then reverse each row
   for (let column = 0; column < SIZE; column++) {
@@ -155,7 +165,7 @@ function shiftDown() {
     for (let row = 0; row < SIZE; row++) {
       boardColumn.push(board[row][column]);
     }
-    boardColumn = rowLeft(boardColumn.reverse()).reverse();
+    boardColumn = rowLeft(boardColumn.reverse(), true).reverse();
     for (let row = 0; row < SIZE; row++) {
       board[row][column] = boardColumn[row];
       updateCell(row, column);
@@ -178,7 +188,7 @@ function updateCell(row, column) {
 }
 
 // Main logic for shifting when the arrow keys are pressed
-function rowLeft(row) {
+function rowLeft(row, increaseScore) {
   // [2, 2, "", 2]
   row = filterEmpty(row);
   // [2, 2, 2]
@@ -186,7 +196,9 @@ function rowLeft(row) {
     if (row[i] != "" && row[i] === row[i + 1]) {
       row[i] *= 2;
       row[i + 1] = "";
-      score += row[i];
+      if (increaseScore) {
+        score += row[i];
+      }
     }
   }
   // [4, ", 2]
@@ -202,4 +214,76 @@ function rowLeft(row) {
 // Helper function to temporarily remove cells that are empty
 function filterEmpty(row) {
   return row.filter((num) => num != "");
+}
+
+// Game over if no more moves can be made (results in same board)
+function checkGameOver() {
+  let leftBoard = checkLeft();
+  let rightBoard = checkRight();
+  let upBoard = checkUp();
+  let downBoard = checkDown();
+  let equal =
+    checkSame(board, leftBoard) &&
+    checkSame(leftBoard, rightBoard) &&
+    checkSame(rightBoard, upBoard) &&
+    checkSame(upBoard, downBoard);
+  if (equal) {
+    scoreMessage.innerHTML = score + "<br><b>GAME OVER</b>";
+  }
+}
+
+// Helper function to check if the game is over
+function checkLeft() {
+  let leftBoard = cloneBoard(board);
+  let tempBoard = cloneBoard(board);
+  for (let row = 0; row < SIZE; row++) {
+    let boardRow = tempBoard[row];
+    leftBoard[row] = rowLeft(boardRow, false);
+  }
+  return leftBoard;
+}
+
+// Helper function to check if the game is over
+function checkRight() {
+  let rightBoard = cloneBoard(board);
+  let tempBoard = cloneBoard(board);
+  for (let row = 0; row < SIZE; row++) {
+    let boardRow = tempBoard[row];
+    rightBoard[row] = rowLeft(boardRow.reverse(), false).reverse();
+  }
+  return rightBoard;
+}
+
+// Helper function to check if the game is over
+function checkUp() {
+  let upBoard = cloneBoard(board);
+  let tempBoard = cloneBoard(board);
+  for (let column = 0; column < SIZE; column++) {
+    let boardColumn = [];
+    for (let row = 0; row < SIZE; row++) {
+      boardColumn.push(tempBoard[row][column]);
+    }
+    boardColumn = rowLeft(boardColumn, false);
+    for (let row = 0; row < SIZE; row++) {
+      upBoard[row][column] = boardColumn[row];
+    }
+  }
+  return upBoard;
+}
+
+// Helper function to check if the game is over
+function checkDown() {
+  let downBoard = cloneBoard(board);
+  let tempBoard = cloneBoard(board);
+  for (let column = 0; column < SIZE; column++) {
+    let boardColumn = [];
+    for (let row = 0; row < SIZE; row++) {
+      boardColumn.push(tempBoard[row][column]);
+    }
+    boardColumn = rowLeft(boardColumn.reverse(), false).reverse();
+    for (let row = 0; row < SIZE; row++) {
+      downBoard[row][column] = boardColumn[row];
+    }
+  }
+  return downBoard;
 }
