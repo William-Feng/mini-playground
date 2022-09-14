@@ -13,7 +13,7 @@ body {
 }
 
 #board {
-  margin-top: 3em;
+  margin: 3em 0 2em;
   display: grid;
   align-items: center;
   justify-content: center;
@@ -105,10 +105,6 @@ h1 {
   background-color: #fe3d3d;
   color: #f9f6f2;
   font-size: 40px;
-}
-
-#score {
-  margin-top: 1em;
 }
 
 button {

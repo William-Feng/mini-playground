@@ -4,6 +4,7 @@ const restart = document.getElementById("restart");
 
 const SIZE = 4;
 let board = [];
+let originalBoard = [];
 let score;
 
 newGame();
@@ -12,7 +13,7 @@ restart.addEventListener("click", newGame);
 function newGame() {
   score = 0;
   board = [];
-  tempBoard = [];
+  let tempBoard = [];
 
   // Initialise all cells within the 2D board to be empty
   cells.forEach((cell) => {
@@ -29,6 +30,8 @@ function newGame() {
   generateCell();
   generateCell();
 
+  originalBoard = cloneBoard(board);
+
   document.addEventListener("keyup", shiftBoard);
 }
 
@@ -39,8 +42,7 @@ function generateCell() {
     column = Math.floor(Math.random() * SIZE);
 
     if (board[row][column] == "") {
-      console.log("The row is " + row + " and the column is " + column);
-      cell = getCell(row, column);
+      let cell = getCell(row, column);
 
       // 10% chance of generating a 4, 90% chance of generating a 2
       chance = Math.floor(Math.random() * 10);
@@ -63,19 +65,45 @@ function getCell(row, column) {
   return document.getElementById(row.toString() + "-" + column.toString());
 }
 
+// Create a copy of the 2D board by value
+function cloneBoard(board) {
+  const newBoard = [...board];
+  newBoard.forEach((row, rowIndex) => (newBoard[rowIndex] = [...row]));
+  return newBoard;
+}
+
 function shiftBoard(e) {
   if (e.key === "ArrowLeft") {
-    console.log("The left arrow key was pressed");
     shiftLeft();
   } else if (e.key === "ArrowRight") {
-    console.log("The right arrow key was pressed");
+    shiftRight();
   } else if (e.key === "ArrowUp") {
-    console.log("The up arrow key was pressed");
+    shiftUp();
   } else if (e.key === "ArrowDown") {
-    console.log("The down arrow key was pressed");
+    shiftDown();
   }
 
+  // Invalid move if the board is the same after the arrow key is pressed
+  generateIfValid();
+  originalBoard = cloneBoard(board);
+
   scoreMessage.innerText = score;
+}
+
+function generateIfValid() {
+  // Check if the board before and after the arrow key was pressed is the same
+  console.log(originalBoard);
+  console.log(board);
+  let equal = true;
+  for (let i = 0; i < SIZE; i++) {
+    for (let j = 0; j < SIZE; j++) {
+      if (originalBoard[i][j] != board[i][j]) {
+        equal = false;
+        break;
+      }
+    }
+  }
+  if (!equal) generateCell();
 }
 
 function shiftLeft() {
@@ -83,13 +111,61 @@ function shiftLeft() {
     let boardRow = board[row];
     board[row] = rowLeft(boardRow);
     for (let column = 0; column < SIZE; column++) {
-      let cell = getCell(row, column);
-      let num = board[row][column];
-      cell.className = "cell";
-      cell.innerText = num;
-      cell.classList.add("num" + num);
+      updateCell(row, column);
     }
   }
+}
+
+function shiftRight() {
+  for (let row = 0; row < SIZE; row++) {
+    let boardRow = board[row];
+    // If we have a row [0, 4, 4, 2]
+    // This when shifted right, it should be [0, 0, 8, 2]
+    // So we must reverse the column before and after the shifting
+    board[row] = rowLeft(boardRow.reverse()).reverse();
+    for (let column = 0; column < SIZE; column++) {
+      updateCell(row, column);
+    }
+  }
+}
+
+function shiftUp() {
+  for (let column = 0; column < SIZE; column++) {
+    // Each 'row' becomes the columns of the original board
+    let boardColumn = [];
+    for (let row = 0; row < SIZE; row++) {
+      boardColumn.push(board[row][column]);
+    }
+    boardColumn = rowLeft(boardColumn);
+    for (let row = 0; row < SIZE; row++) {
+      board[row][column] = boardColumn[row];
+      updateCell(row, column);
+    }
+  }
+}
+
+function shiftDown() {
+  // Take the transpose of the board, then reverse each row
+  for (let column = 0; column < SIZE; column++) {
+    let boardColumn = [];
+    for (let row = 0; row < SIZE; row++) {
+      boardColumn.push(board[row][column]);
+    }
+    boardColumn = rowLeft(boardColumn.reverse()).reverse();
+    for (let row = 0; row < SIZE; row++) {
+      board[row][column] = boardColumn[row];
+      updateCell(row, column);
+    }
+  }
+}
+
+// Change the text and colour of a cell after the board has shifted
+function updateCell(row, column) {
+  let cell = getCell(row, column);
+  let num = board[row][column];
+  cell.className = "cell";
+  cell.innerText = num;
+  cell.classList.add("num" + num);
 }
 
 // Main logic for shifting when the arrow keys are pressed
