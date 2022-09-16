@@ -78,21 +78,17 @@ function Wordle() {
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <div className="App" id={theme}>
         <div className="navbar">
-          <h1>Wordle</h1>
+          <h1 className="heading">Wordle</h1>
           <div className="switch">
             <ReactSwitch
               onChange={toggleTheme}
               checked={theme === "dark"}
               onColor={"#027bff"}
               uncheckedIcon={
-                <FaSun
-                  style={{ width: "30px", paddingTop: "6px", color: "yellow" }}
-                />
+                <FaSun style={{ width: "30px", color: "yellow" }} />
               }
               checkedIcon={
-                <FaMoon
-                  style={{ width: "30px", paddingTop: "6px", color: "yellow" }}
-                />
+                <FaMoon style={{ width: "30px", color: "yellow" }} />
               }
             />
           </div>

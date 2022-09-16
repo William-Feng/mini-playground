@@ -1,0 +1,39 @@
+.home {
+  height: 100vh;
+  width: 100vw;
+  place-items: center;
+  background-color: lightgrey;
+}
+
+.banner {
+  text-align: center;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h1.title {
+  font-size: 5em;
+}
+
+.games {
+  margin-top: 1em;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(2, auto);
+  grid-gap: 50px;
+}
+
+.game {
+  height: 350px;
+  width: 500px;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3em;
+  background-color: white;
+}

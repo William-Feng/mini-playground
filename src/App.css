@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.back {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  z-index: 999;
+  margin: 25px;
+}
