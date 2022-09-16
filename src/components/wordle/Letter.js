@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { AppContext } from "../App";
+import { AppContext } from "./Wordle";
 
 function Letter({ attemptNum, letterPos }) {
   const {
@@ -33,6 +33,7 @@ function Letter({ attemptNum, letterPos }) {
     if (correct) setCorrectLetters((prev) => [...prev, letter]);
     else if (partial) setPartialLetters((prev) => [...prev, letter]);
     else if (letter !== "") setIncorrectLetters((prev) => [...prev, letter]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curr.attempt]);
 
   const letterState =

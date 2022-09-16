@@ -1,5 +1,5 @@
-import lessWords from "../words-less.txt";
-import moreWords from "../words-more.txt";
+import lessWords from "./words-less.txt";
+import moreWords from "./words-more.txt";
 
 export const defaultGrid = [
   ["", "", "", "", ""],

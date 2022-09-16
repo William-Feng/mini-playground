@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect } from "react";
-import { AppContext } from "../App";
+import { AppContext } from "./Wordle";
 import Key from "./Key";
 
 function Keyboard() {
@@ -32,6 +32,7 @@ function Keyboard() {
         });
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [curr]
   );
 

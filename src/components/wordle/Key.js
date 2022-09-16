@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AppContext } from "../App";
+import { AppContext } from "./Wordle";
 
 function Key({ val, special, correct, partial, incorrect }) {
   const { onLetter, onEnter, onDelete } = useContext(AppContext);
