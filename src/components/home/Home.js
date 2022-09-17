@@ -12,8 +12,8 @@ function Home() {
         <Link to="/wordle">
           <div className="game">Wordle</div>
         </Link>
-        <Link to="/wordle">
-          <div className="game">Wordle</div>
+        <Link to="/tic-tac-toe">
+          <div className="game">Tic Tac Toe</div>
         </Link>
         <Link to="/wordle">
           <div className="game">Wordle</div>

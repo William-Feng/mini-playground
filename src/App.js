@@ -3,6 +3,7 @@ import { Route, Routes, Link } from "react-router-dom";
 import "./App.css";
 import Home from "./components/home/Home";
 import Wordle from "./components/wordle/Wordle";
+import TicTacToe from "./components/tic-tac-toe/TicTacToe";
 import { RiArrowGoBackFill } from "react-icons/ri";
 
 function App() {
@@ -18,6 +19,17 @@ function App() {
                 <RiArrowGoBackFill className="back" />
               </Link>
               <Wordle />
+            </>
+          }
+        />
+        <Route
+          path="/tic-tac-toe"
+          element={
+            <>
+              <Link to="/">
+                <RiArrowGoBackFill className="back" />
+              </Link>
+              <TicTacToe />
             </>
           }
         />
