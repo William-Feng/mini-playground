@@ -1,0 +1,89 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  margin-top: 6em;
+  text-align: center;
+}
+
+.board {
+  margin: 2em 0;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(4, auto);
+  grid-gap: 10px;
+}
+
+.cell {
+  width: 120px;
+  height: 120px;
+  background-color: lightgrey;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.cell:not(.stable):hover {
+  border: 2px solid black;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+button {
+  background-color: white;
+  border: 1px solid black;
+  font-size: 1.5em;
+  margin-top: 1em;
+  padding: 0.25em 0.5em;
+  border-radius: 2px;
+  cursor: pointer;
+  user-select: none;
+}
+
+button:hover {
+  background-color: lightgrey;
+}
+
+.red {
+  background-color: orangered;
+}
+
+.maroon {
+  background-color: maroon;
+}
+
+.gold {
+  background-color: gold;
+}
+
+.green {
+  background-color: forestgreen;
+}
+
+.turquoise {
+  background-color: turquoise;
+}
+
+.blue {
+  background-color: royalblue;
+}
+
+.violet {
+  background-color: violet;
+}
+
+.purple {
+  background-color: purple;
+}
+
+.hidden {
+  background-color: lightgrey;
+}
+
+.stable {
+  cursor: not-allowed;
+}
