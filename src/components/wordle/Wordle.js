@@ -1,16 +1,15 @@
-import { createContext, useEffect, useState } from "react";
-import ReactSwitch from "react-switch";
+import { createContext, useContext, useEffect, useState } from "react";
 import "./Wordle.css";
+import { ThemeContext } from "../../App";
 import GameOver from "./GameOver";
 import Grid from "./Grid";
 import Keyboard from "./Keyboard";
 import { defaultGrid, generateWordbank } from "./Words";
-import { FaSun, FaMoon } from "react-icons/fa";
 
-export const ThemeContext = createContext();
 export const AppContext = createContext();
 
 function Wordle() {
+  const { theme } = useContext(ThemeContext);
   const [grid, setGrid] = useState(defaultGrid);
   const [curr, setCurr] = useState({ attempt: 0, letterPos: 0 });
   const [wordbank, setWordbank] = useState(new Set());
@@ -22,11 +21,6 @@ function Wordle() {
     gameOver: false,
     guessedWord: false,
   });
-
-  const [theme, setTheme] = useState("dark");
-  const toggleTheme = () => {
-    setTheme((curr) => (curr === "light" ? "dark" : "light"));
-  };
 
   useEffect(() => {
     generateWordbank().then((words) => {
@@ -75,49 +69,33 @@ function Wordle() {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div className="App" id={theme}>
-        <div className="navbar">
-          <h1 className="heading">Wordle</h1>
-          <div className="switch">
-            <ReactSwitch
-              onChange={toggleTheme}
-              checked={theme === "dark"}
-              onColor={"#027bff"}
-              uncheckedIcon={
-                <FaSun style={{ width: "30px", color: "yellow" }} />
-              }
-              checkedIcon={
-                <FaMoon style={{ width: "30px", color: "yellow" }} />
-              }
-            />
-          </div>
-        </div>
-        <AppContext.Provider
-          value={{
-            grid,
-            setGrid,
-            curr,
-            setCurr,
-            onLetter,
-            onEnter,
-            onDelete,
-            secret,
-            correctLetters,
-            setCorrectLetters,
-            partialLetters,
-            setPartialLetters,
-            incorrectLetters,
-            setIncorrectLetters,
-            gameOver,
-            setGameOver,
-          }}
-        >
+    <div className="wordle" id={theme}>
+      <AppContext.Provider
+        value={{
+          grid,
+          setGrid,
+          curr,
+          setCurr,
+          onLetter,
+          onEnter,
+          onDelete,
+          secret,
+          correctLetters,
+          setCorrectLetters,
+          partialLetters,
+          setPartialLetters,
+          incorrectLetters,
+          setIncorrectLetters,
+          gameOver,
+          setGameOver,
+        }}
+      >
+        <div className="grid-container">
           <Grid />
-          {gameOver.gameOver ? <GameOver /> : <Keyboard />}
-        </AppContext.Provider>
-      </div>
-    </ThemeContext.Provider>
+        </div>
+        {gameOver.gameOver ? <GameOver /> : <Keyboard />}
+      </AppContext.Provider>
+    </div>
   );
 }
 
