@@ -22,7 +22,7 @@
   user-select: none;
 }
 
-.cell:not(.cross):not(.nought):hover {
+.cell:not(.occupied):hover {
   background-color: lightgrey;
 }
 
@@ -46,8 +46,8 @@
   border-bottom: none;
 }
 
-.cross:hover,
-.nought:hover {
+.occupied:hover {
+  background-color: white;
   cursor: not-allowed;
 }
 
@@ -55,7 +55,7 @@ h1 {
   font-size: 3em;
 }
 
-button {
+.restart {
   background-color: white;
   border: 1px solid black;
   font-size: 1.5em;
@@ -63,9 +63,8 @@ button {
   padding: 0.25em 0.5em;
   border-radius: 2px;
   cursor: pointer;
-  user-select: none;
 }
 
-button:hover {
+.restart:hover {
   background-color: lightgrey;
 }
