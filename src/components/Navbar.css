@@ -23,6 +23,19 @@
   width: 100%;
 }
 
+.arrow {
+  position: absolute;
+  display: flex;
+  justify-content: flex-start;
+  left: 0px;
+}
+
+.back {
+  width: 30px;
+  height: 30px;
+  margin: 25px;
+}
+
 h1.heading {
   font-size: 37px;
   font-weight: 700;

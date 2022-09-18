@@ -23,10 +23,7 @@ function App() {
           path="/wordle"
           element={
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
-              <Link to="/">
-                <RiArrowGoBackFill className="back" />
-              </Link>
-              <Navbar />
+              <Navbar heading="Wordle" />
               <Wordle />
             </ThemeContext.Provider>
           }
@@ -34,12 +31,10 @@ function App() {
         <Route
           path="/tic-tac-toe"
           element={
-            <>
-              <Link to="/">
-                <RiArrowGoBackFill className="back" />
-              </Link>
+            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+              <Navbar heading="Tic Tac Toe" />
               <TicTacToe />
-            </>
+            </ThemeContext.Provider>
           }
         />
       </Routes>
