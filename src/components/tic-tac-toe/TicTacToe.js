@@ -68,7 +68,7 @@ function TicTacToe() {
   };
 
   return (
-    <div className="container">
+    <div className="container" id="tic-tac-toe">
       <div className="board">
         {board.map((value, i) => (
           <div

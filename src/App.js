@@ -1,11 +1,11 @@
 import React, { createContext, useState } from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./components/home/Home";
 import Wordle from "./components/wordle/Wordle";
 import TicTacToe from "./components/tic-tac-toe/TicTacToe";
-import { RiArrowGoBackFill } from "react-icons/ri";
 import Navbar from "./components/Navbar";
+import Memory from "./components/memory/Memory";
 
 export const ThemeContext = createContext();
 
@@ -34,6 +34,15 @@ function App() {
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
               <Navbar heading="Tic Tac Toe" />
               <TicTacToe />
+            </ThemeContext.Provider>
+          }
+        />
+        <Route
+          path="/memory"
+          element={
+            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+              <Navbar heading="Memory Game" />
+              <Memory />
             </ThemeContext.Provider>
           }
         />
