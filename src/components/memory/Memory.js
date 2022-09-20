@@ -21,35 +21,44 @@ function Memory() {
     "purple",
   ];
 
-  const cells = [];
   const WIN_NUM_MATCH = colours.length / 2;
   const COLOUR_HIDDEN = "hidden";
   const CELL_STABLE = "stable";
-
-  for (let i = 0; i < colours.length; i++) {
-    let cell = {};
-    cell["colour"] = colours[i];
-    cell["status"] = COLOUR_HIDDEN;
-    cells.push(cell);
-  }
-
-  const [board, setBoard] = useState(cells);
   const [previous, setPrevious] = useState(null);
   const [lockBoard, setLockBoard] = useState(false);
   const [turn, setTurn] = useState(0);
   const [numMatching, setNumMatching] = useState(0);
 
-  /*
-  // Shuffle all the cells so the order is randomised
-  function shuffle() {
-    boardCells.forEach((cell) => {
-      let position = Math.floor(Math.random() * boardCells.length);
-      cell.style.order = position;
-    });
-  }
-  */
+  // Reset the board and all variables for a new game or upon restart
+  const gameInitialisation = () => {
+    setPrevious(null);
+    setLockBoard(false);
+    setTurn(0);
+    setNumMatching(0);
+    const board = [];
+    for (let i = 0; i < colours.length; i++) {
+      let cell = {};
+      cell["colour"] = colours[i];
+      cell["status"] = COLOUR_HIDDEN;
+      board.push(cell);
+    }
+    return shuffleBoard(board);
+  };
 
-  // Another cell was selected before in this turn so we need to check
+  // Shuffle all the cells so the order is randomised (Fisher-Yates algorithm)
+  const shuffleBoard = (board) => {
+    let curr = board.length;
+    while (curr !== 0) {
+      let random = Math.floor(Math.random() * curr);
+      curr--;
+      [board[curr], board[random]] = [board[random], board[curr]];
+    }
+    return board;
+  };
+
+  const [board, setBoard] = useState(gameInitialisation);
+
+  // Another cell was selected before in this turn so checks are necessary
   function secondSelected(i) {
     setTurn(turn + 1);
     if (checkSame(i)) {
@@ -66,7 +75,6 @@ function Memory() {
       // Show the colour of the cell for 1 second, then reset
       // Prevent user from selecting cells during this delay
       board[i].status = "";
-      setBoard(board);
       setLockBoard(true);
       setTimeout(() => {
         previous.status = COLOUR_HIDDEN;
@@ -100,6 +108,7 @@ function Memory() {
     setPrevious(board[i]);
   };
 
+  // A cell within the board is clicked
   const handleClick = (i) => {
     if (allowedClick(i)) {
       if (!previous) {
@@ -110,6 +119,7 @@ function Memory() {
     }
   };
 
+  // Message to be displayed depending on whether user has won
   const message = () => {
     if (numMatching === WIN_NUM_MATCH) {
       if (turn <= 20) {
@@ -138,7 +148,12 @@ function Memory() {
       </div>
       <div>
         {message()}
-        <button className="restart">Restart</button>
+        <button
+          className="restart"
+          onClick={() => setBoard(gameInitialisation)}
+        >
+          Restart
+        </button>
       </div>
     </div>
   );
