@@ -22,7 +22,7 @@ function Memory() {
   ];
 
   const cells = [];
-  const WIN_NUM_MATCH = colours.length;
+  const WIN_NUM_MATCH = colours.length / 2;
   const COLOUR_HIDDEN = "hidden";
   const CELL_STABLE = "stable";
 
@@ -47,45 +47,46 @@ function Memory() {
       cell.style.order = position;
     });
   }
+  */
 
   // Another cell was selected before in this turn so we need to check
-  function secondSelected(cell) {
-    numTurns++;
-    turnMessage.innerText = "Turns: " + numTurns;
-    if (previous == cell) {
-      // If the user selects the same cell twice
-      cell.classList.add(COLOUR_HIDDEN);
-      previous = null;
-    } else if (checkMatch(cell)) {
-      // Do not allow the cells to be chosen again
-      previous.classList.add(CELL_STABLE);
-      cell.classList.add(CELL_STABLE);
-      previous = null;
-      numMatching++;
-      checkWin();
+  function secondSelected(i) {
+    setTurn(turn + 1);
+    if (checkSame(i)) {
+      board[i].status = COLOUR_HIDDEN;
+      setBoard(board);
+      setPrevious(null);
+    } else if (checkMatching(i)) {
+      previous.status = CELL_STABLE;
+      board[i].status = CELL_STABLE;
+      setBoard(board);
+      setPrevious(null);
+      setNumMatching(numMatching + 1);
     } else {
       // Show the colour of the cell for 1 second, then reset
-      // Present user from selecting cells during this delay
-      cell.classList.remove(COLOUR_HIDDEN);
-      lockBoard = true;
+      // Prevent user from selecting cells during this delay
+      board[i].status = "";
+      setBoard(board);
+      setLockBoard(true);
       setTimeout(() => {
-        previous.classList.add(COLOUR_HIDDEN);
-        cell.classList.add(COLOUR_HIDDEN);
-        previous = null;
-        lockBoard = false;
+        previous.status = COLOUR_HIDDEN;
+        board[i].status = COLOUR_HIDDEN;
+        setBoard(board);
+        setPrevious(null);
+        setLockBoard(false);
       }, 1000);
     }
   }
 
+  // Check if the exact same cell is selected twice
+  const checkSame = (i) => {
+    return board[i].status !== COLOUR_HIDDEN;
+  };
+
   // Check if the two selected cells have the same underlying colour
-  function checkMatch(cell) {
-    cell.classList.remove(COLOUR_HIDDEN);
-    return (
-      getComputedStyle(previous).backgroundColor ===
-      getComputedStyle(cell).backgroundColor
-    );
-  }
-  */
+  const checkMatching = (i) => {
+    return board[i].colour === previous.colour;
+  };
 
   // Prevent clicking if board is locked or the new cell is already correct
   const allowedClick = (i) => {
@@ -104,7 +105,7 @@ function Memory() {
       if (!previous) {
         firstSelected(i);
       } else {
-        console.log("This is the second cell selected within a pair");
+        secondSelected(i);
       }
     }
   };
