@@ -1,66 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Memory.css";
 
 function Memory() {
-  /*
-  const boardCells = document.querySelectorAll(".cell");
-  const turnMessage = document.getElementById("turns");
-  const restart = document.getElementById("restart");
+  const colours = [
+    "red",
+    "red",
+    "maroon",
+    "maroon",
+    "gold",
+    "gold",
+    "green",
+    "green",
+    "turquoise",
+    "turquoise",
+    "blue",
+    "blue",
+    "violet",
+    "violet",
+    "purple",
+    "purple",
+  ];
 
+  const cells = [];
+  const WIN_NUM_MATCH = colours.length;
   const COLOUR_HIDDEN = "hidden";
   const CELL_STABLE = "stable";
-  const WIN_NUM_MATCH = boardCells.length / 2;
-  let previous;
-  let lockBoard;
-  let numTurns;
-  let numMatching;
 
-  newGame();
-  restart.addEventListener("click", newGame);
+  for (let i = 0; i < colours.length; i++) {
+    let cell = {};
+    cell["colour"] = colours[i];
+    cell["status"] = COLOUR_HIDDEN;
+    cells.push(cell);
+  }
 
+  const [board, setBoard] = useState(cells);
+  const [previous, setPrevious] = useState(null);
+  const [lockBoard, setLockBoard] = useState(false);
+  const [turn, setTurn] = useState(0);
+  const [numMatching, setNumMatching] = useState(0);
+
+  /*
   // Shuffle all the cells so the order is randomised
   function shuffle() {
     boardCells.forEach((cell) => {
       let position = Math.floor(Math.random() * boardCells.length);
       cell.style.order = position;
     });
-  }
-
-  function newGame() {
-    previous = null;
-    lockBoard = false;
-    numTurns = 0;
-    numMatching = 0;
-    turnMessage.innerText = "Turns: 0";
-    shuffle();
-    boardCells.forEach((cell) => {
-      cell.classList.add(COLOUR_HIDDEN);
-      cell.classList.remove(CELL_STABLE);
-      cell.addEventListener("click", handleClick);
-    });
-  }
-
-  function handleClick(e) {
-    const cell = e.target;
-
-    if (allowedClick(cell)) {
-      if (!previous) {
-        firstSelected(cell);
-      } else {
-        secondSelected(cell);
-      }
-    }
-  }
-
-  // Prevent clicking if board is locked or the new cell is already correct
-  function allowedClick(cell) {
-    return !lockBoard && !cell.classList.contains(CELL_STABLE);
-  }
-
-  // Show the colour of the cell if nothing was selected before in this turn
-  function firstSelected(cell) {
-    cell.classList.remove(COLOUR_HIDDEN);
-    previous = cell;
   }
 
   // Another cell was selected before in this turn so we need to check
@@ -100,41 +85,58 @@ function Memory() {
       getComputedStyle(cell).backgroundColor
     );
   }
+  */
 
-  // Adjust the message if there is a win
-  function checkWin() {
-    if (numMatching === WIN_NUM_MATCH) {
-      if (numTurns <= 20) {
-        turnMessage.innerText = "Well done! Turns: " + numTurns;
+  // Prevent clicking if board is locked or the new cell is already correct
+  const allowedClick = (i) => {
+    return !lockBoard && board[i].status !== CELL_STABLE;
+  };
+
+  // Show the colour of the cell if nothing was selected before in this turn
+  const firstSelected = (i) => {
+    board[i].status = "";
+    setBoard(board);
+    setPrevious(board[i]);
+  };
+
+  const handleClick = (i) => {
+    if (allowedClick(i)) {
+      if (!previous) {
+        firstSelected(i);
       } else {
-        turnMessage.innerText = "You won! Turns: " + numTurns;
+        console.log("This is the second cell selected within a pair");
       }
     }
-  }
-  */
+  };
+
+  const message = () => {
+    if (numMatching === WIN_NUM_MATCH) {
+      if (turn <= 20) {
+        return <h2>Well done! Turns used: {turn}</h2>;
+      } else {
+        return <h2>You won! Turns used: {turn}</h2>;
+      }
+    } else {
+      return <h2>Turns used: {turn}</h2>;
+    }
+  };
 
   return (
     <div className="container" id="memory">
       <div className="board">
-        <div className="cell red"></div>
-        <div className="cell red"></div>
-        <div className="cell maroon"></div>
-        <div className="cell maroon"></div>
-        <div className="cell gold"></div>
-        <div className="cell gold"></div>
-        <div className="cell green"></div>
-        <div className="cell green"></div>
-        <div className="cell turquoise"></div>
-        <div className="cell turquoise"></div>
-        <div className="cell blue"></div>
-        <div className="cell blue"></div>
-        <div className="cell violet"></div>
-        <div className="cell violet"></div>
-        <div className="cell purple"></div>
-        <div className="cell purple"></div>
+        {board.map((value, i) => (
+          <div
+            className={
+              "cell " +
+              (value.status === COLOUR_HIDDEN ? COLOUR_HIDDEN : value.colour)
+            }
+            key={i}
+            onClick={() => handleClick(i)}
+          />
+        ))}
       </div>
       <div>
-        <h2 id="turns"></h2>
+        {message()}
         <button className="restart">Restart</button>
       </div>
     </div>
