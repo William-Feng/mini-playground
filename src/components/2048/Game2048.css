@@ -1,31 +1,18 @@
-body {
-  margin: 0;
-  box-sizing: border-box;
-}
-
-.container {
-  display: grid;
-  height: 100vh;
-  width: 100vw;
-  place-items: center;
-  text-align: center;
-  color: #776e65;
-}
-
-#board {
-  margin: 3em 0 2em;
+#game2048 .board {
+  margin: 0 0 3em;
   display: grid;
   align-items: center;
   justify-content: center;
   grid-template-columns: repeat(4, auto);
   grid-gap: 15px;
-  background-color: #bcac9f;
   padding: 15px;
   border-radius: 6px;
-  user-select: none;
+  background-color: #bbada0;
+  height: 500px;
+  width: 500px;
 }
 
-.cell {
+#game2048 .cell {
   width: 107px;
   height: 107px;
   background-color: #ccc1b4;
@@ -33,12 +20,8 @@ body {
   line-height: 107px;
   font-weight: bold;
   border-radius: 3px;
-}
-
-h1 {
-  font-size: 5em;
-  font-weight: bold;
-  color: #776e65;
+  border: none;
+  cursor: default;
 }
 
 .num2 {
@@ -107,18 +90,12 @@ h1 {
   font-size: 40px;
 }
 
-button {
+#game2048 .restart {
   background-color: #8f7a66;
   border: none;
-  border-radius: 3px;
-  font-size: 1.5em;
-  margin-top: 1em;
-  padding: 0.25em 0.75em;
-  cursor: pointer;
-  user-select: none;
   color: #f9f6f2;
 }
 
-button:hover {
+#game2048 .restart:hover {
   background-color: #68584a;
 }

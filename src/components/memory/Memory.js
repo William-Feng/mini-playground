@@ -59,7 +59,7 @@ function Memory() {
   const [board, setBoard] = useState(gameInitialisation);
 
   // Another cell was selected before in this turn so checks are necessary
-  function secondSelected(i) {
+  const secondSelected = (i) => {
     setTurn(turn + 1);
     if (checkSame(i)) {
       board[i].status = COLOUR_HIDDEN;
@@ -84,7 +84,7 @@ function Memory() {
         setLockBoard(false);
       }, 1000);
     }
-  }
+  };
 
   // Check if the exact same cell is selected twice
   const checkSame = (i) => {

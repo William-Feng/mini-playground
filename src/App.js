@@ -6,6 +6,7 @@ import Wordle from "./components/wordle/Wordle";
 import TicTacToe from "./components/tic-tac-toe/TicTacToe";
 import Navbar from "./components/Navbar";
 import Memory from "./components/memory/Memory";
+import Game2048 from "./components/2048/Game2048";
 
 export const ThemeContext = createContext();
 
@@ -43,6 +44,15 @@ function App() {
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
               <Navbar heading="Memory Game" />
               <Memory />
+            </ThemeContext.Provider>
+          }
+        />
+        <Route
+          path="/2048"
+          element={
+            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+              <Navbar heading="2048" />
+              <Game2048 />
             </ThemeContext.Provider>
           }
         />

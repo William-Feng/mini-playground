@@ -18,8 +18,8 @@ function Home() {
         <Link to="/memory">
           <div className="game">Memory Game</div>
         </Link>
-        <Link to="/wordle">
-          <div className="game">Wordle</div>
+        <Link to="/2048">
+          <div className="game">2048</div>
         </Link>
       </div>
     </div>
