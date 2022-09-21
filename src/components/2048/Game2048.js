@@ -3,7 +3,7 @@ import "./Game2048.css";
 
 function Game2048() {
   const SIZE = 4;
-
+  let prevBoard = [];
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
 
@@ -22,15 +22,15 @@ function Game2048() {
       let row = Math.floor(Math.random() * SIZE);
       let column = Math.floor(Math.random() * SIZE);
 
-      if (board[row][column] == "") {
+      if (board[row][column] === "") {
         let chance = Math.floor(Math.random() * 10);
-        if (chance == 0) {
+        if (chance === 0) {
           board[row][column] = 4;
         } else {
           board[row][column] = 2;
         }
         cellsGenerated++;
-        if (cellsGenerated == 2) return board;
+        if (cellsGenerated === 2) return board;
       }
     }
   };
@@ -57,105 +57,79 @@ function Game2048() {
   
     document.addEventListener("keydown", shiftBoard);
   }
-  
-  // Generate a new number within the board
-  const generateCell = () => {
-    while (true) {
-      let row = Math.floor(Math.random() * SIZE);
-      let column = Math.floor(Math.random() * SIZE);
+  */
 
-      if (board[row][column] == "") {
-        // 10% chance of generating a 4, 90% chance of generating a 2
-        let chance = Math.floor(Math.random() * 10);
-        if (chance == 0) {
-          board[row][column] = 4;
-        } else {
-          board[row][column] = 2;
-        }
-        return;
-      }
-    }
-  };
-  
-  // Return the cell with corresponding id based on the row and column provided
-  function getCell(row, column) {
-    return document.getElementById(row.toString() + "-" + column.toString());
-  }
-  
   // Create a copy of the 2D board by value
   function cloneBoard(board) {
     const newBoard = [...board];
     newBoard.forEach((row, rowIndex) => (newBoard[rowIndex] = [...row]));
     return newBoard;
   }
-  
-  function shiftBoard(e) {
-    if (e.key === "ArrowLeft") {
-      shiftLeft();
-    } else if (e.key === "ArrowRight") {
-      shiftRight();
-    } else if (e.key === "ArrowUp") {
-      shiftUp();
-    } else if (e.key === "ArrowDown") {
-      shiftDown();
+
+  // Generate a new number within the board
+  const generateCell = () => {
+    while (true) {
+      let row = Math.floor(Math.random() * SIZE);
+      let column = Math.floor(Math.random() * SIZE);
+
+      if (board[row][column] === "") {
+        // 10% chance of generating a 4, 90% chance of generating a 2
+        let chance = Math.floor(Math.random() * 10);
+        if (chance === 0) {
+          board[row][column] = 4;
+        } else {
+          board[row][column] = 2;
+        }
+        setBoard([...board]);
+        return;
+      }
     }
-    scoreMessage.innerText = score;
-  
-    // Invalid move if the board is the same after the arrow key is pressed
-    generateIfValid();
-  
-    checkGameOver();
-    prevBoard = cloneBoard(board);
-  }
-  
+  };
+
   // Return true if both boards are equivalent
-  function checkSame(boardA, boardB) {
+  const checkSame = (boardA, boardB) => {
     let equal = true;
     for (let i = 0; i < SIZE; i++) {
       for (let j = 0; j < SIZE; j++) {
-        if (boardA[i][j] != boardB[i][j]) {
+        if (boardA[i][j] !== boardB[i][j]) {
           equal = false;
           break;
         }
       }
     }
     return equal;
-  }
-  
+  };
+
   // Generate a cell if the board before and after are different
-  function generateIfValid() {
+  const generateIfValid = () => {
     if (!checkSame(prevBoard, board)) {
       generateCell();
     }
-  }
-  
+  };
+
   // Shift board when the left arrow key is pressed
-  function shiftLeft() {
+  const shiftLeft = () => {
     for (let row = 0; row < SIZE; row++) {
       let boardRow = board[row];
       board[row] = rowLeft(boardRow, true);
-      for (let column = 0; column < SIZE; column++) {
-        updateCell(row, column);
-      }
     }
-  }
-  
+    setBoard([...board]);
+  };
+
   // Shift board when the right arrow key is pressed
-  function shiftRight() {
+  const shiftRight = () => {
     for (let row = 0; row < SIZE; row++) {
       let boardRow = board[row];
       // If we have a row [0, 4, 4, 2]
       // This when shifted right, it should be [0, 0, 8, 2]
       // So we must reverse the column before and after the shifting
       board[row] = rowLeft(boardRow.reverse(), true).reverse();
-      for (let column = 0; column < SIZE; column++) {
-        updateCell(row, column);
-      }
     }
-  }
-  
+    setBoard([...board]);
+  };
+
   // Shift board when the up arrow key is pressed
-  function shiftUp() {
+  const shiftUp = () => {
     for (let column = 0; column < SIZE; column++) {
       // Each 'row' becomes the columns of the original board
       let boardColumn = [];
@@ -165,13 +139,13 @@ function Game2048() {
       boardColumn = rowLeft(boardColumn, true);
       for (let row = 0; row < SIZE; row++) {
         board[row][column] = boardColumn[row];
-        updateCell(row, column);
       }
     }
-  }
-  
+    setBoard([...board]);
+  };
+
   // Shift board when the down arrow key is pressed
-  function shiftDown() {
+  const shiftDown = () => {
     // Take the transpose of the board, then reverse each row
     for (let column = 0; column < SIZE; column++) {
       let boardColumn = [];
@@ -181,36 +155,22 @@ function Game2048() {
       boardColumn = rowLeft(boardColumn.reverse(), true).reverse();
       for (let row = 0; row < SIZE; row++) {
         board[row][column] = boardColumn[row];
-        updateCell(row, column);
       }
     }
-  }
-  
-  // Change the text and colour of a cell after the board has shifted
-  function updateCell(row, column) {
-    let cell = getCell(row, column);
-    let num = board[row][column];
-    cell.className = "cell";
-    cell.innerText = num;
-    // All numbers over 2048 will have the 'num4096' class (black background)
-    if (num <= 2048) {
-      cell.classList.add("num" + num);
-    } else {
-      cell.classList.add("num4096");
-    }
-  }
-  
+    setBoard([...board]);
+  };
+
   // Main logic for shifting when the arrow keys are pressed
   function rowLeft(row, increaseScore) {
     // [2, 2, "", 2]
     row = filterEmpty(row);
     // [2, 2, 2]
     for (let i = 0; i < row.length - 1; i++) {
-      if (row[i] != "" && row[i] === row[i + 1]) {
+      if (row[i] !== "" && row[i] === row[i + 1]) {
         row[i] *= 2;
         row[i + 1] = "";
         if (increaseScore) {
-          score += row[i];
+          setScore(score + row[i]);
         }
       }
     }
@@ -223,12 +183,13 @@ function Game2048() {
     // [4, 2, "", ""]
     return row;
   }
-  
+
   // Helper function to temporarily remove cells that are empty
   function filterEmpty(row) {
-    return row.filter((num) => num != "");
+    return row.filter((num) => num !== "");
   }
-  
+
+  /*
   // Game over if no more moves can be made (results in same board)
   function checkGameOver() {
     let leftBoard = checkLeft();
@@ -236,10 +197,10 @@ function Game2048() {
     let upBoard = checkUp();
     let downBoard = checkDown();
     let equal =
-      checkSame(board, leftBoard) &&
-      checkSame(leftBoard, rightBoard) &&
-      checkSame(rightBoard, upBoard) &&
-      checkSame(upBoard, downBoard);
+    checkSame(board, leftBoard) &&
+    checkSame(leftBoard, rightBoard) &&
+    checkSame(rightBoard, upBoard) &&
+    checkSame(upBoard, downBoard);
     if (equal) {
       scoreMessage.innerHTML = score + "<br><b>GAME OVER</b>";
     }
@@ -302,15 +263,49 @@ function Game2048() {
   }
   */
 
+  const shiftBoard = (e) => {
+    prevBoard = cloneBoard(board);
+    if (e.key === "ArrowLeft") {
+      shiftLeft();
+    } else if (e.key === "ArrowRight") {
+      shiftRight();
+    } else if (e.key === "ArrowUp") {
+      shiftUp();
+    } else if (e.key === "ArrowDown") {
+      shiftDown();
+    }
+
+    // Invalid move if the board is the same after the arrow key is pressed
+    generateIfValid();
+
+    // checkGameOver();
+    prevBoard = cloneBoard(board);
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", shiftBoard);
+    return () => {
+      document.removeEventListener("keydown", shiftBoard);
+    };
+  }, [shiftBoard]);
+
+  // Update the colour of a cell (after the board has shifted)
+  const cellClass = (num) => {
+    if (!num) {
+      return "cell";
+    } else if (num <= 2048) {
+      return "cell num" + num;
+    } else {
+      return "cell num4096";
+    }
+  };
+
   return (
     <div className="container" id="game2048">
       <div className="board">
         {board.map((row, i) =>
           row.map((value, j) => (
-            <div
-              className={"cell " + (value ? "num" + value : "")}
-              key={`${i}-${j}`}
-            >
+            <div className={cellClass(value)} key={`${i}-${j}`}>
               {value}
             </div>
           ))
@@ -325,7 +320,10 @@ function Game2048() {
         ) : (
           ""
         )}
-        <button className="restart" onClick={() => setBoard(initialiseBoard)}>
+        <button
+          className="restart"
+          onClick={() => setBoard(gameInitialisation)}
+        >
           Restart
         </button>
       </div>
