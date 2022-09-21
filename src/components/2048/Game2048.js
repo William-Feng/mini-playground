@@ -1,16 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Game2048.css";
 
 function Game2048() {
-  /*
-  const cells = [...document.querySelectorAll(".cell")];
-  const scoreMessage = document.getElementById("score");
-  const restart = document.getElementById("restart");
-  
   const SIZE = 4;
-  let board = [];
+
+  const [score, setScore] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
+
+  const gameInitialisation = () => {
+    setScore(0);
+    setGameOver(false);
+    return initialiseBoard();
+  };
+
+  // Generate two cells on an empty board
+  const initialiseBoard = () => {
+    let board = [...Array(SIZE)].map(() => Array(SIZE).fill(""));
+    let cellsGenerated = 0;
+
+    while (true) {
+      let row = Math.floor(Math.random() * SIZE);
+      let column = Math.floor(Math.random() * SIZE);
+
+      if (board[row][column] == "") {
+        let chance = Math.floor(Math.random() * 10);
+        if (chance == 0) {
+          board[row][column] = 4;
+        } else {
+          board[row][column] = 2;
+        }
+        cellsGenerated++;
+        if (cellsGenerated == 2) return board;
+      }
+    }
+  };
+
+  const [board, setBoard] = useState(gameInitialisation);
+
+  /*
   let prevBoard = [];
-  let score;
   
   newGame();
   restart.addEventListener("click", newGame);
@@ -30,44 +58,24 @@ function Game2048() {
     document.addEventListener("keydown", shiftBoard);
   }
   
-  // Initialise all cells within the 2D board to be empty
-  function initaliseBoard() {
-    let tempBoard = [];
-  
-    cells.forEach((cell) => {
-      cell.className = "cell";
-      cell.innerText = "";
-      tempBoard.push(cell.innerText);
-    });
-    while (tempBoard.length) {
-      board.push(tempBoard.splice(0, SIZE));
-    }
-  }
-  
   // Generate a new number within the board
-  function generateCell() {
+  const generateCell = () => {
     while (true) {
-      row = Math.floor(Math.random() * SIZE);
-      column = Math.floor(Math.random() * SIZE);
-  
+      let row = Math.floor(Math.random() * SIZE);
+      let column = Math.floor(Math.random() * SIZE);
+
       if (board[row][column] == "") {
-        let cell = getCell(row, column);
-  
         // 10% chance of generating a 4, 90% chance of generating a 2
-        chance = Math.floor(Math.random() * 10);
+        let chance = Math.floor(Math.random() * 10);
         if (chance == 0) {
           board[row][column] = 4;
-          cell.innerText = 4;
-          cell.classList.add("num4");
         } else {
           board[row][column] = 2;
-          cell.innerText = 2;
-          cell.classList.add("num2");
         }
         return;
       }
     }
-  }
+  };
   
   // Return the cell with corresponding id based on the row and column provided
   function getCell(row, column) {
@@ -297,28 +305,27 @@ function Game2048() {
   return (
     <div className="container" id="game2048">
       <div className="board">
-        <div className="cell" id="0-0"></div>
-        <div className="cell" id="0-1"></div>
-        <div className="cell" id="0-2"></div>
-        <div className="cell" id="0-3"></div>
-        <div className="cell" id="1-0"></div>
-        <div className="cell" id="1-1"></div>
-        <div className="cell" id="1-2"></div>
-        <div className="cell" id="1-3"></div>
-        <div className="cell" id="2-0"></div>
-        <div className="cell" id="2-1"></div>
-        <div className="cell" id="2-2"></div>
-        <div className="cell" id="2-3"></div>
-        <div className="cell" id="3-0"></div>
-        <div className="cell" id="3-1"></div>
-        <div className="cell" id="3-2"></div>
-        <div className="cell" id="3-3"></div>
+        {board.map((row, i) =>
+          row.map((value, j) => (
+            <div
+              className={"cell " + (value ? "num" + value : "")}
+              key={`${i}-${j}`}
+            >
+              {value}
+            </div>
+          ))
+        )}
       </div>
       <div>
-        <h2>
-          Score: <span id="score">0</span>
-        </h2>
-        <button className="restart" id="game2048">
+        <h2>Score: {score}</h2>
+        {gameOver ? (
+          <h2>
+            <b>GAME OVER</b>
+          </h2>
+        ) : (
+          ""
+        )}
+        <button className="restart" onClick={() => setBoard(initialiseBoard)}>
           Restart
         </button>
       </div>

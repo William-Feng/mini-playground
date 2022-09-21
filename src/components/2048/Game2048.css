@@ -24,67 +24,67 @@
   cursor: default;
 }
 
-.num2 {
+#game2048 .num2 {
   background-color: #eee4da;
   color: #776e65;
 }
 
-.num4 {
+#game2048 .num4 {
   background-color: #eee1c9;
   color: #776e65;
 }
 
-.num8 {
+#game2048 .num8 {
   background-color: #f3b279;
   color: #f9f6f2;
 }
 
-.num16 {
+#game2048 .num16 {
   background-color: #f69564;
   color: #f9f6f2;
 }
 
-.num32 {
+#game2048 .num32 {
   background-color: #f77c5f;
   color: #f9f6f2;
 }
 
-.num64 {
+#game2048 .num64 {
   background-color: #f75f3c;
   color: #f9f6f2;
 }
 
-.num128 {
+#game2048 .num128 {
   background-color: #edd073;
   color: #f9f6f2;
   font-size: 45px;
 }
 
-.num256 {
+#game2048 .num256 {
   background-color: #eecc62;
   color: #f9f6f2;
   font-size: 45px;
 }
 
-.num512 {
+#game2048 .num512 {
   background-color: #edc950;
   color: #f9f6f2;
   font-size: 45px;
 }
 
-.num1024 {
+#game2048 .num1024 {
   background-color: #edc53f;
   color: #f9f6f2;
   font-size: 40px;
 }
 
-.num2048 {
+#game2048 .num2048 {
   background-color: #edc22e;
   color: #f9f6f2;
   font-size: 40px;
 }
 
-.num4096 {
+#game2048 .num4096 {
   background-color: #3c3a32;
   color: #f9f6f2;
   font-size: 40px;
