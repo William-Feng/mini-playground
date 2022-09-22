@@ -39,8 +39,12 @@ function Letter({ attemptNum, letterPos }) {
   const letterState =
     curr.attempt > attemptNum &&
     (correct ? "correct" : partial ? "partial" : "incorrect");
+
   return (
-    <div className="letter" id={letterState ? letterState : undefined}>
+    <div
+      className="letter"
+      id={letterState ? letterState : letter ? "entered" : undefined}
+    >
       {letter}
     </div>
   );

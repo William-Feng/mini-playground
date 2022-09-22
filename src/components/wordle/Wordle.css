@@ -54,6 +54,14 @@
   color: black;
 }
 
+#dark .letter#entered {
+  border: 2px solid #565758;
+}
+
+#light .letter#entered {
+  border: 2px solid #878a8c;
+}
+
 .letter:nth-child(2) {
   animation-delay: 0.25s !important;
 }
