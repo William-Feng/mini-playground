@@ -133,7 +133,7 @@ function Memory() {
   };
 
   return (
-    <div className="container" id="memory">
+    <div className="background memory">
       <div className="board">
         {board.map((value, i) => (
           <div

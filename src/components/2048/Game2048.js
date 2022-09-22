@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { ThemeContext } from "../../App";
 import "./Game2048.css";
 
 function Game2048() {
+  const { theme } = useContext(ThemeContext);
+
   const SIZE = 4;
   let prevBoard = [];
   const [score, setScore] = useState(0);
@@ -237,7 +240,7 @@ function Game2048() {
   };
 
   return (
-    <div className="container" id="game2048">
+    <div className="background game2048" id={theme}>
       <div className="board">
         {board.map((row, i) =>
           row.map((value, j) => (

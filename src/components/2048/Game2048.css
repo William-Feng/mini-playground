@@ -1,4 +1,4 @@
-#game2048 .board {
+.game2048 .board {
   margin: 0 0 3em;
   display: grid;
   align-items: center;
@@ -7,15 +7,21 @@
   grid-gap: 15px;
   padding: 15px;
   border-radius: 6px;
-  background-color: #bbada0;
   height: 500px;
   width: 500px;
 }
 
-#game2048 .cell {
+.game2048#light .board {
+  background-color: #bbada0;
+}
+
+.game2048#dark .board {
+  background-color: #8f7a66;
+}
+
+.game2048 .cell {
   width: 107px;
   height: 107px;
-  background-color: #ccc1b4;
   font-size: 55px;
   line-height: 107px;
   font-weight: bold;
@@ -24,78 +30,88 @@
   cursor: default;
 }
 
-#game2048 .num2 {
+.game2048#light .cell {
+  background-color: #ccc1b4;
+}
+
+.game2048#dark .cell {
+  background-color: darkgrey;
+}
+
+.game2048#light .num2,
+.game2048#dark .num2 {
   background-color: #eee4da;
   color: #776e65;
 }
 
-#game2048 .num4 {
+.game2048#light .num4,
+.game2048#dark .num4 {
   background-color: #eee1c9;
   color: #776e65;
 }
 
-#game2048 .num8 {
+.game2048#light .num8,
+.game2048#dark .num8 {
   background-color: #f3b279;
   color: #f9f6f2;
 }
 
-#game2048 .num16 {
+.game2048#light .num16,
+.game2048#dark .num16 {
   background-color: #f69564;
   color: #f9f6f2;
 }
 
-#game2048 .num32 {
+.game2048#light .num32,
+.game2048#dark .num32 {
   background-color: #f77c5f;
   color: #f9f6f2;
 }
 
-#game2048 .num64 {
+.game2048#light .num64,
+.game2048#dark .num64 {
   background-color: #f75f3c;
   color: #f9f6f2;
 }
 
-#game2048 .num128 {
+.game2048#light .num128,
+.game2048#dark .num128 {
   background-color: #edd073;
   color: #f9f6f2;
   font-size: 45px;
 }
 
-#game2048 .num256 {
+.game2048#light .num256,
+.game2048#dark .num256 {
   background-color: #eecc62;
   color: #f9f6f2;
   font-size: 45px;
 }
 
-#game2048 .num512 {
+.game2048#light .num512,
+.game2048#dark .num512 {
   background-color: #edc950;
   color: #f9f6f2;
   font-size: 45px;
 }
 
-#game2048 .num1024 {
+.game2048#light .num1024,
+.game2048#dark .num1024 {
   background-color: #edc53f;
   color: #f9f6f2;
   font-size: 40px;
 }
 
-#game2048 .num2048 {
+.game2048#light .num2048,
+.game2048#dark .num2048 {
   background-color: #edc22e;
   color: #f9f6f2;
   font-size: 40px;
 }
 
-#game2048 .num4096 {
+.game2048#light .num4096,
+.game2048#dark .num4096 {
   background-color: #3c3a32;
   color: #f9f6f2;
   font-size: 40px;
-}
-
-#game2048 .restart {
-  background-color: #8f7a66;
-  border: none;
-  color: #f9f6f2;
-}
-
-#game2048 .restart:hover {
-  background-color: #68584a;
 }

@@ -1,4 +1,4 @@
-.container {
+.background {
   height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
@@ -6,7 +6,17 @@
   align-items: center;
 }
 
-.board {
+.background#light {
+  background-color: #faf8ef;
+  color: black;
+}
+
+.background#dark {
+  background-color: #121213;
+  color: white;
+}
+
+.tic-tac-toe .board {
   margin: 0 0 3em;
   display: grid;
   align-items: center;
@@ -24,27 +34,27 @@
   cursor: pointer;
 }
 
-#tic-tac-toe .cell:not(.occupied):hover {
+.tic-tac-toe .cell:not(.occupied):hover {
   background-color: lightgrey;
 }
 
-.cell:nth-child(1),
-.cell:nth-child(2),
-.cell:nth-child(3) {
+.tic-tac-toe .cell:nth-child(1),
+.tic-tac-toe .cell:nth-child(2),
+.tic-tac-toe .cell:nth-child(3) {
   border-top: none;
 }
 
-.cell:nth-child(3n + 1) {
+.tic-tac-toe .cell:nth-child(3n + 1) {
   border-left: none;
 }
 
-.cell:nth-child(3n + 3) {
+.tic-tac-toe .cell:nth-child(3n + 3) {
   border-right: none;
 }
 
-.cell:nth-child(7),
-.cell:nth-child(8),
-.cell:nth-child(9) {
+.tic-tac-toe .cell:nth-child(7),
+.tic-tac-toe .cell:nth-child(8),
+.tic-tac-toe .cell:nth-child(9) {
   border-bottom: none;
 }
 
@@ -58,15 +68,16 @@ h1 {
 }
 
 .restart {
-  background-color: white;
-  border: 1px solid black;
+  background-color: #8f7a66;
+  color: white;
   font-size: 1.5em;
   margin-top: 1em;
   padding: 0.25em 0.75em;
+  border: none;
   border-radius: 2px;
   cursor: pointer;
 }
 
 .restart:hover {
-  background-color: lightgrey;
+  background-color: #68584a;
 }
