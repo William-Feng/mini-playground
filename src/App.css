@@ -39,9 +39,16 @@ h1 {
   height: 120px;
   display: grid;
   align-items: center;
-  border: 1px solid black;
   font-size: 5em;
   cursor: pointer;
+}
+
+#light .cell {
+  border: 1px solid black;
+}
+
+#dark .cell {
+  border: 1px solid white;
 }
 
 .restart {

@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ThemeContext } from "../../App";
 import "./TicTacToe.css";
 
 function TicTacToe() {
+  const { theme } = useContext(ThemeContext);
+
   const [board, setBoard] = useState(Array(9).fill(null));
   const [turn, setTurn] = useState("X");
   const [winner, setWinner] = useState(null);
@@ -68,7 +71,7 @@ function TicTacToe() {
   };
 
   return (
-    <div className="background tic-tac-toe">
+    <div className="background tic-tac-toe" id={theme}>
       <div className="board">
         {board.map((value, i) => (
           <div

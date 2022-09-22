@@ -9,24 +9,23 @@
 .tic-tac-toe .cell:nth-child(1),
 .tic-tac-toe .cell:nth-child(2),
 .tic-tac-toe .cell:nth-child(3) {
-  border-top: none;
+  border-top: none !important;
 }
 
 .tic-tac-toe .cell:nth-child(3n + 1) {
-  border-left: none;
+  border-left: none !important;
 }
 
 .tic-tac-toe .cell:nth-child(3n + 3) {
-  border-right: none;
+  border-right: none !important;
 }
 
 .tic-tac-toe .cell:nth-child(7),
 .tic-tac-toe .cell:nth-child(8),
 .tic-tac-toe .cell:nth-child(9) {
-  border-bottom: none;
+  border-bottom: none !important;
 }
 
 .occupied:hover {
-  background-color: white;
   cursor: not-allowed;
 }

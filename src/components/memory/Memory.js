@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ThemeContext } from "../../App";
 import "./Memory.css";
 
 function Memory() {
+  const { theme } = useContext(ThemeContext);
+
   const colours = [
     "red",
     "red",
@@ -133,13 +136,14 @@ function Memory() {
   };
 
   return (
-    <div className="background memory">
+    <div className="background memory" id={theme}>
       <div className="board">
         {board.map((value, i) => (
           <div
             className={
               "cell " +
-              (value.status === COLOUR_HIDDEN ? COLOUR_HIDDEN : value.colour)
+              (value.status === COLOUR_HIDDEN ? COLOUR_HIDDEN : value.colour) +
+              (value.status === CELL_STABLE ? " " + CELL_STABLE : "")
             }
             key={i}
             onClick={() => handleClick(i)}

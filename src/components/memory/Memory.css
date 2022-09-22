@@ -4,19 +4,23 @@
 }
 
 .memory .cell {
-  border: none;
+  border: none !important;
 }
 
 .memory .cell:not(.stable):hover {
-  border: 2px solid black;
+  transform: scale(1.1);
 }
 
-.hidden {
+#light .hidden {
   background-color: lightgrey;
 }
 
+#dark .hidden {
+  background-color: darkgrey;
+}
+
 .stable {
-  cursor: not-allowed;
+  cursor: not-allowed !important;
 }
 
 .red {

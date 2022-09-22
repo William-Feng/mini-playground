@@ -22,7 +22,7 @@
   line-height: 107px;
   font-weight: bold;
   border-radius: 3px;
-  border: none;
+  border: none !important;
   cursor: default;
 }
 
