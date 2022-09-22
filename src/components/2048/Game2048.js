@@ -85,57 +85,78 @@ function Game2048() {
     }
   };
 
-  // Shift board when the left arrow key is pressed
-  const shiftLeft = () => {
+  // Shift board when the left arrow key is pressed or checking game over
+  const shiftLeft = (boardShift) => {
+    // Check whether we want to change the original board or create a clone
+    let tempBoard = boardShift ? board : cloneBoard(board);
     for (let row = 0; row < SIZE; row++) {
-      let boardRow = board[row];
-      board[row] = rowLeft(boardRow, true);
+      let boardRow = [...tempBoard[row]];
+      tempBoard[row] = rowLeft(boardRow, boardShift);
     }
-    setBoard([...board]);
+    if (boardShift) {
+      setBoard([...tempBoard]);
+    } else {
+      return tempBoard;
+    }
   };
 
-  // Shift board when the right arrow key is pressed
-  const shiftRight = () => {
+  // Shift board when the right arrow key is pressed or checking game over
+  const shiftRight = (boardShift) => {
+    let tempBoard = boardShift ? board : cloneBoard(board);
     for (let row = 0; row < SIZE; row++) {
-      let boardRow = board[row];
+      let boardRow = [...tempBoard[row]];
       // If we have a row [0, 4, 4, 2]
       // This when shifted right, it should be [0, 0, 8, 2]
       // So we must reverse the column before and after the shifting
-      board[row] = rowLeft(boardRow.reverse(), true).reverse();
+      tempBoard[row] = rowLeft(boardRow.reverse(), boardShift).reverse();
     }
-    setBoard([...board]);
+    if (boardShift) {
+      setBoard([...tempBoard]);
+    } else {
+      return tempBoard;
+    }
   };
 
-  // Shift board when the up arrow key is pressed
-  const shiftUp = () => {
+  // Shift board when the up arrow key is pressed or checking game over
+  const shiftUp = (boardShift) => {
+    let tempBoard = boardShift ? board : cloneBoard(board);
     for (let column = 0; column < SIZE; column++) {
       // Each 'row' becomes the columns of the original board
       let boardColumn = [];
       for (let row = 0; row < SIZE; row++) {
-        boardColumn.push(board[row][column]);
+        boardColumn.push(tempBoard[row][column]);
       }
-      boardColumn = rowLeft(boardColumn, true);
+      boardColumn = rowLeft(boardColumn, boardShift);
       for (let row = 0; row < SIZE; row++) {
-        board[row][column] = boardColumn[row];
+        tempBoard[row][column] = boardColumn[row];
       }
     }
-    setBoard([...board]);
+    if (boardShift) {
+      setBoard([...tempBoard]);
+    } else {
+      return tempBoard;
+    }
   };
 
-  // Shift board when the down arrow key is pressed
-  const shiftDown = () => {
+  // Shift board when the down arrow key is pressed or checking game over
+  const shiftDown = (boardShift) => {
+    let tempBoard = boardShift ? board : cloneBoard(board);
     // Take the transpose of the board, then reverse each row
     for (let column = 0; column < SIZE; column++) {
       let boardColumn = [];
       for (let row = 0; row < SIZE; row++) {
-        boardColumn.push(board[row][column]);
+        boardColumn.push(tempBoard[row][column]);
       }
-      boardColumn = rowLeft(boardColumn.reverse(), true).reverse();
+      boardColumn = rowLeft(boardColumn.reverse(), boardShift).reverse();
       for (let row = 0; row < SIZE; row++) {
-        board[row][column] = boardColumn[row];
+        tempBoard[row][column] = boardColumn[row];
       }
     }
-    setBoard([...board]);
+    if (boardShift) {
+      setBoard([...tempBoard]);
+    } else {
+      return tempBoard;
+    }
   };
 
   // Main logic for shifting when the arrow keys are pressed
@@ -147,9 +168,8 @@ function Game2048() {
       if (row[i] !== "" && row[i] === row[i + 1]) {
         row[i] *= 2;
         row[i + 1] = "";
-        if (boardShift) {
-          setScore(score + row[i]);
-        }
+        // Do not increase score if this is for checking game over
+        if (boardShift) setScore(score + row[i]);
       }
     }
     // [4, ", 2]
@@ -169,11 +189,11 @@ function Game2048() {
 
   // Game over if no more moves can be made (results in same board)
   const checkGameOver = () => {
-    let tempBoard = cloneBoard(board);
-    let leftBoard = checkLeft(tempBoard);
-    let rightBoard = checkRight(tempBoard);
-    let upBoard = checkUp(tempBoard);
-    let downBoard = checkDown(tempBoard);
+    // Call the shift functions to check, but do not change the original board
+    let leftBoard = shiftLeft(false);
+    let rightBoard = shiftRight(false);
+    let upBoard = shiftUp(false);
+    let downBoard = shiftDown(false);
     let equal =
       checkSame(board, leftBoard) &&
       checkSame(leftBoard, rightBoard) &&
@@ -182,69 +202,17 @@ function Game2048() {
     if (equal) setGameOver(true);
   };
 
-  // Helper function to check if the game is over
-  const checkLeft = (tempBoard) => {
-    let leftBoard = cloneBoard(board);
-    for (let row = 0; row < SIZE; row++) {
-      let boardRow = [...tempBoard[row]];
-      leftBoard[row] = rowLeft(boardRow, false);
-    }
-    return leftBoard;
-  };
-
-  // Helper function to check if the game is over
-  const checkRight = (tempBoard) => {
-    let rightBoard = cloneBoard(board);
-    for (let row = 0; row < SIZE; row++) {
-      let boardRow = [...tempBoard[row]];
-      rightBoard[row] = rowLeft(boardRow.reverse(), false).reverse();
-    }
-    return rightBoard;
-  };
-
-  // Helper function to check if the game is over
-  const checkUp = (tempBoard) => {
-    let upBoard = cloneBoard(board);
-    for (let column = 0; column < SIZE; column++) {
-      let boardColumn = [];
-      for (let row = 0; row < SIZE; row++) {
-        boardColumn.push(tempBoard[row][column]);
-      }
-      boardColumn = rowLeft(boardColumn, false);
-      for (let row = 0; row < SIZE; row++) {
-        upBoard[row][column] = boardColumn[row];
-      }
-    }
-    return upBoard;
-  };
-
-  // Helper function to check if the game is over
-  const checkDown = (tempBoard) => {
-    let downBoard = cloneBoard(board);
-    for (let column = 0; column < SIZE; column++) {
-      let boardColumn = [];
-      for (let row = 0; row < SIZE; row++) {
-        boardColumn.push(tempBoard[row][column]);
-      }
-      boardColumn = rowLeft(boardColumn.reverse(), false).reverse();
-      for (let row = 0; row < SIZE; row++) {
-        downBoard[row][column] = boardColumn[row];
-      }
-    }
-    return downBoard;
-  };
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const shiftBoard = (e) => {
     prevBoard = cloneBoard(board);
     if (e.key === "ArrowLeft") {
-      shiftLeft();
+      shiftLeft(true);
     } else if (e.key === "ArrowRight") {
-      shiftRight();
+      shiftRight(true);
     } else if (e.key === "ArrowUp") {
-      shiftUp();
+      shiftUp(true);
     } else if (e.key === "ArrowDown") {
-      shiftDown();
+      shiftDown(true);
     }
     generateIfValid();
     checkGameOver();
