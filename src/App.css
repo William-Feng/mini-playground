@@ -4,3 +4,57 @@
   user-select: none;
   text-align: center;
 }
+
+h1 {
+  font-size: 3em;
+}
+
+.background {
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.background#light {
+  background-color: #faf8ef;
+  color: black;
+}
+
+.background#dark {
+  background-color: #121213;
+  color: white;
+}
+
+.board {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 3em;
+}
+
+.cell {
+  width: 120px;
+  height: 120px;
+  display: grid;
+  align-items: center;
+  border: 1px solid black;
+  font-size: 5em;
+  cursor: pointer;
+}
+
+.restart {
+  background-color: #8f7a66;
+  color: white;
+  font-size: 1.5em;
+  margin-top: 1em;
+  padding: 0.25em 0.75em;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.restart:hover {
+  background-color: #68584a;
+}

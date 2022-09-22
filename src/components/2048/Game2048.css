@@ -1,8 +1,4 @@
 .game2048 .board {
-  margin: 0 0 3em;
-  display: grid;
-  align-items: center;
-  justify-content: center;
   grid-template-columns: repeat(4, auto);
   grid-gap: 15px;
   padding: 15px;

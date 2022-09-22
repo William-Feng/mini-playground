@@ -1,8 +1,4 @@
 .memory .board {
-  margin: 2em 0;
-  display: grid;
-  align-items: center;
-  justify-content: center;
   grid-template-columns: repeat(4, auto);
   grid-gap: 10px;
 }
@@ -13,6 +9,14 @@
 
 .memory .cell:not(.stable):hover {
   border: 2px solid black;
+}
+
+.hidden {
+  background-color: lightgrey;
+}
+
+.stable {
+  cursor: not-allowed;
 }
 
 .red {
@@ -45,12 +49,4 @@
 
 .purple {
   background-color: purple;
-}
-
-.hidden {
-  background-color: lightgrey;
-}
-
-.stable {
-  cursor: not-allowed;
 }
