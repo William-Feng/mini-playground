@@ -37,34 +37,12 @@ function Game2048() {
 
   const [board, setBoard] = useState(gameInitialisation);
 
-  /*
-  let prevBoard = [];
-  
-  newGame();
-  restart.addEventListener("click", newGame);
-  
-  function newGame() {
-    board = [];
-    score = 0;
-  
-    initaliseBoard();
-    scoreMessage.innerText = score;
-  
-    generateCell();
-    generateCell();
-  
-    prevBoard = cloneBoard(board);
-  
-    document.addEventListener("keydown", shiftBoard);
-  }
-  */
-
   // Create a copy of the 2D board by value
-  function cloneBoard(board) {
+  const cloneBoard = (board) => {
     const newBoard = [...board];
     newBoard.forEach((row, rowIndex) => (newBoard[rowIndex] = [...row]));
     return newBoard;
-  }
+  };
 
   // Generate a new number within the board
   const generateCell = () => {
@@ -100,7 +78,7 @@ function Game2048() {
     return equal;
   };
 
-  // Generate a cell if the board before and after are different
+  // Generate a cell if the boards before and after are different
   const generateIfValid = () => {
     if (!checkSame(prevBoard, board)) {
       generateCell();
@@ -161,7 +139,7 @@ function Game2048() {
   };
 
   // Main logic for shifting when the arrow keys are pressed
-  function rowLeft(row, increaseScore) {
+  const rowLeft = (row, boardShift) => {
     // [2, 2, "", 2]
     row = filterEmpty(row);
     // [2, 2, 2]
@@ -169,7 +147,7 @@ function Game2048() {
       if (row[i] !== "" && row[i] === row[i + 1]) {
         row[i] *= 2;
         row[i + 1] = "";
-        if (increaseScore) {
+        if (boardShift) {
           setScore(score + row[i]);
         }
       }
@@ -182,56 +160,51 @@ function Game2048() {
     }
     // [4, 2, "", ""]
     return row;
-  }
+  };
 
   // Helper function to temporarily remove cells that are empty
-  function filterEmpty(row) {
+  const filterEmpty = (row) => {
     return row.filter((num) => num !== "");
-  }
+  };
 
-  /*
   // Game over if no more moves can be made (results in same board)
-  function checkGameOver() {
-    let leftBoard = checkLeft();
-    let rightBoard = checkRight();
-    let upBoard = checkUp();
-    let downBoard = checkDown();
-    let equal =
-    checkSame(board, leftBoard) &&
-    checkSame(leftBoard, rightBoard) &&
-    checkSame(rightBoard, upBoard) &&
-    checkSame(upBoard, downBoard);
-    if (equal) {
-      scoreMessage.innerHTML = score + "<br><b>GAME OVER</b>";
-    }
-  }
-  
-  // Helper function to check if the game is over
-  function checkLeft() {
-    let leftBoard = cloneBoard(board);
+  const checkGameOver = () => {
     let tempBoard = cloneBoard(board);
+    let leftBoard = checkLeft(tempBoard);
+    let rightBoard = checkRight(tempBoard);
+    let upBoard = checkUp(tempBoard);
+    let downBoard = checkDown(tempBoard);
+    let equal =
+      checkSame(board, leftBoard) &&
+      checkSame(leftBoard, rightBoard) &&
+      checkSame(rightBoard, upBoard) &&
+      checkSame(upBoard, downBoard);
+    if (equal) setGameOver(true);
+  };
+
+  // Helper function to check if the game is over
+  const checkLeft = (tempBoard) => {
+    let leftBoard = cloneBoard(board);
     for (let row = 0; row < SIZE; row++) {
-      let boardRow = tempBoard[row];
+      let boardRow = [...tempBoard[row]];
       leftBoard[row] = rowLeft(boardRow, false);
     }
     return leftBoard;
-  }
-  
+  };
+
   // Helper function to check if the game is over
-  function checkRight() {
+  const checkRight = (tempBoard) => {
     let rightBoard = cloneBoard(board);
-    let tempBoard = cloneBoard(board);
     for (let row = 0; row < SIZE; row++) {
-      let boardRow = tempBoard[row];
+      let boardRow = [...tempBoard[row]];
       rightBoard[row] = rowLeft(boardRow.reverse(), false).reverse();
     }
     return rightBoard;
-  }
-  
+  };
+
   // Helper function to check if the game is over
-  function checkUp() {
+  const checkUp = (tempBoard) => {
     let upBoard = cloneBoard(board);
-    let tempBoard = cloneBoard(board);
     for (let column = 0; column < SIZE; column++) {
       let boardColumn = [];
       for (let row = 0; row < SIZE; row++) {
@@ -243,12 +216,11 @@ function Game2048() {
       }
     }
     return upBoard;
-  }
-  
+  };
+
   // Helper function to check if the game is over
-  function checkDown() {
+  const checkDown = (tempBoard) => {
     let downBoard = cloneBoard(board);
-    let tempBoard = cloneBoard(board);
     for (let column = 0; column < SIZE; column++) {
       let boardColumn = [];
       for (let row = 0; row < SIZE; row++) {
@@ -260,9 +232,9 @@ function Game2048() {
       }
     }
     return downBoard;
-  }
-  */
+  };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const shiftBoard = (e) => {
     prevBoard = cloneBoard(board);
     if (e.key === "ArrowLeft") {
@@ -274,12 +246,8 @@ function Game2048() {
     } else if (e.key === "ArrowDown") {
       shiftDown();
     }
-
-    // Invalid move if the board is the same after the arrow key is pressed
     generateIfValid();
-
-    // checkGameOver();
-    prevBoard = cloneBoard(board);
+    checkGameOver();
   };
 
   useEffect(() => {
