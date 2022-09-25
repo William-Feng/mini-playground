@@ -23,8 +23,8 @@ function Navbar({ heading }) {
             onChange={toggleTheme}
             checked={theme === "dark"}
             onColor={"#027bff"}
-            uncheckedIcon={<FaSun style={{ width: "30px", color: "yellow" }} />}
-            checkedIcon={<FaMoon style={{ width: "30px", color: "yellow" }} />}
+            uncheckedIcon={<FaSun className="icon" />}
+            checkedIcon={<FaMoon className="icon" />}
           />
         </div>
       </div>

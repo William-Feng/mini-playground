@@ -11,32 +11,49 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border-bottom: 1px solid black;
 }
 
 h1.title {
-  font-size: 5em;
+  font-size: 4em;
+}
+
+.banner .switch {
+  right: 50px;
+}
+
+.banner .switch .icon {
+  width: 20px;
+  height: 20px;
+  margin-top: 10px;
 }
 
 .games {
-  margin-top: 1em;
-  display: grid;
+  height: calc(100vh - 150px);
+  margin: 0 10%;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  grid-template-columns: repeat(2, auto);
-  grid-gap: 50px;
+  align-content: center;
 }
 
 .game {
   height: 350px;
-  width: 400px;
-  border: 1px solid black;
+  width: 500px;
+  margin: 20px 25px;
   border-radius: 10px;
-  box-shadow: 5px 5px 20px black;
+  box-shadow: 5px 0 20px black;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 3em;
   background-color: #faf8ef;
+}
+
+.game:hover {
+  transform: scale(1.1);
+  transition: transform 0.5s;
 }
 
 .gameTitle {

@@ -5,13 +5,12 @@ import WordleLight from "./images/wordle-light.png";
 import TicTacToeLight from "./images/tic-tac-toe-light.png";
 import MemoryLight from "./images/memory-light.png";
 import Game2048Light from "./images/2048-light.png";
+import HomeHeading from "./HomeHeading";
 
 function Home() {
   return (
     <div className="home">
-      <div className="banner">
-        <h1 className="title">Mini Playground</h1>
-      </div>
+      <HomeHeading />
       <div className="games">
         <Link to="/wordle">
           <div className="game">

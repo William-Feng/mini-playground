@@ -23,6 +23,14 @@
   width: 100%;
 }
 
+#dark .navbar {
+  border-bottom: 1px solid #3a3a3c;
+}
+
+#light .navbar {
+  border-bottom: 1px solid #d4d6da;
+}
+
 .arrow {
   position: absolute;
   display: flex;
@@ -49,10 +57,7 @@ h1.heading {
   right: 20px;
 }
 
-#dark .navbar {
-  border-bottom: 1px solid #3a3a3c;
-}
-
-#light .navbar {
-  border-bottom: 1px solid #d4d6da;
+.switch .icon {
+  width: 30px;
+  color: yellow;
 }

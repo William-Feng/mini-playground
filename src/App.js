@@ -19,7 +19,14 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+              <Home />
+            </ThemeContext.Provider>
+          }
+        />
         <Route
           path="/wordle"
           element={
