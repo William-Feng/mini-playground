@@ -12,37 +12,6 @@
   background-color: grey;
 }
 
-.banner {
-  text-align: center;
-  height: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#light .banner {
-  border-bottom: 1px solid #d4d6da;
-}
-
-#dark .banner {
-  background-color: #121213;
-  color: white;
-}
-
-h1.title {
-  font-size: 4em;
-}
-
-.banner .switch {
-  right: 50px;
-}
-
-.banner .switch .icon {
-  width: 20px;
-  height: 20px;
-  margin-top: 10px;
-}
-
 .games {
   height: calc(100vh - 150px);
   margin: 0 10%;

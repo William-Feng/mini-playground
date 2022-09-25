@@ -1,0 +1,55 @@
+.banner {
+  text-align: center;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#light .banner {
+  border-bottom: 1px solid #d4d6da;
+}
+
+#dark .banner {
+  background-color: #121213;
+  color: white;
+}
+
+h1.title {
+  font-size: 4em;
+  text-transform: uppercase;
+  font-weight: 700;
+  word-spacing: 10px;
+  color: transparent;
+  background-image: linear-gradient(
+    to right,
+    #9e1f63,
+    #00aeef,
+    #006663,
+    #ed1c24,
+    #7bc393,
+    #392d91,
+    #9e1f63
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-size: 200%;
+  background-position: -200%;
+  animation: gradient-heading 3s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes gradient-heading {
+  to {
+    background-position: 200%;
+  }
+}
+
+.banner .switch {
+  right: 50px;
+}
+
+.banner .switch .icon {
+  width: 20px;
+  height: 20px;
+  margin-top: 10px;
+}

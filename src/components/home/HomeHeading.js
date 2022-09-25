@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import "./HomeHeading.css";
 import { FaMoon, FaSun } from "react-icons/fa";
 import ReactSwitch from "react-switch";
 import { ThemeContext } from "../../App";
