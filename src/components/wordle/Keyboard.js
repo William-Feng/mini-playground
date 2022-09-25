@@ -46,38 +46,41 @@ function Keyboard() {
   return (
     <div className="keyboard" onKeyDown={handleKeyboard}>
       <div className="row">
-        {row1.map((key) => {
+        {row1.map((value, i) => {
           return (
             <Key
-              val={key}
-              correct={correctLetters.includes(key)}
-              partial={partialLetters.includes(key)}
-              incorrect={incorrectLetters.includes(key)}
+              key={`row1-${i}`}
+              val={value}
+              correct={correctLetters.includes(value)}
+              partial={partialLetters.includes(value)}
+              incorrect={incorrectLetters.includes(value)}
             />
           );
         })}
       </div>
       <div className="row">
-        {row2.map((key) => {
+        {row2.map((value, i) => {
           return (
             <Key
-              val={key}
-              correct={correctLetters.includes(key)}
-              partial={partialLetters.includes(key)}
-              incorrect={incorrectLetters.includes(key)}
+              key={`row2-${i}`}
+              val={value}
+              correct={correctLetters.includes(value)}
+              partial={partialLetters.includes(value)}
+              incorrect={incorrectLetters.includes(value)}
             />
           );
         })}
       </div>
       <div className="row">
         <Key val={"ENTER"} special />
-        {row3.map((key) => {
+        {row3.map((value, i) => {
           return (
             <Key
-              val={key}
-              correct={correctLetters.includes(key)}
-              partial={partialLetters.includes(key)}
-              incorrect={incorrectLetters.includes(key)}
+              key={`row3-${i}`}
+              val={value}
+              correct={correctLetters.includes(value)}
+              partial={partialLetters.includes(value)}
+              incorrect={incorrectLetters.includes(value)}
             />
           );
         })}
