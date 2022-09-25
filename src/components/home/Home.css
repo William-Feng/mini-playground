@@ -2,7 +2,7 @@
   height: 100vh;
   width: 100vw;
   place-items: center;
-  background-color: lightgrey;
+  background-color: white;
 }
 
 .banner {
@@ -28,12 +28,35 @@ h1.title {
 
 .game {
   height: 350px;
-  width: 500px;
+  width: 400px;
   border: 1px solid black;
   border-radius: 10px;
+  box-shadow: 5px 5px 20px black;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 3em;
-  background-color: white;
+  background-color: #faf8ef;
+}
+
+.gameTitle {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.game img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.game:hover img {
+  opacity: 0.2;
+  transition: opacity 0.5s;
+}
+
+.game:hover .gameTitle {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.5s;
 }
