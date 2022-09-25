@@ -27,19 +27,25 @@ function Wordle() {
     guessedWord: false,
   });
 
-  useEffect(() => {
+  const handleRestart = () => {
     generateWordbank().then((words) => {
       setWordbank(words.wordbank);
       setSecret(words.secret);
     });
     setGrid([...Array(MAX_ATTEMPTS)].map(() => Array(MAX_LETTERS).fill("")));
+    setCurr({ attempt: 0, letterPos: 0 });
     setCorrectLetters([]);
     setPartialLetters([]);
     setIncorrectLetters([]);
+    setGameOver({ gameOver: false, guessedWord: false });
+  };
+
+  useEffect(() => {
+    handleRestart();
   }, []);
 
   const onLetter = (letter) => {
-    if (curr.letterPos > 4) return;
+    if (curr.letterPos >= MAX_LETTERS) return;
     const newGrid = [...grid];
     newGrid[curr.attempt][curr.letterPos] = letter;
     setGrid(newGrid);
@@ -57,7 +63,7 @@ function Wordle() {
     if (wordbank.has(currWord)) {
       setCurr({ attempt: curr.attempt + 1, letterPos: 0 });
     } else {
-      alert("Not in word list");
+      alert("Not a word!");
       return;
     }
 
@@ -85,6 +91,7 @@ function Wordle() {
           setGrid,
           curr,
           setCurr,
+          handleRestart,
           onLetter,
           onEnter,
           onDelete,

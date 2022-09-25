@@ -2,15 +2,18 @@ import React, { useContext } from "react";
 import { AppContext } from "./Wordle";
 
 function GameOver() {
-  const { gameOver, secret, curr } = useContext(AppContext);
+  const { handleRestart, gameOver, secret, curr } = useContext(AppContext);
   return (
-    <div>
-      <h2>Answer: {secret}</h2>
+    <div className="gameOver">
+      <h2 className="answer">Answer: {secret}</h2>
       {gameOver.guessedWord ? (
-        <h3>Well done! You guessed in {curr.attempt} attempts 🤩</h3>
+        <h4>Well done! You guessed in {curr.attempt} attempts 🤩</h4>
       ) : (
-        <h3>Better luck next time 😭</h3>
+        <h4>Better luck next time 😭</h4>
       )}
+      <button className="restart" onClick={handleRestart}>
+        Restart
+      </button>
     </div>
   );
 }

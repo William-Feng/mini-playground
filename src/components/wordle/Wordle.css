@@ -218,3 +218,17 @@
     color: white;
   }
 }
+
+.gameOver {
+  margin-top: -3em;
+}
+
+h2.answer {
+  padding-bottom: 1em;
+}
+
+.wordle .restart {
+  position: absolute;
+  bottom: 10px;
+  transform: translate(-50%);
+}
