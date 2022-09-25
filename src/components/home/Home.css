@@ -2,7 +2,14 @@
   height: 100vh;
   width: 100vw;
   place-items: center;
+}
+
+.home#light {
   background-color: white;
+}
+
+.home#dark {
+  background-color: grey;
 }
 
 .banner {
@@ -11,7 +18,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid black;
+}
+
+#light .banner {
+  border-bottom: 1px solid #d4d6da;
+}
+
+#dark .banner {
+  background-color: #121213;
+  color: white;
 }
 
 h1.title {
@@ -43,12 +58,19 @@ h1.title {
   width: 500px;
   margin: 20px 25px;
   border-radius: 10px;
-  box-shadow: 5px 0 20px black;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 3em;
+}
+
+#light .game {
   background-color: #faf8ef;
+  box-shadow: 5px 0 20px black;
+}
+
+#dark .game {
+  background-color: #121213;
 }
 
 .game:hover {
@@ -60,6 +82,7 @@ h1.title {
   position: absolute;
   visibility: hidden;
   opacity: 0;
+  color: #007bff;
 }
 
 .game img {
@@ -70,6 +93,10 @@ h1.title {
 .game:hover img {
   opacity: 0.2;
   transition: opacity 0.5s;
+}
+
+#dark .game:hover img {
+  opacity: 0.1;
 }
 
 .game:hover .gameTitle {
