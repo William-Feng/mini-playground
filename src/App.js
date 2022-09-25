@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./components/home/Home";
@@ -17,13 +17,24 @@ function App() {
     setTheme((curr) => (curr === "light" ? "dark" : "light"));
   };
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    window.addEventListener("resize", () => setWindowWidth(window.innerWidth));
+    return () => {
+      window.removeEventListener("resize", () =>
+        setWindowWidth(window.innerWidth)
+      );
+    };
+  }, [[], windowWidth]);
+
   return (
     <>
       <Routes>
         <Route
           path="/"
           element={
-            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <ThemeContext.Provider value={{ theme, toggleTheme, windowWidth }}>
               <Home />
               <Footer />
             </ThemeContext.Provider>
@@ -35,7 +46,7 @@ function App() {
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
               <Navbar heading="Wordle" />
               <Wordle />
-              <Footer />
+              <Footer id="noPhone" />
             </ThemeContext.Provider>
           }
         />

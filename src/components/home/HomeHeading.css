@@ -1,6 +1,7 @@
 .banner {
   text-align: center;
   height: 150px;
+  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,8 +49,21 @@ h1.title {
   right: 50px;
 }
 
-.banner .switch .icon {
+.banner .switch .large-icon {
   width: 20px;
   height: 20px;
   margin-top: 10px;
+  width: 30px;
+  color: yellow;
+}
+
+@media screen and (max-width: 400px) {
+  h1.title {
+    font-size: 3em;
+  }
+
+  .banner .switch {
+    top: 20px;
+    right: 20px;
+  }
 }
