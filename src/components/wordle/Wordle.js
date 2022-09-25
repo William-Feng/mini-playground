@@ -4,13 +4,18 @@ import { ThemeContext } from "../../App";
 import GameOver from "./GameOver";
 import Grid from "./Grid";
 import Keyboard from "./Keyboard";
-import { defaultGrid, generateWordbank } from "./Words";
+import { generateWordbank } from "./Words";
 
 export const AppContext = createContext();
 
 function Wordle() {
   const { theme } = useContext(ThemeContext);
-  const [grid, setGrid] = useState(defaultGrid);
+  const MAX_ATTEMPTS = 6;
+  const MAX_LETTERS = 5;
+
+  const [grid, setGrid] = useState(
+    [...Array(MAX_ATTEMPTS)].map(() => Array(MAX_LETTERS).fill(""))
+  );
   const [curr, setCurr] = useState({ attempt: 0, letterPos: 0 });
   const [wordbank, setWordbank] = useState(new Set());
   const [secret, setSecret] = useState("");
@@ -27,6 +32,10 @@ function Wordle() {
       setWordbank(words.wordbank);
       setSecret(words.secret);
     });
+    setGrid([...Array(MAX_ATTEMPTS)].map(() => Array(MAX_LETTERS).fill("")));
+    setCorrectLetters([]);
+    setPartialLetters([]);
+    setIncorrectLetters([]);
   }, []);
 
   const onLetter = (letter) => {
@@ -38,10 +47,10 @@ function Wordle() {
   };
 
   const onEnter = () => {
-    if (curr.letterPos < 5) return;
+    if (curr.letterPos < MAX_LETTERS) return;
 
     let currWord = "";
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < MAX_LETTERS; i++) {
       currWord += grid[curr.attempt][i];
     }
 
@@ -55,7 +64,7 @@ function Wordle() {
     if (currWord === secret) {
       setGameOver({ gameOver: true, guessedWord: true });
       return;
-    } else if (curr.attempt === 5) {
+    } else if (curr.attempt === MAX_ATTEMPTS - 1) {
       setGameOver({ gameOver: true, guessedWord: false });
     }
   };
