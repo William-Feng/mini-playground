@@ -1,0 +1,16 @@
+.footer {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  user-select: text;
+  font-size: x-small;
+}
+
+.author {
+  font-weight: bold;
+  user-select: text;
+}
+
+.footer#dark {
+  color: white;
+}

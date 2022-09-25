@@ -7,6 +7,7 @@ import TicTacToe from "./components/tic-tac-toe/TicTacToe";
 import Navbar from "./components/Navbar";
 import Memory from "./components/memory/Memory";
 import Game2048 from "./components/2048/Game2048";
+import Footer from "./components/Footer";
 
 export const ThemeContext = createContext();
 
@@ -24,6 +25,7 @@ function App() {
           element={
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
               <Home />
+              <Footer />
             </ThemeContext.Provider>
           }
         />
@@ -33,6 +35,7 @@ function App() {
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
               <Navbar heading="Wordle" />
               <Wordle />
+              <Footer />
             </ThemeContext.Provider>
           }
         />
@@ -42,6 +45,7 @@ function App() {
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
               <Navbar heading="Tic Tac Toe" />
               <TicTacToe />
+              <Footer />
             </ThemeContext.Provider>
           }
         />
@@ -51,6 +55,7 @@ function App() {
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
               <Navbar heading="Memory Game" />
               <Memory />
+              <Footer />
             </ThemeContext.Provider>
           }
         />
@@ -60,6 +65,7 @@ function App() {
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
               <Navbar heading="2048" />
               <Game2048 />
+              <Footer />
             </ThemeContext.Provider>
           }
         />
