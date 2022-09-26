@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useSwipeable } from "react-swipeable";
 import { ThemeContext } from "../../App";
 import "./Game2048.css";
 
@@ -228,6 +229,34 @@ function Game2048() {
     };
   }, [shiftBoard]);
 
+  const handleSwipe = useSwipeable({
+    onSwipedLeft: () => {
+      prevBoard = cloneBoard(board);
+      shiftLeft(true);
+      generateIfValid();
+      checkGameOver();
+    },
+    onSwipedRight: () => {
+      prevBoard = cloneBoard(board);
+      shiftRight(true);
+      generateIfValid();
+      checkGameOver();
+    },
+    onSwipedUp: () => {
+      prevBoard = cloneBoard(board);
+      shiftUp(true);
+      generateIfValid();
+      checkGameOver();
+    },
+    onSwipedDown: () => {
+      prevBoard = cloneBoard(board);
+      shiftDown(true);
+      generateIfValid();
+      checkGameOver();
+    },
+    preventScrollOnSwipe: true,
+  });
+
   // Update the colour of a cell (after the board has shifted)
   const cellClass = (num) => {
     if (!num) {
@@ -241,7 +270,7 @@ function Game2048() {
 
   return (
     <div className="background game2048" id={theme}>
-      <div className="board">
+      <div className="board" {...handleSwipe}>
         {board.map((row, i) =>
           row.map((value, j) => (
             <div className={cellClass(value)} key={`${i}-${j}`}>
