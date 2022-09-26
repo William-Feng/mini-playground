@@ -111,3 +111,49 @@
   color: #f9f6f2;
   font-size: 40px;
 }
+
+@media screen and (max-width: 400px) {
+  .game2048 .board {
+    height: 370px;
+    width: 370px;
+    grid-gap: 10px;
+    padding: 10px;
+  }
+
+  .game2048 .cell {
+    height: 80px;
+    width: 80px;
+    line-height: 80px;
+    font-size: 45px;
+  }
+
+  .game2048#light .num128,
+  .game2048#dark .num128 {
+    font-size: 35px;
+  }
+
+  .game2048#light .num256,
+  .game2048#dark .num256 {
+    font-size: 35px;
+  }
+
+  .game2048#light .num512,
+  .game2048#dark .num512 {
+    font-size: 35px;
+  }
+
+  .game2048#light .num1024,
+  .game2048#dark .num1024 {
+    font-size: 30px;
+  }
+
+  .game2048#light .num2048,
+  .game2048#dark .num2048 {
+    font-size: 30px;
+  }
+
+  .game2048#light .num4096,
+  .game2048#dark .num4096 {
+    font-size: 30px;
+  }
+}

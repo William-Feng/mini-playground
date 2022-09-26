@@ -15,7 +15,7 @@
 .grid-container {
   display: flex;
   top: 0;
-  height: calc(100vh - 80px - 190px);
+  height: calc(100vh - 80px - 190px - 5px);
   place-items: center;
 }
 
@@ -85,8 +85,8 @@
   flex-direction: column;
   margin: 5px auto;
   gap: 5px;
-  position: absolute;
-  bottom: 10px;
+  position: fixed;
+  bottom: 5px;
   left: 50%;
   transform: translate(-50%);
 }
@@ -231,4 +231,19 @@ h2.answer {
   position: absolute;
   bottom: 10px;
   transform: translate(-50%);
+}
+
+@media screen and (max-width: 400px) {
+  .grid {
+    width: 340px;
+    height: 410px;
+  }
+
+  .key {
+    width: 33px;
+  }
+
+  #big-key {
+    width: 53px;
+  }
 }

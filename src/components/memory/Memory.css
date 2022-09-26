@@ -54,3 +54,10 @@
 .purple {
   background-color: purple;
 }
+
+@media screen and (max-width: 400px) {
+  .memory .cell {
+    height: 85px;
+    width: 85px;
+  }
+}

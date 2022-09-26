@@ -26,6 +26,7 @@ function App() {
         setWindowWidth(window.innerWidth)
       );
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [[], windowWidth]);
 
   return (

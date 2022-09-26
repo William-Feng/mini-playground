@@ -1,6 +1,6 @@
 .banner {
   text-align: center;
-  height: 150px;
+  height: 120px;
   width: 100vw;
   display: flex;
   align-items: center;
@@ -58,12 +58,16 @@ h1.title {
 }
 
 @media screen and (max-width: 400px) {
+  .banner {
+    height: 150px;
+  }
+
   h1.title {
     font-size: 3em;
   }
 
   .banner .switch {
-    top: 20px;
-    right: 20px;
+    top: 25px;
+    right: 25px;
   }
 }

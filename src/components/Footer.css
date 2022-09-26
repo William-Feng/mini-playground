@@ -1,5 +1,5 @@
 .footer {
-  position: fixed;
+  position: absolute;
   bottom: 5px;
   right: 5px;
   user-select: text;
@@ -13,4 +13,10 @@
 
 .footer#dark {
   color: white;
+}
+
+@media screen and (max-width: 400px) {
+  .noPhone {
+    display: none;
+  }
 }

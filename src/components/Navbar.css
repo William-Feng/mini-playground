@@ -61,3 +61,10 @@ h1.heading {
   width: 30px;
   color: yellow;
 }
+
+@media screen and (max-width: 400px) {
+  h1.heading {
+    font-size: 32px;
+    padding-top: 5px;
+  }
+}
