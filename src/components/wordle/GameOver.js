@@ -5,7 +5,9 @@ function GameOver() {
   const { handleRestart, gameOver, secret, curr } = useContext(AppContext);
   return (
     <div className="gameOver">
-      <h2 className="answer">Answer: {secret}</h2>
+      <h2 className="answer">
+        Answer: <b>{secret}</b>
+      </h2>
       {gameOver.guessedWord ? (
         <h4>Well done! You guessed in {curr.attempt} attempts 🤩</h4>
       ) : (

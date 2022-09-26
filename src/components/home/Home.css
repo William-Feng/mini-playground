@@ -84,13 +84,13 @@
   }
 
   .games {
-    margin: 0 0 25px;
+    margin: 10px 0 25px;
     height: 100%;
   }
 
   .game {
     width: 350px;
-    margin: 20px 0;
+    margin: 10px 0;
   }
 
   .game:hover {

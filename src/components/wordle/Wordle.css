@@ -234,16 +234,37 @@ h2.answer {
 }
 
 @media screen and (max-width: 400px) {
+  .wordle {
+    height: calc(91vh - 80px);
+  }
+
+  .grid-container {
+    height: calc(89vh - 80px - 165px - 5px - 25px);
+  }
+
   .grid {
     width: 340px;
-    height: 410px;
+    height: 400px;
+  }
+
+  .keyboard {
+    height: 165px;
   }
 
   .key {
+    height: 52px;
     width: 33px;
   }
 
   #big-key {
     width: 53px;
+  }
+
+  .gameOver {
+    margin-top: 0.75em;
+  }
+
+  h2.answer {
+    padding-bottom: 0.5em;
   }
 }
