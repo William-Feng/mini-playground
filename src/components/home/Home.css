@@ -78,16 +78,31 @@
   transition: opacity 0.5s;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 1400px) {
+  .games {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 1200px) {
   .home {
     height: 100%;
   }
-
   .games {
     margin: 10px 0 25px;
+  }
+  .game {
+    width: 400px;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .games {
     height: 100%;
   }
+}
 
+@media screen and (max-width: 400px) {
   .game {
     width: 350px;
     margin: 10px 0;
@@ -96,5 +111,14 @@
   .game:hover {
     transform: scale(1.05);
     transition: transform 0.5s;
+  }
+}
+
+@media screen and (max-height: 900px) {
+  .home {
+    height: 100%;
+  }
+  .games {
+    height: 100%;
   }
 }

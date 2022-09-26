@@ -5,12 +5,12 @@ import ReactSwitch from "react-switch";
 import { ThemeContext } from "../../App";
 
 function HomeHeading() {
-  const { theme, toggleTheme, windowWidth } = useContext(ThemeContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <div className="banner">
       <h1 className="title">Mini Playground</h1>
-      {windowWidth > 1000 ? (
+      {window.innerWidth > 1000 ? (
         <div className="switch">
           <ReactSwitch
             onChange={toggleTheme}

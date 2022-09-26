@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { AppContext } from "./Wordle";
+import { MdOutlineBackspace } from "react-icons/md";
 
 function Key({ val, special, correct, partial, incorrect }) {
   const { onLetter, onEnter, onDelete } = useContext(AppContext);
@@ -30,7 +31,7 @@ function Key({ val, special, correct, partial, incorrect }) {
       }
       onClick={updateGrid}
     >
-      {val}
+      {val !== "DELETE" ? val : <MdOutlineBackspace className="backspace" />}
     </div>
   );
 }

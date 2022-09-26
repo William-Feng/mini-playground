@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./components/home/Home";
@@ -17,25 +17,13 @@ function App() {
     setTheme((curr) => (curr === "light" ? "dark" : "light"));
   };
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    window.addEventListener("resize", () => setWindowWidth(window.innerWidth));
-    return () => {
-      window.removeEventListener("resize", () =>
-        setWindowWidth(window.innerWidth)
-      );
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [[], windowWidth]);
-
   return (
     <>
       <Routes>
         <Route
           path="/"
           element={
-            <ThemeContext.Provider value={{ theme, toggleTheme, windowWidth }}>
+            <ThemeContext.Provider value={{ theme, toggleTheme }}>
               <Home />
               <Footer />
             </ThemeContext.Provider>

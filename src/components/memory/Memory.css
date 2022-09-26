@@ -55,7 +55,7 @@
   background-color: purple;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 600px) {
   .memory .board {
     grid-gap: 8px;
   }

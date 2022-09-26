@@ -112,7 +112,7 @@
   font-size: 40px;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 600px) {
   .game2048 .board {
     height: 370px;
     width: 370px;

@@ -101,6 +101,12 @@
   border-radius: 4px;
   cursor: pointer;
   background-color: #808384;
+  -webkit-tap-highlight-color: #666;
+}
+
+.backspace {
+  width: 23px;
+  height: 23px;
 }
 
 #dark .key {

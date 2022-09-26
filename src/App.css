@@ -35,7 +35,7 @@ h2 {
   display: grid;
   align-items: center;
   justify-content: center;
-  margin: 0 0 3em;
+  margin: 20px 0 3em;
 }
 
 .cell {
@@ -60,7 +60,7 @@ h2 {
   background-color: #8f7a66;
   color: white;
   font-size: 1.5em;
-  margin-top: 2em;
+  margin: 2em 0 20px;
   padding: 0.25em 0.75em;
   border: none;
   border-radius: 2px;
@@ -69,6 +69,12 @@ h2 {
 
 .restart:hover {
   background-color: #68584a;
+}
+
+@media screen and (max-height: 800px) {
+  .background {
+    height: 100%;
+  }
 }
 
 @media screen and (max-width: 400px) {
@@ -91,7 +97,7 @@ h2 {
   }
 
   .restart {
-    margin-top: 1.5em;
+    margin: 1.5em 0 0;
     font-size: 1.2em;
   }
 }
