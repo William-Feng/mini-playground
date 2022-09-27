@@ -11,7 +11,16 @@
   user-select: text;
 }
 
-.footer#dark {
+.author:hover {
+  cursor: pointer;
+}
+
+#light .author {
+  color: black;
+}
+
+.footer#dark,
+#dark .author {
   color: white;
 }
 

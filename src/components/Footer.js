@@ -7,7 +7,16 @@ function Footer({ id }) {
 
   return (
     <div className={"footer" + (id ? " " + id : "")} id={theme}>
-      Created by <span className="author">William Feng</span> 2022
+      Created by{" "}
+      <a
+        href="https://williamfeng.com.au/"
+        target="_blank"
+        className="author"
+        rel="author"
+      >
+        William Feng
+      </a>{" "}
+      2022
     </div>
   );
 }
