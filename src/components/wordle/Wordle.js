@@ -95,6 +95,7 @@ function Wordle() {
           onLetter,
           onEnter,
           onDelete,
+          MAX_LETTERS,
           secret,
           correctLetters,
           setCorrectLetters,

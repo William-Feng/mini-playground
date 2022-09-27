@@ -6,6 +6,7 @@ function Letter({ attemptNum, letterPos }) {
     grid,
     secret,
     curr,
+    MAX_LETTERS,
     setCorrectLetters,
     setPartialLetters,
     setIncorrectLetters,
@@ -15,17 +16,21 @@ function Letter({ attemptNum, letterPos }) {
   const correct = secret[letterPos] === letter;
   // Need to check the number of occurrences of the letter
   // within the secret word before setting it to yellow
-  let partial = 0;
+  let partial = false;
   if (!correct && letter !== "" && secret.includes(letter)) {
     const letterCount = secret.match(new RegExp(letter, "g")).length;
     let currCount = 0;
-    for (let i = 0; i < letterPos; i++) {
-      if (grid[attemptNum][i] === letter) {
+    let forwardCorrect = 0;
+    for (let i = 0; i < MAX_LETTERS - 1; i++) {
+      if (i < letterPos && grid[attemptNum][i] === letter) {
         currCount++;
+      } else if (i > letterPos && grid[attemptNum][i] === secret[i]) {
+        forwardCorrect++;
       }
     }
-    if (currCount < letterCount) {
-      partial = 1;
+    // Also ensure that the same letter is not correct in a forward position
+    if (currCount < letterCount - forwardCorrect) {
+      partial = true;
     }
   }
 
