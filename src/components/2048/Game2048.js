@@ -281,12 +281,10 @@ function Game2048() {
       </div>
       <div>
         <h2>Score: {score}</h2>
-        {gameOver ? (
+        {gameOver && (
           <h2>
             <b>GAME OVER</b>
           </h2>
-        ) : (
-          ""
         )}
         <button
           className="restart"
