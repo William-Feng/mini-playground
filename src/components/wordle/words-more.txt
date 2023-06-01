@@ -51,6 +51,7 @@ adios
 adlib
 adman
 admen
+admin
 admit
 admix
 adobe
@@ -168,6 +169,7 @@ angry
 angst
 anile
 anima
+anime
 anion
 anise
 ankhs
@@ -259,6 +261,7 @@ auger
 aught
 augur
 aunts
+aunty
 aurae
 aural
 auras
@@ -285,6 +288,7 @@ axels
 axial
 axing
 axiom
+axion
 axled
 axles
 axman
@@ -441,6 +445,7 @@ bhang
 bhoys
 bibbs
 bible
+bicep
 biddy
 bided
 bider
@@ -495,6 +500,7 @@ blear
 bleat
 blebs
 bleed
+bleep
 blend
 bless
 blest
@@ -554,6 +560,7 @@ bonds
 boned
 boner
 bones
+boney
 bongo
 bongs
 bonks
@@ -774,6 +781,7 @@ caper
 capes
 capon
 capos
+caput
 carat
 cards
 cared
@@ -1161,6 +1169,7 @@ cuspy
 cuter
 cutie
 cutup
+cyber
 cycad
 cycle
 cynic
@@ -1251,6 +1260,7 @@ derby
 desex
 desks
 deter
+detox
 deuce
 devil
 dewed
@@ -1414,6 +1424,7 @@ drink
 drips
 drive
 droid
+droit
 droll
 drone
 drool
@@ -1704,6 +1715,7 @@ fiber
 fibre
 fiche
 fichu
+ficus
 fiefs
 field
 fiend
@@ -1879,6 +1891,7 @@ fries
 frigs
 frill
 frisk
+fritz
 frizz
 frock
 frogs
@@ -1976,6 +1989,7 @@ gazes
 gears
 gecko
 geeks
+geeky
 geese
 gelds
 genes
@@ -2477,6 +2491,7 @@ imply
 impro
 inane
 inapt
+inbox
 incur
 index
 indie
@@ -2586,6 +2601,7 @@ junco
 junks
 junky
 junta
+junto
 juror
 juste
 jutes
@@ -2731,6 +2747,7 @@ latex
 lathe
 laths
 latin
+latte
 latus
 laude
 lauds
@@ -2983,6 +3000,7 @@ mamma
 mammy
 maned
 manes
+manga
 mange
 mango
 mangy
@@ -3076,6 +3094,7 @@ micas
 micks
 micro
 middy
+midge
 midis
 midst
 miens
@@ -3106,6 +3125,7 @@ minis
 minks
 minor
 mints
+minty
 minus
 mired
 mires
@@ -3462,6 +3482,7 @@ ovate
 ovens
 overs
 overt
+ovine
 ovoid
 ovule
 owest
@@ -3582,6 +3603,7 @@ pends
 penes
 pengo
 penis
+penne
 penny
 peons
 peony
@@ -3684,6 +3706,7 @@ plebs
 plein
 plena
 plied
+plier
 plies
 plink
 plods
@@ -3759,6 +3782,7 @@ poufs
 pound
 pours
 pouts
+pouty
 power
 poxed
 poxes
@@ -3925,6 +3949,8 @@ raked
 raker
 rakes
 rally
+ralph
+ramen
 ramps
 ranch
 rands
@@ -4214,6 +4240,7 @@ saved
 saver
 saves
 savor
+savoy
 savvy
 sawed
 sawer
@@ -4255,6 +4282,7 @@ scowl
 scows
 scram
 scrap
+scree
 screw
 scrim
 scrip
@@ -5102,6 +5130,7 @@ tonal
 toned
 toner
 tones
+tonga
 tongs
 tonic
 tools
@@ -5187,6 +5216,7 @@ trite
 troll
 tromp
 troop
+trope
 troth
 trots
 trout
@@ -5341,6 +5371,7 @@ usurp
 usury
 uteri
 utero
+utile
 utter
 uvula
 vacua
@@ -5593,11 +5624,13 @@ widow
 width
 wield
 wifey
+wight
 wilco
 wilds
 wiled
 wiles
 wills
+willy
 wilts
 wimps
 wimpy
