@@ -19,10 +19,6 @@
   background-color: darkgrey;
 }
 
-.stable {
-  cursor: not-allowed !important;
-}
-
 .red {
   background-color: orangered;
 }

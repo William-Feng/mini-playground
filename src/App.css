@@ -56,6 +56,10 @@ h2 {
   border: 1px solid white;
 }
 
+.stable {
+  cursor: not-allowed !important;
+}
+
 .restart {
   background-color: #8f7a66;
   color: white;

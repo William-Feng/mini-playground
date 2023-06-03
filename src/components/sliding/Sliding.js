@@ -1,25 +1,84 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { ThemeContext } from "../../App";
 import "./Sliding.css";
 
 function Sliding() {
-  const SIZE = 3;
-  const initialBoard = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, "", 8],
-  ];
-  const solution = useMemo(
-    () => [
-      [1, 2, 3],
-      [4, 5, 6],
-      [7, 8, ""],
-    ],
-    []
-  );
+  const { theme } = useContext(ThemeContext);
 
-  const [board, setBoard] = useState(initialBoard);
+  const SIZE = 3;
+
+  const solution = useMemo(() => {
+    const result = [];
+    for (let i = 0; i < SIZE; i++) {
+      const row = [];
+      for (let j = 0; j < SIZE; j++) {
+        row.push(i * SIZE + j + 1);
+      }
+      result.push(row);
+    }
+    // There should be an empty cell in the bottom right corner
+    result[SIZE - 1][SIZE - 1] = "";
+    return result;
+  }, []);
+
   const [moves, setMoves] = useState(0);
   const [solved, setSolved] = useState(false);
+
+  const gameInitialisation = () => {
+    setMoves(0);
+    setSolved(false);
+    return initialiseBoard();
+  };
+
+  const initialiseBoard = () => {
+    const numbers = Array.from(
+      { length: SIZE * SIZE - 1 },
+      (_, index) => index + 1
+    );
+    numbers.push("");
+
+    // Randomise the order of the cells (Fisher-Yates shuffle algorithm)
+    for (let i = numbers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+    }
+
+    // Construct the 2D board using the array of numbers
+    const board = [];
+    for (let i = 0; i < SIZE; i++) {
+      const row = [];
+      for (let j = 0; j < SIZE; j++) {
+        row.push(numbers[i * SIZE + j]);
+      }
+      board.push(row);
+    }
+
+    // Swap the last two numbers if the board is not solvable
+    const inversions = countInversions(numbers);
+    if (inversions % 2) {
+      [board[SIZE - 1][SIZE - 2], board[SIZE - 1][SIZE - 3]] = [
+        board[SIZE - 1][SIZE - 3],
+        board[SIZE - 1][SIZE - 2],
+      ];
+    }
+
+    return board;
+  };
+
+  // Count the number of inversions in an array, and this must be even for a solvable board
+  const countInversions = (arr) => {
+    let inversions = 0;
+    for (let i = 0; i < arr.length - 1; i++) {
+      for (let j = i + 1; j < arr.length; j++) {
+        if (arr[i] && arr[j] && arr[i] > arr[j]) {
+          inversions++;
+        }
+      }
+    }
+    return inversions;
+  };
+
+  const [board, setBoard] = useState(gameInitialisation);
 
   const findEmptyCell = (board) => {
     for (let i = 0; i < SIZE; i++) {
@@ -64,13 +123,24 @@ function Sliding() {
     checkWon();
   }, [board, solution]);
 
+  // Message to be displayed depending on whether user has won
+  const message = () => {
+    if (solved) {
+      return <h2>Well done! Moves used: {moves}</h2>;
+    } else {
+      return <h2>Moves: {moves}</h2>;
+    }
+  };
+
   return (
-    <div className="background sliding">
+    <div className="background sliding" id={theme}>
       <div className="board">
         {board.map((row, i) =>
           row.map((value, j) => (
             <div
-              className="cell"
+              className={
+                value === "" ? "cell empty" : solved ? "cell stable" : "cell"
+              }
               key={`${i}-${j}`}
               onClick={() => handleClick(i, j)}
             >
@@ -80,13 +150,11 @@ function Sliding() {
         )}
       </div>
       <div>
-        <h2>Moves: {moves}</h2>
-        {solved && (
-          <h2>
-            <b>Solved, well done!</b>
-          </h2>
-        )}
-        <button className="restart" onClick={() => setBoard(initialBoard)}>
+        {message()}
+        <button
+          className="restart"
+          onClick={() => setBoard(gameInitialisation)}
+        >
           Restart
         </button>
       </div>

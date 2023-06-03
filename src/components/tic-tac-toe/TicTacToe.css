@@ -2,8 +2,12 @@
   grid-template-columns: repeat(3, auto);
 }
 
-.tic-tac-toe .cell:not(.occupied):hover {
+.tic-tac-toe#light .cell:not(.stable):hover {
   background-color: lightgrey;
+}
+
+.tic-tac-toe#dark .cell:not(.stable):hover {
+  background-color: grey;
 }
 
 .tic-tac-toe .cell:nth-child(1),
@@ -24,8 +28,4 @@
 .tic-tac-toe .cell:nth-child(8),
 .tic-tac-toe .cell:nth-child(9) {
   border-bottom: none !important;
-}
-
-.occupied:hover {
-  cursor: not-allowed;
 }

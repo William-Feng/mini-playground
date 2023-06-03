@@ -48,13 +48,11 @@ function Memory() {
     return shuffleBoard(board);
   };
 
-  // Shuffle all the cells so the order is randomised (Fisher-Yates algorithm)
+  // Randomise the order of the cells (Fisher-Yates shuffle algorithm)
   const shuffleBoard = (board) => {
-    let curr = board.length;
-    while (curr !== 0) {
-      let random = Math.floor(Math.random() * curr);
-      curr--;
-      [board[curr], board[random]] = [board[random], board[curr]];
+    for (let i = board.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [board[i], board[j]] = [board[j], board[i]];
     }
     return board;
   };
@@ -127,7 +125,7 @@ function Memory() {
     if (numMatching === WIN_NUM_MATCH) {
       return <h2>Well done! Turns used: {turn}</h2>;
     } else {
-      return <h2>Turns used: {turn}</h2>;
+      return <h2>Turns: {turn}</h2>;
     }
   };
 
