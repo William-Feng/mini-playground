@@ -125,11 +125,7 @@ function Memory() {
   // Message to be displayed depending on whether user has won
   const message = () => {
     if (numMatching === WIN_NUM_MATCH) {
-      if (turn <= 20) {
-        return <h2>Well done! Turns used: {turn}</h2>;
-      } else {
-        return <h2>You won! Turns used: {turn}</h2>;
-      }
+      return <h2>Well done! Turns used: {turn}</h2>;
     } else {
       return <h2>Turns used: {turn}</h2>;
     }
