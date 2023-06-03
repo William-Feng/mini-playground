@@ -54,18 +54,8 @@ function App() {
           path="/memory"
           element={
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
-              <Navbar heading="Memory Game" />
+              <Navbar heading="Memory Matching" />
               <Memory />
-              <Footer />
-            </ThemeContext.Provider>
-          }
-        />
-        <Route
-          path="/2048"
-          element={
-            <ThemeContext.Provider value={{ theme, toggleTheme }}>
-              <Navbar heading="2048" />
-              <Game2048 />
               <Footer />
             </ThemeContext.Provider>
           }
@@ -76,6 +66,16 @@ function App() {
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
               <Navbar heading="Sliding Puzzle" />
               <Sliding />
+              <Footer />
+            </ThemeContext.Provider>
+          }
+        />
+        <Route
+          path="/2048"
+          element={
+            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+              <Navbar heading="2048" />
+              <Game2048 />
               <Footer />
             </ThemeContext.Provider>
           }

@@ -7,6 +7,8 @@ import TicTacToeLight from "./images/tic-tac-toe-light.png";
 import TicTacToeDark from "./images/tic-tac-toe-dark.png";
 import MemoryLight from "./images/memory-light.png";
 import MemoryDark from "./images/memory-dark.png";
+import SlidingLight from "./images/sliding-light.png";
+import SlidingDark from "./images/sliding-dark.png";
 import Game2048Light from "./images/2048-light.png";
 import Game2048Dark from "./images/2048-dark.png";
 import HomeHeading from "./HomeHeading";
@@ -42,11 +44,21 @@ function Home() {
         <Link to="/memory">
           <div className="game">
             {theme === "light" ? (
-              <img src={MemoryLight} alt="Memory Game" />
+              <img src={MemoryLight} alt="Memory Matching" />
             ) : (
-              <img src={MemoryDark} alt="Memory Game" />
+              <img src={MemoryDark} alt="Memory Matching" />
             )}
-            <div className="gameTitle">Memory Game</div>
+            <div className="gameTitle">Memory Matching</div>
+          </div>
+        </Link>
+        <Link to="/sliding">
+          <div className="game">
+            {theme === "light" ? (
+              <img src={SlidingLight} alt="Sliding Puzzle" />
+            ) : (
+              <img src={SlidingDark} alt="Sliding Puzzle" />
+            )}
+            <div className="gameTitle">Sliding Puzzle</div>
           </div>
         </Link>
         <Link to="/2048">
