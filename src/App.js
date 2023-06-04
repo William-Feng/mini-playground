@@ -9,6 +9,7 @@ import Memory from "./components/memory/Memory";
 import Game2048 from "./components/2048/Game2048";
 import Footer from "./components/Footer";
 import Sliding from "./components/sliding/Sliding";
+import Emoji from "./components/emoji/Emoji";
 
 export const ThemeContext = createContext();
 
@@ -54,8 +55,18 @@ function App() {
           path="/memory"
           element={
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
-              <Navbar heading="Memory Matching" />
+              <Navbar heading="Colour Matching" />
               <Memory />
+              <Footer />
+            </ThemeContext.Provider>
+          }
+        />
+        <Route
+          path="/emoji"
+          element={
+            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+              <Navbar heading="Emoji Streak" />
+              <Emoji />
               <Footer />
             </ThemeContext.Provider>
           }

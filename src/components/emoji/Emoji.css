@@ -1,0 +1,37 @@
+.emoji .board {
+  grid-template-columns: repeat(4, auto);
+  grid-gap: 15px;
+  padding: 15px;
+  border-radius: 6px;
+}
+
+.emoji .cell {
+  width: 107px;
+  height: 107px;
+  font-size: 55px;
+  line-height: 107px;
+  font-weight: 500;
+  border-radius: 3px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+.emoji .cell:hover {
+  transform: scale(1.1);
+}
+
+@media screen and (max-width: 600px) {
+  .emoji .board {
+    height: 370px;
+    width: 370px;
+    grid-gap: 10px;
+    padding: 10px;
+  }
+
+  .emoji .cell {
+    height: 80px;
+    width: 80px;
+    line-height: 80px;
+    font-size: 45px;
+  }
+}
