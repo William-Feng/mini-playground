@@ -16,8 +16,18 @@
   cursor: pointer;
 }
 
-.emoji .cell:hover {
+.emoji .cell:not(.stable):not(.selected):hover {
   transform: scale(1.1);
+}
+
+.emoji#light .cell.selected {
+  background-color: darkgrey;
+  cursor: not-allowed;
+}
+
+.emoji#dark .cell.selected {
+  background-color: grey;
+  cursor: not-allowed;
 }
 
 @media screen and (max-width: 600px) {

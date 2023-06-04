@@ -61,6 +61,8 @@ function Emoji() {
     if (gameStatus !== "in-progress") return;
 
     const clickedEmoji = board[row][col];
+
+    // Game over if the same emoji is clicked twice
     if (selected.has(clickedEmoji)) {
       setGameStatus("game-over");
       return;
@@ -98,7 +100,13 @@ function Emoji() {
         {board.map((row, i) =>
           row.map((value, j) => (
             <div
-              className="cell"
+              className={`cell ${
+                gameStatus === "game-over" && selected.has(value)
+                  ? "selected"
+                  : gameStatus !== "in-progress"
+                  ? "stable"
+                  : ""
+              }`}
               key={`${i}-${j}`}
               onClick={() => handleClick(i, j)}
             >
