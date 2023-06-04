@@ -12,7 +12,7 @@ function Footer({ id }) {
         href="https://williamfeng.com.au/"
         target="_blank"
         className="author"
-        rel="author"
+        rel="noopener noreferrer"
       >
         William Feng
       </a>{" "}
