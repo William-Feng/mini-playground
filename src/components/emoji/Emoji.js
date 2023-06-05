@@ -83,17 +83,6 @@ function Emoji() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [streak]);
 
-  // Message to be displayed depending on whether user has won
-  const message = () => {
-    if (gameStatus === "game-won") {
-      return <h2>Well done! Streak: {streak}</h2>;
-    } else if (gameStatus === "game-over") {
-      return <h2>Game Over! Streak: {streak}</h2>;
-    } else {
-      return <h2>Streak: {streak}</h2>;
-    }
-  };
-
   return (
     <div className="background emoji" id={theme}>
       <div className="board">
@@ -115,8 +104,15 @@ function Emoji() {
           ))
         )}
       </div>
-      <div>
-        {message()}
+      <div className="message">
+        {gameStatus === "game-won" ? (
+          <h2>Well done!</h2>
+        ) : gameStatus === "game-over" ? (
+          <h2>Game Over!</h2>
+        ) : (
+          ""
+        )}
+        <h3>Streak: {streak}</h3>
         <button
           className="restart"
           onClick={() => setBoard(gameInitialisation)}

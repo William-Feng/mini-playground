@@ -123,15 +123,6 @@ function Sliding() {
     checkWon();
   }, [board, solution]);
 
-  // Message to be displayed depending on whether user has won
-  const message = () => {
-    if (solved) {
-      return <h2>Well done! Moves used: {moves}</h2>;
-    } else {
-      return <h2>Moves: {moves}</h2>;
-    }
-  };
-
   return (
     <div className="background sliding" id={theme}>
       <div className="board">
@@ -149,8 +140,9 @@ function Sliding() {
           ))
         )}
       </div>
-      <div>
-        {message()}
+      <div className="message">
+        {solved && <h2>Well done!</h2>}
+        <h3>Moves: {moves}</h3>
         <button
           className="restart"
           onClick={() => setBoard(gameInitialisation)}

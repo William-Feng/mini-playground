@@ -279,13 +279,9 @@ function Game2048() {
           ))
         )}
       </div>
-      <div>
-        <h2>Score: {score}</h2>
-        {gameOver && (
-          <h2>
-            <b>GAME OVER</b>
-          </h2>
-        )}
+      <div className="message">
+        {gameOver && <h2>Game Over!</h2>}
+        <h3>Score: {score}</h3>
         <button
           className="restart"
           onClick={() => setBoard(gameInitialisation)}

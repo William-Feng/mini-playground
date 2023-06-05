@@ -9,9 +9,12 @@ function GameOver() {
         Answer: <b>{secret}</b>
       </h2>
       {gameOver.guessedWord ? (
-        <h4>Well done! You guessed in {curr.attempt} attempts 🤩</h4>
+        <h3>
+          You guessed in {curr.attempt}{" "}
+          {curr.attempt === 1 ? "attempt" : "attempts"} 🤩
+        </h3>
       ) : (
-        <h4>Better luck next time 😭</h4>
+        <h3>Better luck next time 😭</h3>
       )}
       <button className="restart" onClick={handleRestart}>
         Restart

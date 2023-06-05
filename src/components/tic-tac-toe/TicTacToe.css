@@ -2,6 +2,10 @@
   grid-template-columns: repeat(3, auto);
 }
 
+.tic-tac-toe .cell {
+  border-radius: 0;
+}
+
 .tic-tac-toe#light .cell:not(.stable):hover {
   background-color: lightgrey;
 }
@@ -28,4 +32,8 @@
 .tic-tac-toe .cell:nth-child(8),
 .tic-tac-toe .cell:nth-child(9) {
   border-bottom: none !important;
+}
+
+.tic-tac-toe .message {
+  margin-top: 3.5em;
 }
