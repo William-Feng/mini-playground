@@ -1,63 +1,116 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../App";
 import "./Memory.css";
 
 function Memory() {
   const { theme } = useContext(ThemeContext);
 
-  const colours = [
-    "red",
-    "red",
-    "maroon",
-    "maroon",
-    "gold",
-    "gold",
-    "green",
-    "green",
-    "turquoise",
-    "turquoise",
-    "blue",
-    "blue",
-    "violet",
-    "violet",
-    "purple",
-    "purple",
-  ];
-
-  const WIN_NUM_MATCH = colours.length / 2;
   const COLOUR_HIDDEN = "hidden";
   const CELL_STABLE = "stable";
+  const [difficulty, setDifficulty] = useState("easy");
   const [previous, setPrevious] = useState(null);
   const [lockBoard, setLockBoard] = useState(false);
   const [turns, setTurns] = useState(0);
   const [numMatching, setNumMatching] = useState(0);
+  const [board, setBoard] = useState([]);
+
+  useEffect(() => {
+    setBoard(gameInitialisation(difficulty));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [difficulty]);
+
+  const handleDifficultyChange = (newDifficulty) => {
+    setDifficulty(newDifficulty);
+  };
 
   // Reset the board and all variables for a new game or upon restart
-  const gameInitialisation = () => {
+  const gameInitialisation = (difficulty) => {
     setPrevious(null);
     setLockBoard(false);
     setTurns(0);
     setNumMatching(0);
-    const board = [];
-    for (let i = 0; i < colours.length; i++) {
-      let cell = {};
-      cell["colour"] = colours[i];
-      cell["status"] = COLOUR_HIDDEN;
-      board.push(cell);
+
+    let colours;
+
+    if (difficulty === "easy") {
+      colours = [
+        "orangered",
+        "orangered",
+        "saddlebrown",
+        "saddlebrown",
+        "gold",
+        "gold",
+        "forestgreen",
+        "forestgreen",
+        "turquoise",
+        "turquoise",
+        "royalblue",
+        "royalblue",
+        "violet",
+        "violet",
+        "purple",
+        "purple",
+      ];
+    } else {
+      colours = [
+        "orangered",
+        "orangered",
+        "saddlebrown",
+        "saddlebrown",
+        "darkorange",
+        "darkorange",
+        "burlywood",
+        "burlywood",
+        "gold",
+        "gold",
+        "darkgoldenrod",
+        "darkgoldenrod",
+        "limegreen",
+        "limegreen",
+        "darkolivegreen",
+        "darkolivegreen",
+        "mediumspringgreen",
+        "mediumspringgreen",
+        "teal",
+        "teal",
+        "royalblue",
+        "royalblue",
+        "deepskyblue",
+        "deepskyblue",
+        "aqua",
+        "aqua",
+        "blueviolet",
+        "blueviolet",
+        "purple",
+        "purple",
+        "mediumpurple",
+        "mediumpurple",
+        "violet",
+        "violet",
+        "deeppink",
+        "deeppink",
+      ];
     }
-    return shuffleBoard(board);
+
+    const shuffledBoard = shuffleBoard(colours);
+    return shuffledBoard.map((colour) => ({
+      colour,
+      status: COLOUR_HIDDEN,
+    }));
   };
 
   // Randomise the order of the cells (Fisher-Yates shuffle algorithm)
-  const shuffleBoard = (board) => {
-    for (let i = board.length - 1; i > 0; i--) {
+  const shuffleBoard = (colours) => {
+    const shuffledBoard = [...colours];
+    for (let i = shuffledBoard.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [board[i], board[j]] = [board[j], board[i]];
+      [shuffledBoard[i], shuffledBoard[j]] = [
+        shuffledBoard[j],
+        shuffledBoard[i],
+      ];
     }
-    return board;
+    return shuffledBoard;
   };
-
-  const [board, setBoard] = useState(gameInitialisation);
 
   // Check if the exact same cell is selected twice
   const checkSame = (i) => {
@@ -128,7 +181,21 @@ function Memory() {
 
   return (
     <div className="background memory" id={theme}>
-      <div className="board">
+      <div className="difficulty-tab">
+        <button
+          className={difficulty === "easy" ? "active" : ""}
+          onClick={() => handleDifficultyChange("easy")}
+        >
+          Easy
+        </button>
+        <button
+          className={difficulty === "hard" ? "active" : ""}
+          onClick={() => handleDifficultyChange("hard")}
+        >
+          Hard
+        </button>
+      </div>
+      <div className={"board " + (difficulty === "hard" ? "hard" : "")}>
         {board.map((value, i) => (
           <div
             className={
@@ -142,11 +209,11 @@ function Memory() {
         ))}
       </div>
       <div className="message">
-        {numMatching === WIN_NUM_MATCH && <h2>Well done!</h2>}
+        {numMatching === board.length / 2 && <h2>Well done!</h2>}
         <h3>Turns: {turns}</h3>
         <button
           className="restart"
-          onClick={() => setBoard(gameInitialisation)}
+          onClick={() => setBoard(gameInitialisation(difficulty))}
         >
           Restart
         </button>

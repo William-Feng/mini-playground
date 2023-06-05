@@ -3,6 +3,11 @@
   grid-gap: 10px;
 }
 
+.memory .board.hard {
+  grid-template-columns: repeat(6, auto);
+  grid-gap: 8px;
+}
+
 .memory .cell {
   border: none !important;
 }
@@ -19,19 +24,19 @@
   background-color: darkgrey;
 }
 
-.red {
+.orangered {
   background-color: orangered;
 }
 
-.maroon {
-  background-color: maroon;
+.saddlebrown {
+  background-color: saddlebrown;
 }
 
 .gold {
   background-color: gold;
 }
 
-.green {
+.forestgreen {
   background-color: forestgreen;
 }
 
@@ -39,7 +44,7 @@
   background-color: turquoise;
 }
 
-.blue {
+.royalblue {
   background-color: royalblue;
 }
 
@@ -51,6 +56,54 @@
   background-color: purple;
 }
 
+.darkorange {
+  background-color: darkorange;
+}
+
+.burlywood {
+  background-color: burlywood;
+}
+
+.darkgoldenrod {
+  background-color: darkgoldenrod;
+}
+
+.limegreen {
+  background-color: limegreen;
+}
+
+.darkolivegreen {
+  background-color: darkolivegreen;
+}
+
+.mediumspringgreen {
+  background-color: mediumspringgreen;
+}
+
+.teal {
+  background-color: teal;
+}
+
+.deepskyblue {
+  background-color: deepskyblue;
+}
+
+.aqua {
+  background-color: aqua;
+}
+
+.blueviolet {
+  background-color: blueviolet;
+}
+
+.mediumpurple {
+  background-color: mediumpurple;
+}
+
+.deeppink {
+  background-color: deeppink;
+}
+
 @media screen and (max-width: 600px) {
   .memory .board {
     grid-gap: 8px;
@@ -59,5 +112,14 @@
   .memory .cell {
     height: 85px;
     width: 85px;
+  }
+
+  .memory .board.hard {
+    grid-gap: 6px;
+  }
+
+  .memory .hard .cell {
+    height: 56px;
+    width: 56px;
   }
 }
