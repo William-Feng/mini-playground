@@ -29,14 +29,14 @@ function Memory() {
   const CELL_STABLE = "stable";
   const [previous, setPrevious] = useState(null);
   const [lockBoard, setLockBoard] = useState(false);
-  const [turn, setTurn] = useState(0);
+  const [turns, setTurns] = useState(0);
   const [numMatching, setNumMatching] = useState(0);
 
   // Reset the board and all variables for a new game or upon restart
   const gameInitialisation = () => {
     setPrevious(null);
     setLockBoard(false);
-    setTurn(0);
+    setTurns(0);
     setNumMatching(0);
     const board = [];
     for (let i = 0; i < colours.length; i++) {
@@ -59,34 +59,6 @@ function Memory() {
 
   const [board, setBoard] = useState(gameInitialisation);
 
-  // Another cell was selected before in this turn so checks are necessary
-  const secondSelected = (i) => {
-    setTurn(turn + 1);
-    if (checkSame(i)) {
-      board[i].status = COLOUR_HIDDEN;
-      setBoard(board);
-      setPrevious(null);
-    } else if (checkMatching(i)) {
-      previous.status = CELL_STABLE;
-      board[i].status = CELL_STABLE;
-      setBoard(board);
-      setPrevious(null);
-      setNumMatching(numMatching + 1);
-    } else {
-      // Show the colour of the cell for 1 second, then reset
-      // Prevent user from selecting cells during this delay
-      board[i].status = "";
-      setLockBoard(true);
-      setTimeout(() => {
-        previous.status = COLOUR_HIDDEN;
-        board[i].status = COLOUR_HIDDEN;
-        setBoard(board);
-        setPrevious(null);
-        setLockBoard(false);
-      }, 1000);
-    }
-  };
-
   // Check if the exact same cell is selected twice
   const checkSame = (i) => {
     return board[i].status !== COLOUR_HIDDEN;
@@ -104,9 +76,43 @@ function Memory() {
 
   // Show the colour of the cell if nothing was selected before in this turn
   const firstSelected = (i) => {
-    board[i].status = "";
-    setBoard(board);
-    setPrevious(board[i]);
+    const updatedBoard = [...board];
+    updatedBoard[i].status = "";
+    setBoard(updatedBoard);
+    setPrevious({ colour: board[i].colour, index: i });
+  };
+
+  // Another cell was previously selected in this turn
+  const secondSelected = (i) => {
+    setTurns(turns + 1);
+    const updatedBoard = [...board];
+    if (checkSame(i)) {
+      // Hide the cell again if it's selected twice
+      updatedBoard[i].status = COLOUR_HIDDEN;
+      setBoard(updatedBoard);
+      setPrevious(null);
+    } else if (checkMatching(i)) {
+      // Set both cells to be stable if they match
+      updatedBoard[previous.index].status = CELL_STABLE;
+      updatedBoard[i].status = CELL_STABLE;
+      setBoard(updatedBoard);
+      setPrevious(null);
+      setNumMatching(numMatching + 1);
+    } else {
+      // Show the colour of the cells for 1 second if they don't match, then reset
+      // Prevent user from clicking any cells during this delay
+      updatedBoard[i].status = "";
+      setBoard(updatedBoard);
+      setLockBoard(true);
+      setTimeout(() => {
+        const resetBoard = [...board];
+        resetBoard[previous.index].status = COLOUR_HIDDEN;
+        resetBoard[i].status = COLOUR_HIDDEN;
+        setBoard(resetBoard);
+        setPrevious(null);
+        setLockBoard(false);
+      }, 1000);
+    }
   };
 
   // A cell within the board is clicked
@@ -117,15 +123,6 @@ function Memory() {
       } else {
         secondSelected(i);
       }
-    }
-  };
-
-  // Message to be displayed depending on whether user has won
-  const message = () => {
-    if (numMatching === WIN_NUM_MATCH) {
-      return <h2>Well done! Turns used: {turn}</h2>;
-    } else {
-      return <h2>Turns: {turn}</h2>;
     }
   };
 
@@ -144,8 +141,9 @@ function Memory() {
           />
         ))}
       </div>
-      <div>
-        {message()}
+      <div className="message">
+        {numMatching === WIN_NUM_MATCH && <h2>Well done!</h2>}
+        <h3>Turns: {turns}</h3>
         <button
           className="restart"
           onClick={() => setBoard(gameInitialisation)}

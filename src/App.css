@@ -9,8 +9,11 @@ h1 {
   font-size: 3em;
 }
 
-h2 {
+.message h2 {
   font-size: 2em;
+  font-weight: 600;
+  word-spacing: 5px;
+  text-transform: uppercase;
 }
 
 .background {
@@ -35,7 +38,6 @@ h2 {
   display: grid;
   align-items: center;
   justify-content: center;
-  margin: 20px 0 3em;
 }
 
 .cell {
@@ -45,6 +47,7 @@ h2 {
   align-items: center;
   font-size: 5em;
   line-height: 120px;
+  border-radius: 2px;
   cursor: pointer;
 }
 
@@ -60,6 +63,10 @@ h2 {
   cursor: not-allowed !important;
 }
 
+.message {
+  margin-top: 3em;
+}
+
 .restart {
   background-color: #8f7a66;
   color: white;
@@ -67,7 +74,7 @@ h2 {
   margin: 2em 0 20px;
   padding: 0.25em 0.75em;
   border: none;
-  border-radius: 2px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -82,22 +89,26 @@ h2 {
 }
 
 @media screen and (max-width: 400px) {
-  h2 {
+  .message h2 {
     font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.3em;
   }
 
   .background {
     height: calc(91vh - 80px);
   }
 
-  .board {
-    margin: 0 0 2.5em;
-  }
-
   .cell {
     width: 110px;
     height: 110px;
     line-height: 110px;
+  }
+
+  .message {
+    margin-top: 1.5em;
   }
 
   .restart {

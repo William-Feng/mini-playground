@@ -75,7 +75,7 @@ function TicTacToe() {
       <div className="board">
         {board.map((value, i) => (
           <div
-            className={value || winner ? "cell occupied" : "cell"}
+            className={value || winner ? "cell stable" : "cell"}
             key={i}
             onClick={() => handleClick(i)}
           >
@@ -83,13 +83,13 @@ function TicTacToe() {
           </div>
         ))}
       </div>
-      <div>
+      <div className="message">
         {!winner ? (
-          <h2>Player {turn}'s Turn</h2>
+          <h3>Player {turn}'s Turn</h3>
         ) : winner === "draw" ? (
           <h2>Draw!</h2>
         ) : (
-          <h2>Player {winner} wins!</h2>
+          <h2>Player {winner} Wins!</h2>
         )}
         <button className="restart" onClick={() => handleRestart()}>
           Restart
