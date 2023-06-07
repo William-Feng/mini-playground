@@ -9,11 +9,11 @@ function Memory() {
   const COLOUR_HIDDEN = "hidden";
   const CELL_STABLE = "stable";
   const [difficulty, setDifficulty] = useState("easy");
+  const [board, setBoard] = useState([]);
   const [previous, setPrevious] = useState(null);
   const [lockBoard, setLockBoard] = useState(false);
   const [turns, setTurns] = useState(0);
   const [numMatching, setNumMatching] = useState(0);
-  const [board, setBoard] = useState([]);
 
   useEffect(() => {
     setBoard(gameInitialisation(difficulty));
@@ -24,7 +24,7 @@ function Memory() {
     setDifficulty(newDifficulty);
   };
 
-  // Reset the board and all variables for a new game or upon restart
+  // Reset the board and all variables for a new game
   const gameInitialisation = (difficulty) => {
     setPrevious(null);
     setLockBoard(false);
