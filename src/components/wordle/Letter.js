@@ -14,24 +14,20 @@ function Letter({ attemptNum, letterPos }) {
   const letter = grid[attemptNum][letterPos];
 
   const correct = secret[letterPos] === letter;
+
   // Need to check the number of occurrences of the letter
   // within the secret word before setting it to yellow
   let partial = false;
-  if (!correct && letter !== "" && secret.includes(letter)) {
-    const letterCount = secret.match(new RegExp(letter, "g")).length;
-    let currCount = 0;
-    let forwardCorrect = 0;
-    for (let i = 0; i < MAX_LETTERS - 1; i++) {
-      if (i < letterPos && grid[attemptNum][i] === letter) {
-        currCount++;
-      } else if (i > letterPos && grid[attemptNum][i] === secret[i]) {
-        forwardCorrect++;
-      }
-    }
-    // Also ensure that the same letter is not correct in a forward position
-    if (currCount < letterCount - forwardCorrect) {
-      partial = true;
-    }
+  if (!correct && letter && secret.includes(letter)) {
+    const letterCount = secret.split(letter).length - 1;
+    const currCount = grid[attemptNum]
+      .slice(0, letterPos)
+      .filter((char) => char === letter).length;
+    const forwardCorrect = grid[attemptNum]
+      .slice(letterPos + 1)
+      .filter((char) => char === letter).length;
+
+    partial = currCount < letterCount - forwardCorrect;
   }
 
   useEffect(() => {
