@@ -69,7 +69,7 @@ function Sliding() {
 
     // Swap the last two numbers if the board is not solvable
     const inversions = countInversions(numbers);
-    if (inversions % 2) {
+    if (!solvable(size, inversions)) {
       [board[size - 1][size - 2], board[size - 1][size - 3]] = [
         board[size - 1][size - 3],
         board[size - 1][size - 2],
@@ -79,7 +79,19 @@ function Sliding() {
     return board;
   };
 
-  // Count the number of inversions in an array (even for a solvable board)
+  // Check whether the board after the randomised shuffling is solvable
+  const solvable = (size, inversions) => {
+    // If odd (3x3 for 8-puzzle), the number of inversions must be even for solvability
+    if (size % 2 === 1) {
+      return inversions % 2 === 0;
+      // If even (4x4 for 15-puzzle), the sum of the permutation parity must be even
+    } else {
+      const blankRowFromBottom = size - Math.floor(inversions / size) - 1;
+      return (inversions + blankRowFromBottom) % 2 === 0;
+    }
+  };
+
+  // Count the number of inversions in an array
   const countInversions = (arr) => {
     let inversions = 0;
     for (let i = 0; i < arr.length - 1; i++) {
