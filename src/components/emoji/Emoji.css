@@ -5,6 +5,11 @@
   border-radius: 6px;
 }
 
+.emoji .board.hard {
+  grid-template-columns: repeat(5, auto);
+  grid-gap: 12px;
+}
+
 .emoji .cell {
   width: 107px;
   height: 107px;
@@ -14,6 +19,13 @@
   border-radius: 3px;
   border: 1px solid black;
   cursor: pointer;
+}
+
+.emoji .hard .cell {
+  height: 86px;
+  width: 86px;
+  font-size: 45px;
+  line-height: 86px;
 }
 
 .emoji .cell:not(.stable):not(.selected):hover {
@@ -38,10 +50,21 @@
     padding: 10px;
   }
 
+  .emoji .board.hard {
+    grid-gap: 8px;
+  }
+
   .emoji .cell {
     height: 80px;
     width: 80px;
     line-height: 80px;
     font-size: 45px;
+  }
+
+  .emoji .hard .cell {
+    height: 64px;
+    width: 64px;
+    line-height: 64px;
+    font-size: 36px;
   }
 }
