@@ -1,0 +1,22 @@
+.difficulty-tab {
+  margin-bottom: 2em;
+}
+
+.difficulty-tab button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #bbada0;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.difficulty-tab button:hover {
+  background-color: #68584a;
+}
+
+.difficulty-tab button.active {
+  background-color: #8f7a66;
+}

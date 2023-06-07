@@ -1,15 +1,15 @@
 import React, { createContext, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
 import Home from "./components/home/Home";
 import Wordle from "./components/wordle/Wordle";
 import TicTacToe from "./components/tic-tac-toe/TicTacToe";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/misc/Navbar";
 import Memory from "./components/memory/Memory";
 import Game2048 from "./components/2048/Game2048";
-import Footer from "./components/Footer";
+import Footer from "./components/misc/Footer";
 import Sliding from "./components/sliding/Sliding";
 import Emoji from "./components/emoji/Emoji";
+import "./App.css";
 
 export const ThemeContext = createContext();
 

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ThemeContext } from "../App";
+import { ThemeContext } from "../../App";
 import "./Footer.css";
 
 function Footer({ id }) {

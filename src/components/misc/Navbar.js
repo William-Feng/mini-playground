@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import "./Navbar.css";
-import { ThemeContext } from "../App";
+import { ThemeContext } from "../../App";
 import { Link } from "react-router-dom";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import ReactSwitch from "react-switch";
+import "./Navbar.css";
 
 function Navbar({ heading }) {
   const { theme, toggleTheme } = useContext(ThemeContext);
