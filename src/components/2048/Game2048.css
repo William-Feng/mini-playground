@@ -3,8 +3,6 @@
   grid-gap: 15px;
   padding: 15px;
   border-radius: 6px;
-  height: 500px;
-  width: 500px;
 }
 
 .game2048#light .board {

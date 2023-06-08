@@ -1,31 +1,13 @@
 .sliding .board {
   grid-template-columns: repeat(3, auto);
-  grid-gap: 15px;
-  padding: 15px;
-  border-radius: 6px;
 }
 
 .sliding .board.hard {
   grid-template-columns: repeat(4, auto);
-  grid-gap: 15px;
-  height: 500px;
-  width: 500px;
-}
-
-.sliding .cell {
-  height: 107px;
-  width: 107px;
-  font-size: 55px;
-  line-height: 107px;
-  font-weight: 500;
-  border-radius: 3px;
-  border: 1px solid black;
-  cursor: pointer;
 }
 
 .sliding .hard .cell {
-  height: 107px;
-  width: 107px;
+  font-size: 52px;
 }
 
 .sliding#light .cell.empty {
@@ -48,10 +30,7 @@
 
 @media screen and (max-width: 600px) {
   .sliding .board.hard {
-    height: 370px;
-    width: 370px;
     grid-gap: 10px;
-    padding: 10px;
   }
 
   .sliding .hard .cell {

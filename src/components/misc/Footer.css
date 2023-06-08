@@ -2,8 +2,8 @@
   position: fixed;
   bottom: 5px;
   right: 5px;
-  user-select: text;
   font-size: x-small;
+  user-select: text;
 }
 
 .author {

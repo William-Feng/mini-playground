@@ -1,8 +1,12 @@
 .tic-tac-toe .board {
   grid-template-columns: repeat(3, auto);
+  grid-gap: 0px;
 }
 
 .tic-tac-toe .cell {
+  height: 124px;
+  width: 124px;
+  font-size: 5em;
   border-radius: 0;
 }
 

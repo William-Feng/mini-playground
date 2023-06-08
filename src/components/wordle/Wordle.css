@@ -13,19 +13,19 @@
 }
 
 .grid-container {
-  display: flex;
   top: 0;
-  height: calc(100vh - 80px - 190px - 5px);
+  display: flex;
   place-items: center;
+  height: calc(100vh - 80px - 190px - 5px);
 }
 
 .grid {
-  width: 350px;
-  height: 420px;
-  margin: auto;
   display: flex;
   flex-direction: column;
   gap: 5px;
+  height: 420px;
+  width: 350px;
+  margin: auto;
 }
 
 .row {
@@ -38,11 +38,11 @@
 
 .letter {
   display: grid;
-  font-size: 2rem;
-  font-weight: bold;
   flex: 1;
   place-items: center;
   color: white;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
 #dark .letter {
@@ -79,34 +79,34 @@
 }
 
 .keyboard {
-  height: 190px;
-  width: 484px;
-  display: flex;
-  flex-direction: column;
-  margin: 5px auto;
-  gap: 5px;
   position: fixed;
   bottom: 5px;
   left: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 190px;
+  width: 484px;
+  margin: 5px auto;
   transform: translate(-50%);
 }
 
 .key {
-  height: 58px;
-  width: 43px;
-  font-weight: bold;
-  font-size: 0.8rem;
   display: grid;
   place-items: center;
-  border-radius: 4px;
-  cursor: pointer;
+  height: 58px;
+  width: 43px;
   background-color: #808384;
   -webkit-tap-highlight-color: #666;
+  font-weight: bold;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .backspace {
-  width: 23px;
   height: 23px;
+  width: 23px;
 }
 
 #dark .key {
@@ -230,8 +230,8 @@
 }
 
 h2.answer {
-  font-size: 2.25em;
   padding-bottom: 0.75em;
+  font-size: 2.25em;
 }
 
 @media screen and (max-width: 400px) {
@@ -244,8 +244,8 @@ h2.answer {
   }
 
   .grid {
-    width: 340px;
     height: 400px;
+    width: 340px;
   }
 
   .keyboard {

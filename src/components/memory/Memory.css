@@ -1,19 +1,23 @@
 .memory .board {
   grid-template-columns: repeat(4, auto);
-  grid-gap: 10px;
 }
 
 .memory .board.hard {
   grid-template-columns: repeat(6, auto);
-  grid-gap: 8px;
+  grid-gap: 10px;
 }
 
 .memory .cell {
   border: none !important;
 }
 
+.memory .hard .cell {
+  height: 75px;
+  width: 75px;
+}
+
 .memory .cell:not(.stable):hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
 #light .hidden {
