@@ -84,7 +84,7 @@ function Wordle() {
   };
 
   return (
-    <div className="wordle" id={theme}>
+    <div className="background wordle" id={theme}>
       <AppContext.Provider
         value={{
           grid,

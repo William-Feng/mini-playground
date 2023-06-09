@@ -1,5 +1,5 @@
 .difficulty-tab {
-  margin-bottom: 3em;
+  margin: 0.5em 0 2em;
 }
 
 .difficulty-tab button {
@@ -19,10 +19,4 @@
 
 .difficulty-tab button.active {
   background-color: #8f7a66;
-}
-
-@media screen and (max-width: 600px) {
-  .difficulty-tab {
-    margin-bottom: 1em;
-  }
 }

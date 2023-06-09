@@ -41,3 +41,22 @@
 .tic-tac-toe .message {
   margin-top: 3.5em;
 }
+
+.tic-tac-toe .restart {
+  margin: 2em 0 0.5em;
+}
+
+@media screen and (max-width: 400px) {
+  .tic-tac-toe .cell {
+    height: 110px;
+    width: 110px;
+  }
+
+  .tic-tac-toe .message {
+    margin-top: 2.5em;
+  }
+
+  .tic-tac-toe .restart {
+    margin: 1.5em 0 0.5em;
+  }
+}

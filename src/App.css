@@ -21,7 +21,7 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 80px);
+  height: calc(100dvh - 80px);
 }
 
 .background#light {
@@ -67,11 +67,11 @@ h1 {
 }
 
 .message {
-  margin-top: 3em;
+  margin-top: 2.25em;
 }
 
 .restart {
-  margin: 2em 0 20px;
+  margin: 1.25em 0 0.25em;
   padding: 0.25em 0.75em;
   background-color: #8f7a66;
   color: white;
@@ -85,12 +85,6 @@ h1 {
   background-color: #68584a;
 }
 
-@media screen and (max-height: 800px) {
-  .background {
-    height: 100%;
-  }
-}
-
 @media screen and (max-width: 400px) {
   .message h2 {
     font-size: 1.5em;
@@ -100,10 +94,6 @@ h1 {
     font-size: 1.3em;
   }
 
-  .background {
-    height: calc(91vh - 80px);
-  }
-
   .cell {
     height: 110px;
     width: 110px;
@@ -111,11 +101,11 @@ h1 {
   }
 
   .message {
-    margin-top: 1em;
+    margin-top: 1.5em;
   }
 
   .restart {
-    margin-top: 1em;
+    margin: 1em 0 0.25em;
     font-size: 1.2em;
   }
 }
