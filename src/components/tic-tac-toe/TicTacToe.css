@@ -1,6 +1,7 @@
 .tic-tac-toe .board {
   grid-template-columns: repeat(3, auto);
   grid-gap: 0px;
+  padding-top: 1em;
 }
 
 .tic-tac-toe .cell {
@@ -46,7 +47,17 @@
   margin: 2em 0 0.5em;
 }
 
+@media screen and (max-height: 673px) {
+  .background.tic-tac-toe {
+    height: 100%;
+  }
+}
+
 @media screen and (max-width: 400px) {
+  .background.tic-tac-toe {
+    height: calc(100dvh - 80px);
+  }
+
   .tic-tac-toe .cell {
     height: 110px;
     width: 110px;
@@ -58,5 +69,11 @@
 
   .tic-tac-toe .restart {
     margin: 1.5em 0 0.5em;
+  }
+
+  @media screen and (max-height: 574px) {
+    .background.tic-tac-toe {
+      height: 100%;
+    }
   }
 }

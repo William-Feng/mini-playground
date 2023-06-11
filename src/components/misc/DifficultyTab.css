@@ -1,5 +1,5 @@
 .difficulty-tab {
-  margin: 0.5em 0 2em;
+  margin: 1em 0 2em;
 }
 
 .difficulty-tab button {
@@ -19,4 +19,5 @@
 
 .difficulty-tab button.active {
   background-color: #8f7a66;
+  cursor: not-allowed;
 }

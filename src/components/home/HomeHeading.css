@@ -1,10 +1,10 @@
 .banner {
-  text-align: center;
-  height: 120px;
-  width: 100vw;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 120px;
+  width: 100%;
+  text-align: center;
 }
 
 #light .banner {
@@ -74,6 +74,7 @@ h1.title {
 @media screen and (max-width: 700px) {
   .banner {
     height: 150px;
+    word-wrap: break-word;
   }
 }
 
@@ -90,6 +91,9 @@ h1.title {
 }
 
 @media screen and (max-width: 400px) {
+  /* .banner {
+  } */
+
   h1.title {
     font-size: 3em;
     padding: 0;

@@ -32,7 +32,17 @@
   cursor: not-allowed;
 }
 
+@media screen and (max-height: 845px) {
+  .background.emoji {
+    height: 100%;
+  }
+}
+
 @media screen and (max-width: 600px) {
+  .background.emoji {
+    height: calc(100dvh - 80px);
+  }
+
   .emoji .board {
     grid-gap: 10px;
   }
@@ -53,5 +63,11 @@
     width: 64px;
     line-height: 64px;
     font-size: 36px;
+  }
+
+  @media screen and (max-height: 663px) {
+    .background.emoji {
+      height: 100%;
+    }
   }
 }

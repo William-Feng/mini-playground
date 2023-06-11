@@ -1,6 +1,7 @@
 .game2048 .board {
   grid-template-columns: repeat(4, auto);
   grid-gap: 15px;
+  margin-top: 1em;
   padding: 15px;
   border-radius: 6px;
 }
@@ -110,7 +111,17 @@
   font-size: 40px;
 }
 
+@media screen and (max-height: 778px) {
+  .background.game2048 {
+    height: 100%;
+  }
+}
+
 @media screen and (max-width: 600px) {
+  .background.game2048 {
+    height: calc(100dvh - 80px);
+  }
+
   .game2048 .board {
     height: 370px;
     width: 370px;
@@ -153,5 +164,11 @@
   .game2048#light .num4096,
   .game2048#dark .num4096 {
     font-size: 30px;
+  }
+
+  @media screen and (max-height: 643px) {
+    .background.game2048 {
+      height: 100%;
+    }
   }
 }

@@ -148,7 +148,10 @@ function Sliding() {
   }, [board, solution]);
 
   return (
-    <div className="background sliding" id={theme}>
+    <div
+      className={"background sliding " + (difficulty === "hard" ? "hard" : "")}
+      id={theme}
+    >
       <DifficultyTab
         difficulty={difficulty}
         handleDifficultyChange={handleDifficultyChange}

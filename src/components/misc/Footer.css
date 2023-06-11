@@ -25,6 +25,10 @@
 }
 
 @media screen and (max-width: 400px) {
+  .footer {
+    right: 8px;
+  }
+
   .noPhone {
     display: none;
   }

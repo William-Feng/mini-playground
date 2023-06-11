@@ -28,7 +28,24 @@
   background-color: grey;
 }
 
+@media screen and (max-height: 716px) {
+  .background.sliding:not(.hard) {
+    height: 100%;
+  }
+}
+
+@media screen and (max-height: 845px) {
+  .background.sliding.hard {
+    height: 100%;
+  }
+}
+
 @media screen and (max-width: 600px) {
+  .background.sliding:not(.hard),
+  .background.sliding.hard {
+    height: calc(100dvh - 80px);
+  }
+
   .sliding .board.hard {
     grid-gap: 10px;
   }
@@ -38,5 +55,12 @@
     width: 80px;
     line-height: 80px;
     font-size: 45px;
+  }
+
+  @media screen and (max-height: 663px) {
+    .background.sliding:not(.hard),
+    .background.sliding.hard {
+      height: 100%;
+    }
   }
 }

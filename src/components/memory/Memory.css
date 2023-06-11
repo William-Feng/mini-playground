@@ -108,7 +108,17 @@
   background-color: deeppink;
 }
 
+@media screen and (max-height: 845px) {
+  .background.memory {
+    height: 100%;
+  }
+}
+
 @media screen and (max-width: 600px) {
+  .background.memory {
+    height: calc(100dvh - 80px);
+  }
+
   .memory .board {
     grid-gap: 8px;
   }
@@ -125,5 +135,11 @@
   .memory .hard .cell {
     height: 56px;
     width: 56px;
+  }
+
+  @media screen and (max-height: 663px) {
+    .background.memory {
+      height: 100%;
+    }
   }
 }
