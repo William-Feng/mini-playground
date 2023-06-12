@@ -23,20 +23,30 @@ function TicTacToe() {
     [2, 4, 6],
   ];
 
-  // There is a winner if all three cells within any winning state is satisfied
-  const checkWin = () => {
-    for (let state of WIN_STATES) {
-      let [cell0, cell1, cell2] = state;
-      if (
-        board[cell0] &&
-        board[cell0] === board[cell1] &&
-        board[cell0] === board[cell2]
-      ) {
-        setWinner(board[cell0]);
-        return true;
+  // Check if a given combination of cells is a winning combination
+  const isWinningCombination = (combination) => {
+    const [cell0, cell1, cell2] = combination;
+    return (
+      board[cell0] &&
+      board[cell0] === board[cell1] &&
+      board[cell0] === board[cell2]
+    );
+  };
+
+  // If there is a winner, return the winning combination
+  const getWinner = () => {
+    for (let combination of WIN_STATES) {
+      if (isWinningCombination(combination)) {
+        return combination;
       }
     }
-    return false;
+    return null;
+  };
+
+  // Check if a cell index is part of the winning combination
+  const isWinningCell = (index) => {
+    const winningCombination = getWinner();
+    return winningCombination && winningCombination.includes(index);
   };
 
   // Game results in a draw if all the squares are filled up (without a winner)
@@ -56,12 +66,13 @@ function TicTacToe() {
 
   // Update the board, check for any winners and swap turns
   const handleClick = (i) => {
-    // A cell can be only clicked if it's not occupied and there is no winner
+    // A cell can be only clicked if it's not occupied and there's no winner
     if (!winner && !board[i]) {
       board[i] = turn === "X" ? "X" : "O";
-      setBoard(board);
-      if (checkWin()) {
-        setWinner(turn);
+      setBoard([...board]);
+      const winningCombination = getWinner();
+      if (winningCombination) {
+        setWinner(board[winningCombination[0]]);
       } else if (checkDraw()) {
         setWinner("draw");
       } else {
@@ -75,7 +86,9 @@ function TicTacToe() {
       <div className="board">
         {board.map((value, i) => (
           <div
-            className={value || winner ? "cell stable" : "cell"}
+            className={`cell ${value || winner ? "stable" : ""} ${
+              isWinningCell(i) ? "winning" : ""
+            }`}
             key={i}
             onClick={() => handleClick(i)}
           >
