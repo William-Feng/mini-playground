@@ -9,6 +9,7 @@ function TicTacToe() {
   const SIZE = 9;
   const [numPlayers, setNumPlayers] = useState("1 player");
   const [board, setBoard] = useState(Array(SIZE).fill(null));
+  const [initialPlayer, setInitialPlayer] = useState("X");
   const [turn, setTurn] = useState("X");
   const [winner, setWinner] = useState(null);
 
@@ -47,7 +48,6 @@ function TicTacToe() {
 
   // If there is a winner, return the winning combination
   const getWinner = (board) => {
-    console.log(board);
     for (let combination of WIN_STATES) {
       if (isWinningCombination(board, combination)) {
         return combination;
@@ -70,21 +70,20 @@ function TicTacToe() {
     return true;
   };
 
-  // Reset the board, turn and winner if the restart button is selected
+  // Reset the board, turn, initial player and winner if the restart button is selected
   const handleRestart = () => {
     setBoard(Array(SIZE).fill(null));
-    setTurn("X");
+    setTurn(initialPlayer);
+    setInitialPlayer(initialPlayer === "X" ? "O" : "X");
     setWinner(null);
   };
 
-  // Update the board, swap turns and check for any winners and swap turns
+  // Update the board, check for any winners and swap turns
   const handleClick = (i) => {
     if (!winner && !board[i]) {
       let newBoard = [...board];
       newBoard[i] = turn === "X" ? "X" : "O";
-
-      const newTurn = turn === "X" ? "O" : "X";
-      setTurn(newTurn);
+      setBoard(newBoard);
 
       const winningCombination = getWinner(newBoard);
       if (winningCombination) {
@@ -93,7 +92,7 @@ function TicTacToe() {
         setWinner("draw");
       }
 
-      setBoard(newBoard);
+      setTurn(turn === "X" ? "O" : "X");
     }
   };
 
