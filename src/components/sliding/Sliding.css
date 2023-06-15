@@ -2,11 +2,11 @@
   grid-template-columns: repeat(3, auto);
 }
 
-.sliding .board.hard {
+.sliding.hard .board {
   grid-template-columns: repeat(4, auto);
 }
 
-.sliding .hard .cell {
+.sliding.hard .cell {
   font-size: 52px;
 }
 
@@ -46,11 +46,11 @@
     height: calc(100dvh - 80px);
   }
 
-  .sliding .board.hard {
+  .sliding.hard .board {
     grid-gap: 10px;
   }
 
-  .sliding .hard .cell {
+  .sliding.hard .cell {
     height: 80px;
     width: 80px;
     line-height: 80px;
@@ -58,6 +58,15 @@
   }
 
   @media screen and (max-height: 663px) {
+    .background.sliding:not(.hard),
+    .background.sliding.hard {
+      height: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  @media screen and (max-height: 630px) {
     .background.sliding:not(.hard),
     .background.sliding.hard {
       height: 100%;

@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import { ThemeContext } from "../../App";
 import "./TicTacToe.css";
+import ModeTab from "../misc/ModeTab";
 
 function TicTacToe() {
   const { theme } = useContext(ThemeContext);
 
+  const [numPlayers, setNumPlayers] = useState("2 players");
   const [board, setBoard] = useState(Array(9).fill(null));
   const [turn, setTurn] = useState("X");
   const [winner, setWinner] = useState(null);
@@ -22,6 +24,10 @@ function TicTacToe() {
     [0, 4, 8],
     [2, 4, 6],
   ];
+
+  const handleModeChange = (newDifficulty) => {
+    setNumPlayers(newDifficulty);
+  };
 
   // Check if a given combination of cells is a winning combination
   const isWinningCombination = (combination) => {
@@ -83,6 +89,12 @@ function TicTacToe() {
 
   return (
     <div className="background tic-tac-toe" id={theme}>
+      <ModeTab
+        modeType={numPlayers}
+        mode1={"1 player"}
+        mode2={"2 players"}
+        handleModeChange={handleModeChange}
+      />
       <div className="board">
         {board.map((value, i) => (
           <div

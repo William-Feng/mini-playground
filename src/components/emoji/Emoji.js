@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { easyEmojis, hardEmojis } from "./EmojiBank";
 import { ThemeContext } from "../../App";
 import "./Emoji.css";
-import DifficultyTab from "../misc/DifficultyTab";
+import ModeTab from "../misc/ModeTab";
 
 function Emoji() {
   const { theme } = useContext(ThemeContext);
@@ -94,10 +94,15 @@ function Emoji() {
   }, [streak]);
 
   return (
-    <div className="background emoji" id={theme}>
-      <DifficultyTab
-        difficulty={difficulty}
-        handleDifficultyChange={handleDifficultyChange}
+    <div
+      className={"background emoji " + (difficulty === "hard" ? "hard" : "")}
+      id={theme}
+    >
+      <ModeTab
+        modeType={difficulty}
+        handleModeChange={handleDifficultyChange}
+        mode1={"easy"}
+        mode2={"hard"}
       />
       <div className={"board " + (difficulty === "hard" ? "hard" : "")}>
         {board.map((row, i) =>

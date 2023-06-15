@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { ThemeContext } from "../../App";
-import DifficultyTab from "../misc/DifficultyTab";
+import ModeTab from "../misc/ModeTab";
 import "./Sliding.css";
 
 function Sliding() {
@@ -152,11 +152,13 @@ function Sliding() {
       className={"background sliding " + (difficulty === "hard" ? "hard" : "")}
       id={theme}
     >
-      <DifficultyTab
-        difficulty={difficulty}
-        handleDifficultyChange={handleDifficultyChange}
+      <ModeTab
+        modeType={difficulty}
+        handleModeChange={handleDifficultyChange}
+        mode1={"easy"}
+        mode2={"hard"}
       />
-      <div className={"board " + (difficulty === "hard" ? "hard" : "")}>
+      <div className="board">
         {board.map((row, i) =>
           row.map((value, j) => (
             <div

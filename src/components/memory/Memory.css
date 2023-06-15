@@ -2,7 +2,7 @@
   grid-template-columns: repeat(4, auto);
 }
 
-.memory .board.hard {
+.memory.hard .board {
   grid-template-columns: repeat(6, auto);
   grid-gap: 10px;
 }
@@ -11,7 +11,7 @@
   border: none !important;
 }
 
-.memory .hard .cell {
+.memory.hard .cell {
   height: 75px;
   width: 75px;
 }
@@ -124,20 +124,28 @@
   }
 
   .memory .cell {
-    height: 85px;
-    width: 85px;
+    height: 82px;
+    width: 82px;
   }
 
-  .memory .board.hard {
+  .memory.hard .board {
     grid-gap: 6px;
   }
 
-  .memory .hard .cell {
-    height: 56px;
-    width: 56px;
+  .memory.hard .cell {
+    height: 54px;
+    width: 54px;
   }
 
   @media screen and (max-height: 663px) {
+    .background.memory {
+      height: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  @media screen and (max-height: 630px) {
     .background.memory {
       height: 100%;
     }

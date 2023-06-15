@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../App";
-import DifficultyTab from "../misc/DifficultyTab";
+import ModeTab from "../misc/ModeTab";
 import "./Memory.css";
 
 function Memory() {
@@ -181,12 +181,17 @@ function Memory() {
   };
 
   return (
-    <div className="background memory" id={theme}>
-      <DifficultyTab
-        difficulty={difficulty}
-        handleDifficultyChange={handleDifficultyChange}
+    <div
+      className={"background memory " + (difficulty === "hard" ? "hard" : "")}
+      id={theme}
+    >
+      <ModeTab
+        modeType={difficulty}
+        handleModeChange={handleDifficultyChange}
+        mode1={"easy"}
+        mode2={"hard"}
       />
-      <div className={"board " + (difficulty === "hard" ? "hard" : "")}>
+      <div className="board">
         {board.map((value, i) => (
           <div
             className={

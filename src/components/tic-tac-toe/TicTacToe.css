@@ -48,10 +48,10 @@
 }
 
 .tic-tac-toe .restart {
-  margin: 2em 0 0.5em;
+  margin-top: 2em;
 }
 
-@media screen and (max-height: 673px) {
+@media screen and (max-height: 770px) {
   .background.tic-tac-toe {
     height: 100%;
   }
@@ -62,20 +62,24 @@
     height: calc(100dvh - 80px);
   }
 
+  .tic-tac-toe .board {
+    padding-top: 0;
+  }
+
   .tic-tac-toe .cell {
-    height: 110px;
-    width: 110px;
+    height: 117px;
+    width: 117px;
   }
 
   .tic-tac-toe .message {
-    margin-top: 2.5em;
+    margin-top: 2em;
   }
 
   .tic-tac-toe .restart {
-    margin: 1.5em 0 0.5em;
+    margin: 1em 0 0.5em;
   }
 
-  @media screen and (max-height: 574px) {
+  @media screen and (max-height: 650px) {
     .background.tic-tac-toe {
       height: 100%;
     }

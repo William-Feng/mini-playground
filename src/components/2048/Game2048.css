@@ -172,3 +172,11 @@
     }
   }
 }
+
+@media screen and (max-width: 400px) {
+  @media screen and (max-height: 578px) {
+    .background.game2048 {
+      height: 100%;
+    }
+  }
+}

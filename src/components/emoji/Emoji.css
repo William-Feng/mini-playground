@@ -2,7 +2,7 @@
   grid-template-columns: repeat(4, auto);
 }
 
-.emoji .board.hard {
+.emoji.hard .board {
   grid-template-columns: repeat(5, auto);
   grid-gap: 12px;
 }
@@ -11,7 +11,7 @@
   font-size: 58px;
 }
 
-.emoji .hard .cell {
+.emoji.hard .cell {
   height: 90px;
   width: 90px;
   line-height: 90px;
@@ -47,7 +47,7 @@
     grid-gap: 10px;
   }
 
-  .emoji .board.hard {
+  .emoji.hard .board {
     grid-gap: 8px;
   }
 
@@ -58,7 +58,7 @@
     font-size: 45px;
   }
 
-  .emoji .hard .cell {
+  .emoji.hard .cell {
     height: 64px;
     width: 64px;
     line-height: 64px;
@@ -66,6 +66,14 @@
   }
 
   @media screen and (max-height: 663px) {
+    .background.emoji {
+      height: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  @media screen and (max-height: 630px) {
     .background.emoji {
       height: 100%;
     }

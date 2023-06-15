@@ -1,23 +1,24 @@
-.difficulty-tab {
+.mode-tab {
   margin: 1em 0 2em;
 }
 
-.difficulty-tab button {
+.mode-tab button {
   margin: 0 5px;
   padding: 5px 10px;
   background-color: #bbada0;
   color: white;
   font-size: 1.2em;
+  text-transform: capitalize;
   border: none;
   border-radius: 3px;
   cursor: pointer;
 }
 
-.difficulty-tab button:hover {
+.mode-tab button:hover {
   background-color: #68584a;
 }
 
-.difficulty-tab button.active {
+.mode-tab button.active {
   background-color: #8f7a66;
   cursor: not-allowed;
 }
