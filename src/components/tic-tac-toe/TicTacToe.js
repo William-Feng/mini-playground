@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../App";
 import "./TicTacToe.css";
 import ModeTab from "../misc/ModeTab";
@@ -6,8 +6,9 @@ import ModeTab from "../misc/ModeTab";
 function TicTacToe() {
   const { theme } = useContext(ThemeContext);
 
-  const [numPlayers, setNumPlayers] = useState("2 players");
-  const [board, setBoard] = useState(Array(9).fill(null));
+  const SIZE = 9;
+  const [numPlayers, setNumPlayers] = useState("1 player");
+  const [board, setBoard] = useState(Array(SIZE).fill(null));
   const [turn, setTurn] = useState("X");
   const [winner, setWinner] = useState(null);
 
@@ -25,12 +26,17 @@ function TicTacToe() {
     [2, 4, 6],
   ];
 
+  useEffect(() => {
+    handleRestart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [numPlayers]);
+
   const handleModeChange = (newDifficulty) => {
     setNumPlayers(newDifficulty);
   };
 
   // Check if a given combination of cells is a winning combination
-  const isWinningCombination = (combination) => {
+  const isWinningCombination = (board, combination) => {
     const [cell0, cell1, cell2] = combination;
     return (
       board[cell0] &&
@@ -40,9 +46,10 @@ function TicTacToe() {
   };
 
   // If there is a winner, return the winning combination
-  const getWinner = () => {
+  const getWinner = (board) => {
+    console.log(board);
     for (let combination of WIN_STATES) {
-      if (isWinningCombination(combination)) {
+      if (isWinningCombination(board, combination)) {
         return combination;
       }
     }
@@ -51,12 +58,12 @@ function TicTacToe() {
 
   // Check if a cell index is part of the winning combination
   const isWinningCell = (index) => {
-    const winningCombination = getWinner();
+    const winningCombination = getWinner(board);
     return winningCombination && winningCombination.includes(index);
   };
 
-  // Game results in a draw if all the squares are filled up (without a winner)
-  const checkDraw = () => {
+  // Game results in a draw if all the cells are filled up (without a winner)
+  const checkDraw = (board) => {
     for (let cell of board) {
       if (!cell) return false;
     }
@@ -65,27 +72,104 @@ function TicTacToe() {
 
   // Reset the board, turn and winner if the restart button is selected
   const handleRestart = () => {
-    setBoard(Array(9).fill(null));
+    setBoard(Array(SIZE).fill(null));
     setTurn("X");
     setWinner(null);
   };
 
-  // Update the board, check for any winners and swap turns
+  // Update the board, swap turns and check for any winners and swap turns
   const handleClick = (i) => {
-    // A cell can be only clicked if it's not occupied and there's no winner
     if (!winner && !board[i]) {
-      board[i] = turn === "X" ? "X" : "O";
-      setBoard([...board]);
-      const winningCombination = getWinner();
+      let newBoard = [...board];
+      newBoard[i] = turn === "X" ? "X" : "O";
+
+      const newTurn = turn === "X" ? "O" : "X";
+      setTurn(newTurn);
+
+      const winningCombination = getWinner(newBoard);
       if (winningCombination) {
-        setWinner(board[winningCombination[0]]);
-      } else if (checkDraw()) {
+        setWinner(newBoard[winningCombination[0]]);
+      } else if (checkDraw(newBoard)) {
         setWinner("draw");
-      } else {
-        setTurn(turn === "X" ? "O" : "X");
       }
+
+      setBoard(newBoard);
     }
   };
+
+  // Evaluate the current board state to determine the score
+  const calculateScore = (board, depth) => {
+    for (let combination of WIN_STATES) {
+      const [cell0, cell1, cell2] = combination;
+      if (
+        board[cell0] &&
+        board[cell0] === board[cell1] &&
+        board[cell0] === board[cell2]
+      ) {
+        return board[cell0] === "O" ? 10 - depth : depth - 10;
+      }
+    }
+    return 0;
+  };
+
+  // Minimax algorithm that gets called recursively
+  const minimax = (board, depth, maximisingPlayer) => {
+    // Prioritise winning as quickly as possible and vice versa
+    let score = calculateScore(board, depth);
+    if (score !== 0) return score;
+    if (checkDraw(board)) return 0;
+
+    // The AI is the maximising player and the human is the minimising player
+    if (maximisingPlayer) {
+      let best = -Infinity;
+      for (let i = 0; i < SIZE; i++) {
+        if (!board[i]) {
+          board[i] = "O";
+          best = Math.max(best, minimax(board, depth + 1, false));
+          board[i] = null;
+        }
+      }
+      return best;
+    } else {
+      let best = Infinity;
+      for (let i = 0; i < SIZE; i++) {
+        if (!board[i]) {
+          board[i] = "X";
+          best = Math.min(best, minimax(board, depth + 1, true));
+          board[i] = null;
+        }
+      }
+      return best;
+    }
+  };
+
+  // Find the index of the best move for the AI
+  const makeAIMove = () => {
+    let bestScore = -Infinity;
+    let bestMove;
+
+    for (let i = 0; i < SIZE; i++) {
+      if (!board[i]) {
+        board[i] = "O";
+        let score = minimax(board, 0, false);
+        board[i] = null;
+
+        if (score > bestScore) {
+          bestMove = i;
+          bestScore = score;
+        }
+      }
+    }
+    return bestMove;
+  };
+
+  // AI makes a move if it is the AI's turn in 1 player mode
+  useEffect(() => {
+    if (numPlayers === "1 player" && turn === "O" && !winner) {
+      handleClick(makeAIMove());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [board]);
 
   return (
     <div className="background tic-tac-toe" id={theme}>
