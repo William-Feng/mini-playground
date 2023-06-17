@@ -174,9 +174,8 @@ function TicTacToe() {
     <div className="background tic-tac-toe" id={theme}>
       <ModeTab
         modeType={numPlayers}
-        mode1={"1 player"}
-        mode2={"2 players"}
         handleModeChange={handleModeChange}
+        modes={["1 player", "2 players"]}
       />
       <div className="board">
         {board.map((value, i) => (

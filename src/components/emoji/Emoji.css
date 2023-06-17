@@ -2,20 +2,32 @@
   grid-template-columns: repeat(4, auto);
 }
 
-.emoji.hard .board {
+.emoji.medium .board {
   grid-template-columns: repeat(5, auto);
   grid-gap: 12px;
+}
+
+.emoji.hard .board {
+  grid-template-columns: repeat(6, auto);
+  grid-gap: 10px;
 }
 
 .emoji .cell {
   font-size: 58px;
 }
 
-.emoji.hard .cell {
+.emoji.medium .cell {
   height: 90px;
   width: 90px;
   line-height: 90px;
   font-size: 45px;
+}
+
+.emoji.hard .cell {
+  height: 75px;
+  width: 75px;
+  line-height: 75px;
+  font-size: 38px;
 }
 
 .emoji .cell:not(.stable):not(.selected):hover {
@@ -47,8 +59,12 @@
     grid-gap: 10px;
   }
 
-  .emoji.hard .board {
+  .emoji.medium .board {
     grid-gap: 8px;
+  }
+
+  .emoji.hard .board {
+    grid-gap: 7px;
   }
 
   .emoji .cell {
@@ -58,11 +74,18 @@
     font-size: 45px;
   }
 
-  .emoji.hard .cell {
+  .emoji.medium .cell {
     height: 64px;
     width: 64px;
     line-height: 64px;
     font-size: 36px;
+  }
+
+  .emoji.hard .cell {
+    height: 53px;
+    width: 53px;
+    line-height: 53px;
+    font-size: 30px;
   }
 
   @media screen and (max-height: 663px) {

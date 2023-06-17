@@ -11,7 +11,7 @@ function Emoji() {
   const [selected, setSelected] = useState(new Set());
   const [streak, setStreak] = useState(0);
   const [gameStatus, setGameStatus] = useState("in-progress");
-  const size = difficulty === "easy" ? 4 : 5;
+  const size = difficulty === "easy" ? 4 : difficulty === "medium" ? 5 : 6;
 
   useEffect(() => {
     setBoard(gameInitialisation(difficulty));
@@ -33,7 +33,7 @@ function Emoji() {
     return shuffleBoard(emojis);
   };
 
-  // Randomise the emojis for the difficult 5x5 board from the bank
+  // Randomise the emojis for the difficult 5x5 or 6x6 boards from the bank
   const randomiseEmojis = (emojis) => {
     const hardEmojis = [];
     while (hardEmojis.length < size * size) {
@@ -95,16 +95,22 @@ function Emoji() {
 
   return (
     <div
-      className={"background emoji " + (difficulty === "hard" ? "hard" : "")}
+      className={
+        "background emoji " +
+        (difficulty === "medium"
+          ? "medium"
+          : difficulty === "hard"
+          ? "hard"
+          : "")
+      }
       id={theme}
     >
       <ModeTab
         modeType={difficulty}
         handleModeChange={handleDifficultyChange}
-        mode1={"easy"}
-        mode2={"hard"}
+        modes={["easy", "medium", "hard"]}
       />
-      <div className={"board " + (difficulty === "hard" ? "hard" : "")}>
+      <div className="board">
         {board.map((row, i) =>
           row.map((value, j) => (
             <div

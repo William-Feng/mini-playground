@@ -155,8 +155,7 @@ function Sliding() {
       <ModeTab
         modeType={difficulty}
         handleModeChange={handleDifficultyChange}
-        mode1={"easy"}
-        mode2={"hard"}
+        modes={["easy", "hard"]}
       />
       <div className="board">
         {board.map((row, i) =>

@@ -1,21 +1,18 @@
 import React from "react";
 import "./ModeTab.css";
 
-function ModeTab({ modeType, handleModeChange, mode1, mode2 }) {
+function ModeTab({ modeType, handleModeChange, modes }) {
   return (
     <div className="mode-tab">
-      <button
-        className={modeType === mode1 ? "active" : ""}
-        onClick={() => handleModeChange(mode1)}
-      >
-        {mode1}
-      </button>
-      <button
-        className={modeType === mode2 ? "active" : ""}
-        onClick={() => handleModeChange(mode2)}
-      >
-        {mode2}
-      </button>
+      {modes.map((mode) => (
+        <button
+          key={mode}
+          className={modeType === mode ? "active" : ""}
+          onClick={() => handleModeChange(mode)}
+        >
+          {mode}
+        </button>
+      ))}
     </div>
   );
 }
