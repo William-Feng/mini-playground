@@ -2,18 +2,28 @@
   grid-template-columns: repeat(4, auto);
 }
 
-.memory.hard .board {
+.memory.medium .board {
   grid-template-columns: repeat(6, auto);
   grid-gap: 10px;
+}
+
+.memory.hard .board {
+  grid-template-columns: repeat(8, auto);
+  grid-gap: 8px;
 }
 
 .memory .cell {
   border: none !important;
 }
 
-.memory.hard .cell {
+.memory.medium .cell {
   height: 75px;
   width: 75px;
+}
+
+.memory.hard .cell {
+  height: 55px;
+  width: 55px;
 }
 
 .memory .cell:not(.stable):hover {
@@ -36,36 +46,16 @@
   background-color: saddlebrown;
 }
 
-.gold {
-  background-color: gold;
-}
-
-.forestgreen {
-  background-color: forestgreen;
-}
-
-.turquoise {
-  background-color: turquoise;
-}
-
-.royalblue {
-  background-color: royalblue;
-}
-
-.violet {
-  background-color: violet;
-}
-
-.purple {
-  background-color: purple;
-}
-
 .darkorange {
   background-color: darkorange;
 }
 
 .burlywood {
   background-color: burlywood;
+}
+
+.gold {
+  background-color: gold;
 }
 
 .darkgoldenrod {
@@ -88,6 +78,10 @@
   background-color: teal;
 }
 
+.royalblue {
+  background-color: royalblue;
+}
+
 .deepskyblue {
   background-color: deepskyblue;
 }
@@ -100,12 +94,88 @@
   background-color: blueviolet;
 }
 
+.purple {
+  background-color: purple;
+}
+
 .mediumpurple {
   background-color: mediumpurple;
 }
 
+.violet {
+  background-color: violet;
+}
+
 .deeppink {
   background-color: deeppink;
+}
+
+.coral {
+  background-color: coral;
+}
+
+.crimson {
+  background-color: crimson;
+}
+
+.mediumvioletred {
+  background-color: mediumvioletred;
+}
+
+.mediumorchid {
+  background-color: mediumorchid;
+}
+
+.darkorchid {
+  background-color: darkorchid;
+}
+
+.orchid {
+  background-color: orchid;
+}
+
+.hotpink {
+  background-color: hotpink;
+}
+
+.darkmagenta {
+  background-color: darkmagenta;
+}
+
+.mediumblue {
+  background-color: mediumblue;
+}
+
+.mediumturquoise {
+  background-color: mediumturquoise;
+}
+
+.lime {
+  background-color: lime;
+}
+
+.mediumseagreen {
+  background-color: mediumseagreen;
+}
+
+.steelblue {
+  background-color: steelblue;
+}
+
+.indigo {
+  background-color: indigo;
+}
+
+.firebrick {
+  background-color: firebrick;
+}
+
+.forestgreen {
+  background-color: forestgreen;
+}
+
+.turquoise {
+  background-color: turquoise;
 }
 
 @media screen and (max-height: 845px) {
@@ -128,13 +198,22 @@
     width: 82px;
   }
 
-  .memory.hard .board {
+  .memory.medium .board {
     grid-gap: 6px;
   }
 
-  .memory.hard .cell {
+  .memory.medium .cell {
     height: 54px;
     width: 54px;
+  }
+
+  .memory.hard .board {
+    grid-gap: 5px;
+  }
+
+  .memory.hard .cell {
+    height: 40px;
+    width: 40px;
   }
 
   @media screen and (max-height: 663px) {

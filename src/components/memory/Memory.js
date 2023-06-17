@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { easyColours, mediumColours, hardColours } from "./MemoryColours";
 import { ThemeContext } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import "./Memory.css";
@@ -34,63 +35,11 @@ function Memory() {
     let colours;
 
     if (difficulty === "easy") {
-      colours = [
-        "orangered",
-        "orangered",
-        "saddlebrown",
-        "saddlebrown",
-        "gold",
-        "gold",
-        "forestgreen",
-        "forestgreen",
-        "turquoise",
-        "turquoise",
-        "royalblue",
-        "royalblue",
-        "violet",
-        "violet",
-        "purple",
-        "purple",
-      ];
+      colours = easyColours;
+    } else if (difficulty === "medium") {
+      colours = mediumColours;
     } else {
-      colours = [
-        "orangered",
-        "orangered",
-        "saddlebrown",
-        "saddlebrown",
-        "darkorange",
-        "darkorange",
-        "burlywood",
-        "burlywood",
-        "gold",
-        "gold",
-        "darkgoldenrod",
-        "darkgoldenrod",
-        "limegreen",
-        "limegreen",
-        "darkolivegreen",
-        "darkolivegreen",
-        "mediumspringgreen",
-        "mediumspringgreen",
-        "teal",
-        "teal",
-        "royalblue",
-        "royalblue",
-        "deepskyblue",
-        "deepskyblue",
-        "aqua",
-        "aqua",
-        "blueviolet",
-        "blueviolet",
-        "purple",
-        "purple",
-        "mediumpurple",
-        "mediumpurple",
-        "violet",
-        "violet",
-        "deeppink",
-        "deeppink",
-      ];
+      colours = hardColours;
     }
 
     const shuffledBoard = shuffleBoard(colours);
@@ -182,13 +131,20 @@ function Memory() {
 
   return (
     <div
-      className={"background memory " + (difficulty === "hard" ? "hard" : "")}
+      className={
+        "background memory " +
+        (difficulty === "medium"
+          ? "medium"
+          : difficulty === "hard"
+          ? "hard"
+          : "")
+      }
       id={theme}
     >
       <ModeTab
         modeType={difficulty}
         handleModeChange={handleDifficultyChange}
-        modes={["easy", "hard"]}
+        modes={["easy", "medium", "hard"]}
       />
       <div className="board">
         {board.map((value, i) => (
