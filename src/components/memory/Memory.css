@@ -110,12 +110,24 @@
   background-color: deeppink;
 }
 
-.coral {
-  background-color: coral;
+.pink {
+  background-color: pink;
 }
 
-.crimson {
-  background-color: crimson;
+.darkred {
+  background-color: darkred;
+}
+
+.firebrick {
+  background-color: firebrick;
+}
+
+.hotpink {
+  background-color: hotpink;
+}
+
+.magenta {
+  background-color: magenta;
 }
 
 .mediumvioletred {
@@ -130,44 +142,28 @@
   background-color: darkorchid;
 }
 
-.orchid {
-  background-color: orchid;
-}
-
-.hotpink {
-  background-color: hotpink;
-}
-
-.darkmagenta {
-  background-color: darkmagenta;
-}
-
-.mediumblue {
-  background-color: mediumblue;
-}
-
 .mediumturquoise {
   background-color: mediumturquoise;
-}
-
-.lime {
-  background-color: lime;
-}
-
-.mediumseagreen {
-  background-color: mediumseagreen;
 }
 
 .steelblue {
   background-color: steelblue;
 }
 
-.indigo {
-  background-color: indigo;
+.mediumblue {
+  background-color: mediumblue;
 }
 
-.firebrick {
-  background-color: firebrick;
+.darkgreen {
+  background-color: darkgreen;
+}
+
+.yellowgreen {
+  background-color: yellowgreen;
+}
+
+.lime {
+  background-color: lime;
 }
 
 .forestgreen {
