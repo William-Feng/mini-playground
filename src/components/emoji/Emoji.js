@@ -10,8 +10,14 @@ function Emoji() {
   const [difficulty, setDifficulty] = useState("easy");
   const [selected, setSelected] = useState(new Set());
   const [streak, setStreak] = useState(0);
+  const [lives, setLives] = useState(3);
+  const [lastClicked, setlastClicked] = useState(null);
   const [gameStatus, setGameStatus] = useState("in-progress");
   const size = difficulty === "easy" ? 4 : difficulty === "medium" ? 5 : 6;
+
+  const hearts = Array.from({ length: lives }, (_, index) => (
+    <span key={index}>❤️</span>
+  ));
 
   useEffect(() => {
     setBoard(gameInitialisation(difficulty));
@@ -26,6 +32,8 @@ function Emoji() {
   const gameInitialisation = (difficulty) => {
     setSelected(new Set());
     setStreak(0);
+    setLives(3);
+    setlastClicked(null);
     setGameStatus("in-progress");
 
     const emojis =
@@ -47,7 +55,6 @@ function Emoji() {
 
   // Randomise the order of the cells (Fisher-Yates shuffle algorithm)
   const shuffleBoard = (emojis) => {
-    console.log(emojis);
     for (let i = emojis.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [emojis[i], emojis[j]] = [emojis[j], emojis[i]];
@@ -67,14 +74,20 @@ function Emoji() {
 
   const [board, setBoard] = useState(() => gameInitialisation(difficulty));
 
+  // Determine whether the cell has been selected before and update states accordingly
   const handleClick = (row, col) => {
     if (gameStatus !== "in-progress") return;
 
     const clickedEmoji = board[row][col];
 
-    // Game over if the same emoji is clicked twice
+    // A life is lost if the same emoji is clicked twice, and game over if all lives are lost
     if (selected.has(clickedEmoji)) {
-      setGameStatus("game-over");
+      if (lives > 1) {
+        setLives(lives - 1);
+        setlastClicked({ row, col });
+      } else {
+        setGameStatus("game-over");
+      }
       return;
     }
 
@@ -82,8 +95,10 @@ function Emoji() {
     updateSelected.add(clickedEmoji);
     setSelected(updateSelected);
     setStreak(streak + 1);
+    setlastClicked(null);
   };
 
+  // Shuffle the board whenever the streak is updated and the user hasn't won the game
   useEffect(() => {
     if (streak === size * size) {
       setGameStatus("game-won");
@@ -117,8 +132,12 @@ function Emoji() {
               className={`cell ${
                 gameStatus === "game-over" && selected.has(value)
                   ? "selected"
-                  : gameStatus !== "in-progress"
+                  : lastClicked?.row === i && lastClicked?.col === j
+                  ? "selected"
+                  : gameStatus === "game-over"
                   ? "stable"
+                  : gameStatus === "game-won"
+                  ? "won"
                   : ""
               }`}
               key={`${i}-${j}`}
@@ -135,7 +154,7 @@ function Emoji() {
         ) : gameStatus === "game-over" ? (
           <h2>Game Over!</h2>
         ) : (
-          ""
+          <h2>Lives: {hearts}</h2>
         )}
         <h3>Streak: {streak}</h3>
         <button

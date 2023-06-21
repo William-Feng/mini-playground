@@ -30,7 +30,7 @@
   font-size: 38px;
 }
 
-.emoji .cell:not(.stable):not(.selected):hover {
+.emoji .cell:not(.stable):not(.selected):not(.won):hover {
   transform: scale(1.15);
 }
 
@@ -42,6 +42,21 @@
 .emoji#dark .cell.selected {
   background-color: grey;
   cursor: not-allowed;
+}
+
+.emoji#light .cell.won,
+.emoji#dark .cell.won {
+  animation: scale 1s infinite alternate;
+  cursor: not-allowed;
+}
+
+@keyframes scale {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
 }
 
 @media screen and (max-height: 845px) {
