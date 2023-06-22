@@ -4,6 +4,7 @@
   margin-top: 1em;
   padding: 15px;
   border-radius: 6px;
+  cursor: not-allowed;
 }
 
 .game2048#light .board {
@@ -22,7 +23,7 @@
   font-weight: bold;
   border-radius: 3px;
   border: none !important;
-  cursor: default;
+  cursor: not-allowed;
 }
 
 .game2048#light .cell {

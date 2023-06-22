@@ -59,7 +59,7 @@
   }
 }
 
-@media screen and (max-height: 845px) {
+@media screen and (max-height: 888px) {
   .background.emoji {
     height: 100%;
   }
@@ -103,7 +103,7 @@
     font-size: 30px;
   }
 
-  @media screen and (max-height: 663px) {
+  @media screen and (max-height: 738px) {
     .background.emoji {
       height: 100%;
     }

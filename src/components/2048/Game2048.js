@@ -9,11 +9,11 @@ function Game2048() {
   const SIZE = 4;
   let prevBoard = [];
   const [score, setScore] = useState(0);
-  const [gameOver, setGameOver] = useState(false);
+  const [gameStatus, setGameStatus] = useState("in-progress");
 
   const gameInitialisation = () => {
     setScore(0);
-    setGameOver(false);
+    setGameStatus(false);
     return initialiseBoard();
   };
 
@@ -191,6 +191,16 @@ function Game2048() {
     return row.filter((num) => num !== "");
   };
 
+  // Game won if a cell has a value of 2048 or more
+  const checkGameWon = () => {
+    for (let i = 0; i < SIZE; i++) {
+      for (let j = 0; j < SIZE; j++) {
+        if (board[i][j] >= 2048) return true;
+      }
+    }
+    return false;
+  };
+
   // Game over if no more moves can be made (results in same board)
   const checkGameOver = () => {
     // Call the shift functions to check, but do not change the original board
@@ -203,7 +213,9 @@ function Game2048() {
       checkSame(leftBoard, rightBoard) &&
       checkSame(rightBoard, upBoard) &&
       checkSame(upBoard, downBoard);
-    if (equal) setGameOver(true);
+    if (equal) {
+      setGameStatus(checkGameWon() ? "game-won" : "game-over");
+    }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -280,7 +292,8 @@ function Game2048() {
         )}
       </div>
       <div className="message">
-        {gameOver && <h2>Game Over!</h2>}
+        {gameStatus === "game-won" && <h2>Well done!</h2>}
+        {gameStatus === "game-over" && <h2>Game Over!</h2>}
         <h3>Score: {score}</h3>
         <button
           className="restart"

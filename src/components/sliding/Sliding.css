@@ -28,13 +28,13 @@
   background-color: grey;
 }
 
-@media screen and (max-height: 716px) {
+@media screen and (max-height: 714px) {
   .background.sliding:not(.hard) {
     height: 100%;
   }
 }
 
-@media screen and (max-height: 845px) {
+@media screen and (max-height: 842px) {
   .background.sliding.hard {
     height: 100%;
   }
