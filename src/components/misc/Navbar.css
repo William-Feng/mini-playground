@@ -50,6 +50,19 @@ h1.heading {
   font-weight: 700;
 }
 
+.info {
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  right: 100px;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+#gameInfo {
+  width: 30em;
+}
+
 .switch {
   position: absolute;
   display: flex;
@@ -62,9 +75,20 @@ h1.heading {
   color: yellow;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 550px) {
   h1.heading {
-    padding-top: 5px;
-    font-size: 32px;
+    padding-top: 0;
+    font-size: 30px;
+  }
+
+  .info {
+    justify-content: center;
+    right: auto;
+    margin-top: 3em;
+    font-size: 1em;
+  }
+
+  #gameInfo {
+    width: 350px;
   }
 }
