@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/home/Home";
 import Wordle from "./components/wordle/Wordle";
@@ -14,7 +14,14 @@ import "./App.css";
 export const ThemeContext = createContext();
 
 function App() {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(
+    () => window.localStorage.getItem("theme") || "light"
+  );
+
+  useEffect(() => {
+    window.localStorage.setItem("theme", theme);
+  }, [theme]);
+
   const toggleTheme = () => {
     setTheme((curr) => (curr === "light" ? "dark" : "light"));
   };
