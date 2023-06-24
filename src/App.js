@@ -57,7 +57,7 @@ function App() {
           element={
             <AppContext.Provider value={{ theme, toggleTheme }}>
               <Home />
-              <Footer />
+              <Footer isHome />
             </AppContext.Provider>
           }
         />
@@ -69,7 +69,7 @@ function App() {
             >
               <Navbar heading="Wordle" />
               <Wordle />
-              <Footer id="noPhone" />
+              <Footer isWordle />
             </AppContext.Provider>
           }
         />

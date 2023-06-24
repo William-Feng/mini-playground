@@ -2,11 +2,12 @@ import React, { useContext } from "react";
 import { AppContext } from "../../App";
 import "./Footer.css";
 
-function Footer({ id }) {
+function Footer({ isHome, isWordle }) {
   const { theme } = useContext(AppContext);
+  const isPhoneView = window.innerWidth < 480;
 
   return (
-    <div className={"footer" + (id ? " " + id : "")} id={theme}>
+    <div className={"footer " + (isWordle ? "wordle" : "")} id={theme}>
       Created by{" "}
       <a
         href="https://williamfeng.com.au/"
@@ -16,7 +17,7 @@ function Footer({ id }) {
       >
         William Feng
       </a>{" "}
-      2022
+      {(!isPhoneView || isHome) && "2022"}
     </div>
   );
 }

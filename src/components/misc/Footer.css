@@ -24,12 +24,8 @@
   color: white;
 }
 
-@media screen and (max-width: 400px) {
-  .footer {
-    right: 8px;
-  }
-
-  .noPhone {
+@media screen and (max-width: 600px) {
+  .footer.wordle {
     display: none;
   }
 }

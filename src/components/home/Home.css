@@ -86,8 +86,7 @@
   .games {
     grid-template-columns: repeat(auto-fit, 350px);
     grid-gap: 25px;
-    padding: 1.5em 0;
-    margin-bottom: 10px;
+    padding: 1.5em 0 2em;
   }
 
   .game {
