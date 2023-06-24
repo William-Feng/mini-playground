@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { easyColours, mediumColours, hardColours } from "./MemoryColours";
-import { ThemeContext } from "../../App";
+import { AppContext } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import "./Memory.css";
 
 function Memory() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(AppContext);
 
   const COLOUR_HIDDEN = "hidden";
   const CELL_STABLE = "stable";

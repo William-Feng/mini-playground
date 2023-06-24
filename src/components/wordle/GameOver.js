@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "./Wordle";
+import { WordleContext } from "./Wordle";
 
 function GameOver() {
-  const { handleRestart, gameOver, secret, curr } = useContext(AppContext);
+  const { handleRestart, gameOver, secret, curr } = useContext(WordleContext);
   const [showComponent, setShowComponent] = useState(false);
 
   // Only show this component after all 5 letters in the final attempt have been flipped

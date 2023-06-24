@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
-import { ThemeContext } from "../../App";
+import { AppContext } from "../../App";
 import "./Game2048.css";
 
 function Game2048() {
-  const { theme } = useContext(ThemeContext);
+  const { theme, setGameStat } = useContext(AppContext);
 
   const SIZE = 4;
   let prevBoard = [];
@@ -234,6 +234,7 @@ function Game2048() {
     checkGameOver();
   };
 
+  // Add event listener for arrow keys
   useEffect(() => {
     document.addEventListener("keydown", shiftBoard);
     return () => {
@@ -241,6 +242,7 @@ function Game2048() {
     };
   }, [shiftBoard]);
 
+  // Allow swiping on mobile
   const handleSwipe = useSwipeable({
     onSwipedLeft: () => {
       prevBoard = cloneBoard(board);
@@ -279,6 +281,40 @@ function Game2048() {
       return "cell num4096";
     }
   };
+
+  // On component mount, load any saved state from local storage
+  useEffect(() => {
+    const savedBoard = localStorage.getItem("2048-board");
+    const savedScore = localStorage.getItem("2048-currentScore");
+    const savedMaxScore = localStorage.getItem("2048-maxScore");
+    const savedGameStatus = localStorage.getItem("2048-gameStatus");
+
+    if (savedBoard && savedScore && savedMaxScore && savedGameStatus) {
+      setBoard(JSON.parse(savedBoard));
+      setScore(parseInt(savedScore));
+      setGameStatus(savedGameStatus);
+    }
+  }, []);
+
+  // Save the state of the game to local storage
+  useEffect(() => {
+    localStorage.setItem("2048-board", JSON.stringify(board));
+    localStorage.setItem("2048-currentScore", score.toString());
+    localStorage.setItem("2048-gameStatus", gameStatus);
+
+    const savedMaxScore = localStorage.getItem("2048-maxScore");
+    if (!savedMaxScore || score > parseInt(savedMaxScore)) {
+      localStorage.setItem("2048-maxScore", score.toString());
+    }
+
+    setGameStat((prevStats) => ({
+      ...prevStats,
+      2048: {
+        ...prevStats["2048"],
+        "Maximum Score": Math.max(prevStats["2048"]["Maximum Score"], score),
+      },
+    }));
+  }, [board, score, gameStatus, setGameStat]);
 
   return (
     <div className="background game2048" id={theme}>

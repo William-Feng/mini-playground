@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect } from "react";
-import { AppContext } from "./Wordle";
+import { WordleContext } from "./Wordle";
 import Key from "./Key";
 
 function Keyboard() {
@@ -11,7 +11,7 @@ function Keyboard() {
     correctLetters,
     partialLetters,
     incorrectLetters,
-  } = useContext(AppContext);
+  } = useContext(WordleContext);
 
   const row1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const row2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];

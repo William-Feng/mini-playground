@@ -1,20 +1,37 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { ThemeContext } from "../../App";
+import { AppContext } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import "./Sliding.css";
 
 function Sliding() {
-  const { theme } = useContext(ThemeContext);
+  const { theme, setGameStat } = useContext(AppContext);
 
-  const [difficulty, setDifficulty] = useState("easy");
+  const savedDifficulty = localStorage.getItem("sliding-difficulty") || "easy";
+  const [difficulty, setDifficulty] = useState(savedDifficulty);
   const [board, setBoard] = useState([]);
   const [moves, setMoves] = useState(0);
   const [solved, setSolved] = useState(false);
 
   const size = useMemo(() => (difficulty === "easy" ? 3 : 4), [difficulty]);
 
+  // After the difficulty is set, load any saved state from local storage and initialise the game
   useEffect(() => {
-    gameInitialisation();
+    const savedBoard = localStorage.getItem("sliding-board");
+    const savedMoves = localStorage.getItem("sliding-currentMoves");
+    const savedSolved = localStorage.getItem("sliding-solved");
+
+    if (
+      savedBoard &&
+      savedMoves &&
+      savedSolved &&
+      JSON.parse(savedBoard).length === size
+    ) {
+      setBoard(JSON.parse(savedBoard));
+      setMoves(parseInt(savedMoves));
+      setSolved(savedSolved === "true");
+    } else {
+      gameInitialisation();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -173,12 +190,48 @@ function Sliding() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
 
+  // Add event listener for arrow keys
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, [handleKeyPress]);
+
+  // Save the state of the game to local storage
+  useEffect(() => {
+    localStorage.setItem("sliding-board", JSON.stringify(board));
+    localStorage.setItem("sliding-difficulty", difficulty);
+    localStorage.setItem("sliding-currentMoves", moves.toString());
+    localStorage.setItem("sliding-solved", solved.toString());
+  }, [board, difficulty, moves, solved]);
+
+  // Only update the minimum moves if the game is solved
+  useEffect(() => {
+    if (solved) {
+      const savedMinMoves = localStorage.getItem("sliding-minMoves");
+      if (savedMinMoves === "N/A" || moves < parseInt(savedMinMoves)) {
+        localStorage.setItem("sliding-minMoves", moves.toString());
+      }
+
+      setGameStat((prevStats) => {
+        const prevMinMoves =
+          prevStats["Sliding Puzzle"]["Minimum Moves"] === "N/A"
+            ? Infinity
+            : prevStats["Sliding Puzzle"]["Minimum Moves"];
+
+        return {
+          ...prevStats,
+          "Sliding Puzzle": {
+            ...prevStats["Sliding Puzzle"],
+            "Minimum Moves": Math.min(prevMinMoves, moves),
+          },
+        };
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [solved, setGameStat]);
 
   return (
     <div

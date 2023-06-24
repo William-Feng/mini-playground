@@ -11,7 +11,7 @@ import Sliding from "./components/sliding/Sliding";
 import Emoji from "./components/emoji/Emoji";
 import "./App.css";
 
-export const ThemeContext = createContext();
+export const AppContext = createContext();
 
 function App() {
   const [theme, setTheme] = useState(
@@ -26,76 +26,111 @@ function App() {
     setTheme((curr) => (curr === "light" ? "dark" : "light"));
   };
 
+  const [gameStat, setGameStat] = useState({
+    Wordle: {
+      guessed: localStorage.getItem("wordle-guessed") || 0,
+      failed: localStorage.getItem("wordle-failed") || 0,
+    },
+    "Tic Tac Toe": {
+      lost: localStorage.getItem("tictactoe-lost") || 0,
+      draw: localStorage.getItem("tictactoe-draw") || 0,
+    },
+    "Colour Matching": {
+      minTurns: localStorage.getItem("colour-minTurns") || 0,
+    },
+    "Emoji Streak": {
+      maxStreak: localStorage.getItem("emoji-maxStreak") || 0,
+    },
+    "Sliding Puzzle": {
+      "Minimum Moves": localStorage.getItem("sliding-minMoves") || "N/A",
+    },
+    2048: {
+      "Maximum Score": localStorage.getItem("2048-maxScore") || 0,
+    },
+  });
+
   return (
     <>
       <Routes>
         <Route
           path="/"
           element={
-            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <AppContext.Provider value={{ theme, toggleTheme }}>
               <Home />
               <Footer />
-            </ThemeContext.Provider>
+            </AppContext.Provider>
           }
         />
         <Route
           path="/wordle"
           element={
-            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <AppContext.Provider
+              value={{ theme, toggleTheme, gameStat, setGameStat }}
+            >
               <Navbar heading="Wordle" />
               <Wordle />
               <Footer id="noPhone" />
-            </ThemeContext.Provider>
+            </AppContext.Provider>
           }
         />
         <Route
           path="/tic-tac-toe"
           element={
-            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <AppContext.Provider
+              value={{ theme, toggleTheme, gameStat, setGameStat }}
+            >
               <Navbar heading="Tic Tac Toe" />
               <TicTacToe />
               <Footer />
-            </ThemeContext.Provider>
+            </AppContext.Provider>
           }
         />
         <Route
           path="/memory"
           element={
-            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <AppContext.Provider
+              value={{ theme, toggleTheme, gameStat, setGameStat }}
+            >
               <Navbar heading="Colour Matching" />
               <Memory />
               <Footer />
-            </ThemeContext.Provider>
+            </AppContext.Provider>
           }
         />
         <Route
           path="/emoji"
           element={
-            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <AppContext.Provider
+              value={{ theme, toggleTheme, gameStat, setGameStat }}
+            >
               <Navbar heading="Emoji Streak" />
               <Emoji />
               <Footer />
-            </ThemeContext.Provider>
+            </AppContext.Provider>
           }
         />
         <Route
           path="/sliding"
           element={
-            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <AppContext.Provider
+              value={{ theme, toggleTheme, gameStat, setGameStat }}
+            >
               <Navbar heading="Sliding Puzzle" />
               <Sliding />
               <Footer />
-            </ThemeContext.Provider>
+            </AppContext.Provider>
           }
         />
         <Route
           path="/2048"
           element={
-            <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <AppContext.Provider
+              value={{ theme, toggleTheme, gameStat, setGameStat }}
+            >
               <Navbar heading="2048" />
               <Game2048 />
               <Footer />
-            </ThemeContext.Provider>
+            </AppContext.Provider>
           }
         />
       </Routes>

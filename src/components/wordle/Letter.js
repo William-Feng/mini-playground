@@ -1,16 +1,15 @@
 import React, { useContext, useEffect } from "react";
-import { AppContext } from "./Wordle";
+import { WordleContext } from "./Wordle";
 
 function Letter({ attemptNum, letterPos }) {
   const {
     grid,
     secret,
     curr,
-    MAX_LETTERS,
     setCorrectLetters,
     setPartialLetters,
     setIncorrectLetters,
-  } = useContext(AppContext);
+  } = useContext(WordleContext);
   const letter = grid[attemptNum][letterPos];
 
   const correct = secret[letterPos] === letter;

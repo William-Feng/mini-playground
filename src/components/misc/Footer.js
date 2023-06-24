@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { ThemeContext } from "../../App";
+import { AppContext } from "../../App";
 import "./Footer.css";
 
 function Footer({ id }) {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(AppContext);
 
   return (
     <div className={"footer" + (id ? " " + id : "")} id={theme}>

@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ThemeContext } from "../../App";
+import { AppContext } from "../../App";
 import "./TicTacToe.css";
 import ModeTab from "../misc/ModeTab";
 
 function TicTacToe() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(AppContext);
 
   const SIZE = 9;
   const [numPlayers, setNumPlayers] = useState("1 player");

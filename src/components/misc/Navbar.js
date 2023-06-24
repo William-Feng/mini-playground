@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ThemeContext } from "../../App";
+import { AppContext } from "../../App";
 import { Link } from "react-router-dom";
 import { BsInfoCircle } from "react-icons/bs";
 import { FaMoon, FaSun } from "react-icons/fa";
@@ -9,7 +9,7 @@ import ReactSwitch from "react-switch";
 import "./Navbar.css";
 
 function Navbar({ heading }) {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme, toggleTheme, gameStat } = useContext(AppContext);
 
   const gameDescriptions = {
     Wordle:
@@ -19,10 +19,17 @@ function Navbar({ heading }) {
     "Colour Matching":
       "Colour Matching involves discovering all the pairs of colours on the board in the fewest number of moves. However, only two tiles are revealed at once, so try to remember the position of every colour.",
     "Emoji Streak":
-      "Emoji Streak is a memory game where you need to select all the unique emojis on the board. But beware, the board will shuffle after each selection, so try to maximise your streak before your lives run out.",
+      "Emoji Streak is a memory game where you need to select all the unique emojis on the board. But beware, the board will shuffle after each selection, so try to extend your streak before your lives run out.",
     "Sliding Puzzle":
       "Sliding Puzzle involves arranging the tiles into ascending order. This is much harder than it seems as the empty tile can only be swapped with an adjacent cell, and the challenge is to move it into the bottom-right corner.",
-    2048: "2048 involves combining tiles (swipe or use the arrow keys) with the same number to create a tile of double the value. The goal is to create a tile with the value 2048 and maximise your score.",
+    2048: "2048 involves combining tiles (swipe or use the arrow keys) with the same number to create a tile of double the value. The goal is to create a tile with the value 2048 and obtain the highest possible score.",
+  };
+
+  const gameStats = (game) => {
+    const stats = gameStat[game];
+    return Object.entries(stats).map(([statName, statValue]) => {
+      return `${statName}: ${statValue}`;
+    });
   };
 
   return (
@@ -34,14 +41,15 @@ function Navbar({ heading }) {
           </Link>
         </div>
         <h1 className="heading">{heading}</h1>
-        <div
-          className="info"
-          data-tooltip-id="gameInfo"
-          data-tooltip-content={gameDescriptions[heading]}
-        >
+        <div className="info" data-tooltip-id="gameInfo">
           <BsInfoCircle />
         </div>
-        <Tooltip id="gameInfo" />
+        <Tooltip id="gameInfo">
+          <p>{gameDescriptions[heading]}</p>
+          {gameStats(heading).map((stat, index) => (
+            <h4 key={index}>{stat}</h4>
+          ))}
+        </Tooltip>
         <div className="switch">
           <ReactSwitch
             onChange={toggleTheme}

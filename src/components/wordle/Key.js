@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { AppContext } from "./Wordle";
+import { WordleContext } from "./Wordle";
 import { MdOutlineBackspace } from "react-icons/md";
 
 function Key({ val, special, correct, partial, incorrect }) {
-  const { onLetter, onEnter, onDelete } = useContext(AppContext);
+  const { onLetter, onEnter, onDelete } = useContext(WordleContext);
 
   const updateGrid = () => {
     if (val === "ENTER") {

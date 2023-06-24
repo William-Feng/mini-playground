@@ -1,15 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import "./Wordle.css";
-import { ThemeContext } from "../../App";
+import { AppContext } from "../../App";
 import GameOver from "./GameOver";
 import Grid from "./Grid";
 import Keyboard from "./Keyboard";
 import { generateWordbank } from "./Words";
 
-export const AppContext = createContext();
+export const WordleContext = createContext();
 
 function Wordle() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(AppContext);
   const MAX_ATTEMPTS = 6;
   const MAX_LETTERS = 5;
 
@@ -85,7 +85,7 @@ function Wordle() {
 
   return (
     <div className="background wordle" id={theme}>
-      <AppContext.Provider
+      <WordleContext.Provider
         value={{
           grid,
           setGrid,
@@ -111,7 +111,7 @@ function Wordle() {
           <Grid />
         </div>
         {gameOver.gameOver ? <GameOver /> : <Keyboard />}
-      </AppContext.Provider>
+      </WordleContext.Provider>
     </div>
   );
 }

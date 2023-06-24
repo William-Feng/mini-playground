@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { easyEmojis, hardEmojis } from "./EmojiBank";
-import { ThemeContext } from "../../App";
+import { AppContext } from "../../App";
 import "./Emoji.css";
 import ModeTab from "../misc/ModeTab";
 
 function Emoji() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(AppContext);
 
   const [difficulty, setDifficulty] = useState("easy");
   const [selected, setSelected] = useState(new Set());

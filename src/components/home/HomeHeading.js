@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import "./HomeHeading.css";
 import { FaMoon, FaSun } from "react-icons/fa";
 import ReactSwitch from "react-switch";
-import { ThemeContext } from "../../App";
+import { AppContext } from "../../App";
 
 function HomeHeading() {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { theme, toggleTheme } = useContext(AppContext);
 
   return (
     <div className="banner">

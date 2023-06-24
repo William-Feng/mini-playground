@@ -14,10 +14,10 @@ import SlidingDark from "./images/sliding-dark.png";
 import Game2048Light from "./images/2048-light.png";
 import Game2048Dark from "./images/2048-dark.png";
 import HomeHeading from "./HomeHeading";
-import { ThemeContext } from "../../App";
+import { AppContext } from "../../App";
 
 function Home() {
-  const { theme } = useContext(ThemeContext);
+  const { theme } = useContext(AppContext);
 
   return (
     <div className="home" id={theme}>
