@@ -5,19 +5,24 @@ import ModeTab from "../misc/ModeTab";
 import "./Memory.css";
 
 function Memory() {
-  const { theme } = useContext(AppContext);
+  const { theme, setGameStat } = useContext(AppContext);
 
   const COLOUR_HIDDEN = "hidden";
   const CELL_STABLE = "stable";
-  const [difficulty, setDifficulty] = useState("easy");
+
+  const [difficulty, setDifficulty] = useState(
+    localStorage.getItem("colour-difficulty") || "easy"
+  );
   const [board, setBoard] = useState([]);
   const [previous, setPrevious] = useState(null);
   const [lockBoard, setLockBoard] = useState(false);
   const [turns, setTurns] = useState(0);
   const [numMatching, setNumMatching] = useState(0);
+  const [solved, setSolved] = useState(false);
 
   useEffect(() => {
     setBoard(gameInitialisation(difficulty));
+    localStorage.setItem("colour-difficulty", difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -31,6 +36,7 @@ function Memory() {
     setLockBoard(false);
     setTurns(0);
     setNumMatching(0);
+    setSolved(false);
 
     let colours;
 
@@ -129,6 +135,36 @@ function Memory() {
     }
   };
 
+  useEffect(() => {
+    setSolved(board.length > 0 && numMatching === board.length / 2);
+  }, [numMatching, board]);
+
+  // Only update the minimum turns in local storage if the game is solved
+  useEffect(() => {
+    if (solved) {
+      const savedMinTurns = localStorage.getItem("colour-minTurns");
+      if (!savedMinTurns || turns < parseInt(savedMinTurns)) {
+        localStorage.setItem("colour-minTurns", turns.toString());
+      }
+
+      setGameStat((prevStats) => {
+        const prevMinTurns =
+          prevStats["Colour Matching"]["Minimum Turns"] === "N/A"
+            ? Infinity
+            : prevStats["Colour Matching"]["Minimum Turns"];
+
+        return {
+          ...prevStats,
+          "Colour Matching": {
+            ...prevStats["Colour Matching"],
+            "Minimum Turns": Math.min(prevMinTurns, turns),
+          },
+        };
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [solved, setGameStat]);
+
   return (
     <div
       className={
@@ -160,7 +196,7 @@ function Memory() {
         ))}
       </div>
       <div className="message">
-        {numMatching === board.length / 2 && <h2>Well done!</h2>}
+        {solved && <h2>Well Done!</h2>}
         <h3>Turns: {turns}</h3>
         <button
           className="restart"

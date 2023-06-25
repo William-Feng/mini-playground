@@ -28,18 +28,18 @@ function App() {
 
   const [gameStat, setGameStat] = useState({
     Wordle: {
-      guessed: localStorage.getItem("wordle-guessed") || 0,
-      failed: localStorage.getItem("wordle-failed") || 0,
+      "Words Guessed": localStorage.getItem("wordle-guessed") || 0,
+      "Words Missed": localStorage.getItem("wordle-missed") || 0,
     },
     "Tic Tac Toe": {
-      lost: localStorage.getItem("tictactoe-lost") || 0,
-      draw: localStorage.getItem("tictactoe-draw") || 0,
+      "Rounds Drew": localStorage.getItem("tictactoe-drew") || 0,
+      "Rounds Lost": localStorage.getItem("tictactoe-lost") || 0,
     },
     "Colour Matching": {
-      minTurns: localStorage.getItem("colour-minTurns") || 0,
+      "Minimum Turns": localStorage.getItem("colour-minTurns") || "N/A",
     },
     "Emoji Streak": {
-      maxStreak: localStorage.getItem("emoji-maxStreak") || 0,
+      "Maximum Streak": localStorage.getItem("emoji-maxStreak") || 0,
     },
     "Sliding Puzzle": {
       "Minimum Moves": localStorage.getItem("sliding-minMoves") || "N/A",

@@ -1,19 +1,25 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { easyEmojis, hardEmojis } from "./EmojiBank";
 import { AppContext } from "../../App";
 import "./Emoji.css";
 import ModeTab from "../misc/ModeTab";
 
 function Emoji() {
-  const { theme } = useContext(AppContext);
+  const { theme, setGameStat } = useContext(AppContext);
 
-  const [difficulty, setDifficulty] = useState("easy");
+  const [difficulty, setDifficulty] = useState(
+    localStorage.getItem("emoji-difficulty") || "easy"
+  );
   const [selected, setSelected] = useState(new Set());
   const [streak, setStreak] = useState(0);
   const [lives, setLives] = useState(3);
   const [lastClicked, setlastClicked] = useState(null);
   const [gameStatus, setGameStatus] = useState("in-progress");
-  const size = difficulty === "easy" ? 4 : difficulty === "medium" ? 5 : 6;
+
+  const size = useMemo(
+    () => (difficulty === "easy" ? 4 : difficulty === "medium" ? 5 : 6),
+    [difficulty]
+  );
 
   const hearts = Array.from({ length: lives }, (_, index) => (
     <span key={index}>❤️</span>
@@ -21,6 +27,7 @@ function Emoji() {
 
   useEffect(() => {
     setBoard(gameInitialisation(difficulty));
+    localStorage.setItem("emoji-difficulty", difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -108,6 +115,25 @@ function Emoji() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [streak]);
 
+  // Save the maximum streak to local storage
+  useEffect(() => {
+    const savedMaxStreak = localStorage.getItem("emoji-maxStreak");
+    if (!savedMaxStreak || streak > parseInt(savedMaxStreak)) {
+      localStorage.setItem("emoji-maxStreak", streak.toString());
+    }
+
+    setGameStat((prevStats) => ({
+      ...prevStats,
+      "Emoji Streak": {
+        ...prevStats["Emoji Streak"],
+        "Maximum Streak": Math.max(
+          prevStats["Emoji Streak"]["Maximum Streak"],
+          streak
+        ),
+      },
+    }));
+  }, [difficulty, streak, setGameStat]);
+
   return (
     <div
       className={
@@ -150,7 +176,7 @@ function Emoji() {
       </div>
       <div className="message">
         {gameStatus === "game-won" ? (
-          <h2>Well done!</h2>
+          <h2>Well Done!</h2>
         ) : gameStatus === "game-over" ? (
           <h2>Game Over!</h2>
         ) : (

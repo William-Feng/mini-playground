@@ -328,7 +328,7 @@ function Game2048() {
         )}
       </div>
       <div className="message">
-        {gameStatus === "game-won" && <h2>Well done!</h2>}
+        {gameStatus === "game-won" && <h2>Well Done!</h2>}
         {gameStatus === "game-over" && <h2>Game Over!</h2>}
         <h3>Score: {score}</h3>
         <button

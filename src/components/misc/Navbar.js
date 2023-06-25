@@ -47,7 +47,7 @@ function Navbar({ heading }) {
         <Tooltip id="gameInfo">
           <p>{gameDescriptions[heading]}</p>
           {gameStats(heading).map((stat, index) => (
-            <h4 key={index}>{stat}</h4>
+            <h5 key={index}>{stat}</h5>
           ))}
         </Tooltip>
         <div className="switch">

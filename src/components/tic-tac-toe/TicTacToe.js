@@ -4,10 +4,12 @@ import "./TicTacToe.css";
 import ModeTab from "../misc/ModeTab";
 
 function TicTacToe() {
-  const { theme } = useContext(AppContext);
+  const { theme, setGameStat } = useContext(AppContext);
 
   const SIZE = 9;
-  const [numPlayers, setNumPlayers] = useState("1 player");
+  const [numPlayers, setNumPlayers] = useState(
+    localStorage.getItem("tictactoe-numPlayers") || "1 player"
+  );
   const [board, setBoard] = useState(Array(SIZE).fill(null));
   const [initialPlayer, setInitialPlayer] = useState("X");
   const [turn, setTurn] = useState("X");
@@ -29,6 +31,7 @@ function TicTacToe() {
 
   useEffect(() => {
     handleRestart();
+    localStorage.setItem("tictactoe-numPlayers", numPlayers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numPlayers]);
 
@@ -70,7 +73,7 @@ function TicTacToe() {
     return true;
   };
 
-  // Reset the board, turn, initial player and winner if the restart button is selected
+  // Reset the board and all variables for a new game
   const handleRestart = () => {
     setBoard(Array(SIZE).fill(null));
     setTurn(initialPlayer);
@@ -169,6 +172,31 @@ function TicTacToe() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
+
+  // Update the number of games drew/lost
+  useEffect(() => {
+    const incrementGameStat = (statLabel) => {
+      setGameStat((prevStats) => ({
+        ...prevStats,
+        "Tic Tac Toe": {
+          ...prevStats["Tic Tac Toe"],
+          [statLabel]: parseInt(prevStats["Tic Tac Toe"][statLabel]) + 1,
+        },
+      }));
+    };
+
+    const incrementStatAndStore = (statLabel, item) => {
+      let savedStat = parseInt(localStorage.getItem(item)) || 0;
+      localStorage.setItem(item, (savedStat + 1).toString());
+      incrementGameStat(statLabel);
+    };
+
+    if (winner === "draw") {
+      incrementStatAndStore("Rounds Drew", "tictactoe-drew");
+    } else if (winner === "O") {
+      incrementStatAndStore("Rounds Lost", "tictactoe-lost");
+    }
+  }, [winner, setGameStat]);
 
   return (
     <div className="background tic-tac-toe" id={theme}>

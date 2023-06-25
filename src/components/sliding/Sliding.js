@@ -6,8 +6,9 @@ import "./Sliding.css";
 function Sliding() {
   const { theme, setGameStat } = useContext(AppContext);
 
-  const savedDifficulty = localStorage.getItem("sliding-difficulty") || "easy";
-  const [difficulty, setDifficulty] = useState(savedDifficulty);
+  const [difficulty, setDifficulty] = useState(
+    localStorage.getItem("sliding-difficulty") || "easy"
+  );
   const [board, setBoard] = useState([]);
   const [moves, setMoves] = useState(0);
   const [solved, setSolved] = useState(false);
@@ -32,6 +33,8 @@ function Sliding() {
     } else {
       gameInitialisation();
     }
+
+    localStorage.setItem("sliding-difficulty", difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -201,16 +204,15 @@ function Sliding() {
   // Save the state of the game to local storage
   useEffect(() => {
     localStorage.setItem("sliding-board", JSON.stringify(board));
-    localStorage.setItem("sliding-difficulty", difficulty);
     localStorage.setItem("sliding-currentMoves", moves.toString());
     localStorage.setItem("sliding-solved", solved.toString());
-  }, [board, difficulty, moves, solved]);
+  }, [board, moves, solved]);
 
-  // Only update the minimum moves if the game is solved
+  // Only update the minimum moves in local storage if the game is solved
   useEffect(() => {
     if (solved) {
       const savedMinMoves = localStorage.getItem("sliding-minMoves");
-      if (savedMinMoves === "N/A" || moves < parseInt(savedMinMoves)) {
+      if (!savedMinMoves || moves < parseInt(savedMinMoves)) {
         localStorage.setItem("sliding-minMoves", moves.toString());
       }
 
@@ -229,7 +231,6 @@ function Sliding() {
         };
       });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [solved, setGameStat]);
 
@@ -259,7 +260,7 @@ function Sliding() {
         )}
       </div>
       <div className="message">
-        {solved && <h2>Well done!</h2>}
+        {solved && <h2>Well Done!</h2>}
         <h3>Moves: {moves}</h3>
         <button className="restart" onClick={gameInitialisation}>
           Restart

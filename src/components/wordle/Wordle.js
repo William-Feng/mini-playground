@@ -9,10 +9,10 @@ import { generateWordbank } from "./Words";
 export const WordleContext = createContext();
 
 function Wordle() {
-  const { theme } = useContext(AppContext);
+  const { theme, setGameStat } = useContext(AppContext);
+
   const MAX_ATTEMPTS = 6;
   const MAX_LETTERS = 5;
-
   const [grid, setGrid] = useState(
     [...Array(MAX_ATTEMPTS)].map(() => Array(MAX_LETTERS).fill(""))
   );
@@ -26,7 +26,47 @@ function Wordle() {
     gameOver: false,
     guessedWord: false,
   });
+  const [statsUpdated, setStatsUpdated] = useState(false);
 
+  // Load any saved state from local storage and initialise the game
+  useEffect(() => {
+    const savedWordbank = localStorage.getItem("wordle-wordbank");
+    const savedSecret = localStorage.getItem("wordle-secret");
+    const savedGrid = localStorage.getItem("wordle-grid");
+    const savedCurr = localStorage.getItem("wordle-curr");
+    const savedCorrectLetters = localStorage.getItem("wordle-correctLetters");
+    const savedPartialLetters = localStorage.getItem("wordle-partialLetters");
+    const savedIncorrectLetters = localStorage.getItem(
+      "wordle-incorrectLetters"
+    );
+    const savedGameOver = localStorage.getItem("wordle-gameOver");
+    const statsUpdated = localStorage.getItem("wordle-statsUpdated");
+
+    if (
+      savedWordbank &&
+      savedSecret &&
+      savedGrid &&
+      savedCurr &&
+      savedCorrectLetters &&
+      savedPartialLetters &&
+      savedIncorrectLetters &&
+      savedGameOver
+    ) {
+      setWordbank(new Set(JSON.parse(savedWordbank)));
+      setSecret(savedSecret);
+      setGrid(JSON.parse(savedGrid));
+      setCurr(JSON.parse(savedCurr));
+      setCorrectLetters(JSON.parse(savedCorrectLetters));
+      setPartialLetters(JSON.parse(savedPartialLetters));
+      setIncorrectLetters(JSON.parse(savedIncorrectLetters));
+      setGameOver(JSON.parse(savedGameOver));
+      setStatsUpdated(statsUpdated === "true");
+    } else {
+      handleRestart();
+    }
+  }, []);
+
+  // Reset the grid and all variables for a new game
   const handleRestart = () => {
     generateWordbank().then((words) => {
       setWordbank(words.wordbank);
@@ -38,12 +78,10 @@ function Wordle() {
     setPartialLetters([]);
     setIncorrectLetters([]);
     setGameOver({ gameOver: false, guessedWord: false });
+    setStatsUpdated(false);
   };
 
-  useEffect(() => {
-    handleRestart();
-  }, []);
-
+  // Include the letter onto the grid
   const onLetter = (letter) => {
     if (curr.letterPos >= MAX_LETTERS) return;
     const newGrid = [...grid];
@@ -52,6 +90,7 @@ function Wordle() {
     setCurr({ ...curr, letterPos: curr.letterPos + 1 });
   };
 
+  // Check if the word is correct and update the board/colours and game over status
   const onEnter = () => {
     if (curr.letterPos < MAX_LETTERS) return;
 
@@ -75,6 +114,7 @@ function Wordle() {
     }
   };
 
+  // Remove the letter from the grid
   const onDelete = () => {
     if (curr.letterPos === 0) return;
     const newGrid = [...grid];
@@ -82,6 +122,66 @@ function Wordle() {
     setGrid(newGrid);
     setCurr({ ...curr, letterPos: curr.letterPos - 1 });
   };
+
+  // Save the state of the game to local storage
+  useEffect(() => {
+    localStorage.setItem("wordle-wordbank", JSON.stringify([...wordbank]));
+    localStorage.setItem("wordle-secret", secret);
+    localStorage.setItem("wordle-grid", JSON.stringify(grid));
+    localStorage.setItem("wordle-curr", JSON.stringify(curr));
+    localStorage.setItem(
+      "wordle-correctLetters",
+      JSON.stringify(correctLetters)
+    );
+    localStorage.setItem(
+      "wordle-partialLetters",
+      JSON.stringify(partialLetters)
+    );
+    localStorage.setItem(
+      "wordle-incorrectLetters",
+      JSON.stringify(incorrectLetters)
+    );
+    localStorage.setItem("wordle-gameOver", JSON.stringify(gameOver));
+    localStorage.setItem("wordle-statsUpdated", statsUpdated.toString());
+  }, [
+    secret,
+    wordbank,
+    grid,
+    curr,
+    correctLetters,
+    partialLetters,
+    incorrectLetters,
+    gameOver,
+    statsUpdated,
+  ]);
+
+  // Update the number of words guessed/missed only once per game
+  useEffect(() => {
+    const incrementGameStat = (statLabel) => {
+      setGameStat((prevStats) => ({
+        ...prevStats,
+        Wordle: {
+          ...prevStats["Wordle"],
+          [statLabel]: parseInt(prevStats["Wordle"][statLabel]) + 1,
+        },
+      }));
+    };
+
+    const incrementStatAndStore = (statLabel, item) => {
+      let savedStat = parseInt(localStorage.getItem(item)) || 0;
+      localStorage.setItem(item, (savedStat + 1).toString());
+      incrementGameStat(statLabel);
+    };
+
+    if (gameOver.gameOver && !statsUpdated) {
+      setStatsUpdated(true);
+      if (gameOver.guessedWord) {
+        incrementStatAndStore("Words Guessed", "wordle-guessed");
+      } else {
+        incrementStatAndStore("Words Missed", "wordle-missed");
+      }
+    }
+  }, [gameOver, statsUpdated, setGameStat]);
 
   return (
     <div className="background wordle" id={theme}>

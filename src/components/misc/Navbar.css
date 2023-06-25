@@ -61,6 +61,11 @@ h1.heading {
 
 #gameInfo {
   width: 30em;
+  z-index: 1;
+}
+
+#gameInfo p {
+  font-style: italic;
 }
 
 .switch {
