@@ -6,6 +6,7 @@ import { FaMoon, FaSun } from "react-icons/fa";
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { Tooltip } from "react-tooltip";
 import ReactSwitch from "react-switch";
+import { PieChart as RechartsPieChart, Pie, Cell, Legend } from "recharts";
 import "./Navbar.css";
 
 function Navbar({ heading }) {
@@ -32,6 +33,39 @@ function Navbar({ heading }) {
     });
   };
 
+  const wordleData = [
+    {
+      title: "1 Attempt",
+      value: parseInt(localStorage.getItem("wordle-1attempts")) || 0,
+      color: "#fb8072",
+    },
+    {
+      title: "2 Attempts",
+      value: parseInt(localStorage.getItem("wordle-2attempts")) || 0,
+      color: "#ffffb3",
+    },
+    {
+      title: "3 Attempts",
+      value: parseInt(localStorage.getItem("wordle-3attempts")) || 0,
+      color: "#bebada",
+    },
+    {
+      title: "4 Attempts",
+      value: parseInt(localStorage.getItem("wordle-4attempts")) || 0,
+      color: "#b3de69",
+    },
+    {
+      title: "5 Attempts",
+      value: parseInt(localStorage.getItem("wordle-5attempts")) || 0,
+      color: "#fdb462",
+    },
+    {
+      title: "6 Attempts",
+      value: parseInt(localStorage.getItem("wordle-6attempts")) || 0,
+      color: "#80b1d3",
+    },
+  ].filter((data) => data.value !== 0);
+
   return (
     <div className="theme" id={theme}>
       <div className="navbar">
@@ -44,11 +78,32 @@ function Navbar({ heading }) {
         <div className="info" data-tooltip-id="gameInfo">
           <BsInfoCircle />
         </div>
-        <Tooltip id="gameInfo">
+        <Tooltip id="gameInfo" clickable closeOnEsc>
           <p>{gameDescriptions[heading]}</p>
-          {gameStats(heading).map((stat, index) => (
-            <h5 key={index}>{stat}</h5>
-          ))}
+          {gameStats(heading).map((stat, index) => {
+            return <h5 key={index}>{stat}</h5>;
+          })}
+          {heading === "Wordle" && wordleData.length > 0 && (
+            <div className="container">
+              <RechartsPieChart width={380} height={250}>
+                <Pie
+                  data={wordleData}
+                  dataKey="value"
+                  nameKey="title"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={60}
+                  fill="#8884d8"
+                  label
+                >
+                  {wordleData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Legend />
+              </RechartsPieChart>
+            </div>
+          )}
         </Tooltip>
         <div className="switch">
           <ReactSwitch

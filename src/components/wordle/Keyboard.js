@@ -72,7 +72,7 @@ function Keyboard() {
         })}
       </div>
       <div className="row">
-        <Key val={"ENTER"} special />
+        <Key val={"ENTER"} enter />
         {row3.map((value, i) => {
           return (
             <Key
@@ -84,7 +84,7 @@ function Keyboard() {
             />
           );
         })}
-        <Key val={"DELETE"} special />
+        <Key val={"BACKSPACE"} backspace />
       </div>
     </div>
   );

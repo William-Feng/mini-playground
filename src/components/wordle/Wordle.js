@@ -173,10 +173,20 @@ function Wordle() {
       incrementGameStat(statLabel);
     };
 
+    const incrementAttemptAndStore = (attempts) => {
+      let savedAttemptCount =
+        parseInt(localStorage.getItem(`wordle-${attempts}attempts`)) || 0;
+      localStorage.setItem(
+        `wordle-${attempts}attempts`,
+        (savedAttemptCount + 1).toString()
+      );
+    };
+
     if (gameOver.gameOver && !statsUpdated) {
       setStatsUpdated(true);
       if (gameOver.guessedWord) {
         incrementStatAndStore("Words Guessed", "wordle-guessed");
+        incrementAttemptAndStore(curr.attempt);
       } else {
         incrementStatAndStore("Words Missed", "wordle-missed");
       }

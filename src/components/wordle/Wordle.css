@@ -98,14 +98,13 @@
   background-color: #808384;
   -webkit-tap-highlight-color: #666;
   font-weight: bold;
-  font-size: 0.8rem;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .backspace {
-  height: 23px;
-  width: 23px;
+  height: 20px;
+  width: 20px;
 }
 
 .gameOver {
@@ -129,7 +128,12 @@ h2.answer {
   background-color: #d4d6da;
 }
 
-#big-key {
+#enter-key {
+  width: 67px;
+  font-size: 0.8em;
+}
+
+#backspace-key {
   width: 67px;
 }
 
@@ -253,7 +257,8 @@ h2.answer {
     width: 33px;
   }
 
-  #big-key {
+  #enter-key,
+  #backspace-key {
     width: 53px;
   }
 

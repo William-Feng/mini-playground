@@ -2,13 +2,13 @@ import React, { useContext } from "react";
 import { WordleContext } from "./Wordle";
 import { MdOutlineBackspace } from "react-icons/md";
 
-function Key({ val, special, correct, partial, incorrect }) {
+function Key({ val, enter, backspace, correct, partial, incorrect }) {
   const { onLetter, onEnter, onDelete } = useContext(WordleContext);
 
   const updateGrid = () => {
     if (val === "ENTER") {
       onEnter();
-    } else if (val === "DELETE") {
+    } else if (val === "BACKSPACE") {
       onDelete();
     } else {
       onLetter(val);
@@ -19,8 +19,10 @@ function Key({ val, special, correct, partial, incorrect }) {
     <div
       className="key"
       id={
-        special
-          ? "big-key"
+        enter
+          ? "enter-key"
+          : backspace
+          ? "backspace-key"
           : correct
           ? "correct-key"
           : partial
@@ -31,7 +33,7 @@ function Key({ val, special, correct, partial, incorrect }) {
       }
       onClick={updateGrid}
     >
-      {val !== "DELETE" ? val : <MdOutlineBackspace className="backspace" />}
+      {val !== "BACKSPACE" ? val : <MdOutlineBackspace className="backspace" />}
     </div>
   );
 }
