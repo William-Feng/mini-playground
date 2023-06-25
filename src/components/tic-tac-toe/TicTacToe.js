@@ -173,7 +173,7 @@ function TicTacToe() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
 
-  // Update the number of games drew/lost
+  // Update the game statistics when a winner has been determined
   useEffect(() => {
     const incrementGameStat = (statLabel) => {
       setGameStat((prevStats) => ({
@@ -191,11 +191,24 @@ function TicTacToe() {
       incrementGameStat(statLabel);
     };
 
-    if (winner === "draw") {
-      incrementStatAndStore("Rounds Drew", "tictactoe-drew");
-    } else if (winner === "O") {
-      incrementStatAndStore("Rounds Lost", "tictactoe-lost");
+    if (!winner) return;
+
+    if (numPlayers === "1 player") {
+      if (winner === "draw") {
+        incrementStatAndStore("Rounds Drew (1P)", "tictactoe-drew");
+      } else if (winner === "O") {
+        incrementStatAndStore("Rounds Lost (1P)", "tictactoe-lost");
+      }
+    } else {
+      if (winner === "X") {
+        incrementStatAndStore("Player X Won (2P)", "tictactoe-xWon");
+      } else if (winner === "O") {
+        incrementStatAndStore("Player O Won (2P)", "tictactoe-oWon");
+      } else {
+        incrementStatAndStore("Players Drew (2P)", "tictactoe-drew2P");
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [winner, setGameStat]);
 
   return (

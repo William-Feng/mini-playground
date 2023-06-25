@@ -32,17 +32,33 @@ function App() {
       "Words Missed": localStorage.getItem("wordle-missed") || 0,
     },
     "Tic Tac Toe": {
-      "Rounds Drew": localStorage.getItem("tictactoe-drew") || 0,
-      "Rounds Lost": localStorage.getItem("tictactoe-lost") || 0,
+      "Rounds Drew (1P)": localStorage.getItem("tictactoe-drew") || 0,
+      "Rounds Lost (1P)": localStorage.getItem("tictactoe-lost") || 0,
+      "Player X Won (2P)": localStorage.getItem("tictactoe-xWon") || 0,
+      "Player O Won (2P)": localStorage.getItem("tictactoe-oWon") || 0,
+      "Players Drew (2P)": localStorage.getItem("tictactoe-drew2P") || 0,
     },
     "Colour Matching": {
-      "Minimum Turns": localStorage.getItem("colour-minTurns") || "N/A",
+      "Minimum Turns (Easy)":
+        localStorage.getItem("colour-minTurns-easy") || "N/A",
+      "Minimum Turns (Medium)":
+        localStorage.getItem("colour-minTurns-medium") || "N/A",
+      "Minimum Turns (Hard)":
+        localStorage.getItem("colour-minTurns-hard") || "N/A",
     },
     "Emoji Streak": {
-      "Maximum Streak": localStorage.getItem("emoji-maxStreak") || 0,
+      "Maximum Streak (Easy)":
+        localStorage.getItem("emoji-maxStreak-easy") || 0,
+      "Maximum Streak (Medium)":
+        localStorage.getItem("emoji-maxStreak-medium") || 0,
+      "Maximum Streak (Hard)":
+        localStorage.getItem("emoji-maxStreak-hard") || 0,
     },
     "Sliding Puzzle": {
-      "Minimum Moves": localStorage.getItem("sliding-minMoves") || "N/A",
+      "Minimum Moves (Easy)":
+        localStorage.getItem("sliding-minMoves-easy") || "N/A",
+      "Minimum Moves (Hard)":
+        localStorage.getItem("sliding-minMoves-hard") || "N/A",
     },
     2048: {
       "Maximum Score": localStorage.getItem("2048-maxScore") || 0,

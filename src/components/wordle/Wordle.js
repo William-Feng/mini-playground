@@ -181,7 +181,8 @@ function Wordle() {
         incrementStatAndStore("Words Missed", "wordle-missed");
       }
     }
-  }, [gameOver, statsUpdated, setGameStat]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameOver, setGameStat]);
 
   return (
     <div className="background wordle" id={theme}>

@@ -117,22 +117,34 @@ function Emoji() {
 
   // Save the maximum streak to local storage
   useEffect(() => {
-    const savedMaxStreak = localStorage.getItem("emoji-maxStreak");
+    const savedMaxStreakKey = `emoji-maxStreak-${difficulty}`;
+    const savedMaxStreak = localStorage.getItem(savedMaxStreakKey);
     if (!savedMaxStreak || streak > parseInt(savedMaxStreak)) {
-      localStorage.setItem("emoji-maxStreak", streak.toString());
+      localStorage.setItem(savedMaxStreakKey, streak.toString());
     }
 
-    setGameStat((prevStats) => ({
-      ...prevStats,
-      "Emoji Streak": {
-        ...prevStats["Emoji Streak"],
-        "Maximum Streak": Math.max(
-          prevStats["Emoji Streak"]["Maximum Streak"],
-          streak
-        ),
-      },
-    }));
-  }, [difficulty, streak, setGameStat]);
+    setGameStat((prevStats) => {
+      const prevMaxStreakKey = `Maximum Streak (${
+        difficulty === "easy"
+          ? "Easy"
+          : difficulty === "medium"
+          ? "Medium"
+          : "Hard"
+      })`;
+
+      return {
+        ...prevStats,
+        "Emoji Streak": {
+          ...prevStats["Emoji Streak"],
+          [prevMaxStreakKey]: Math.max(
+            prevStats["Emoji Streak"][prevMaxStreakKey],
+            streak
+          ),
+        },
+      };
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [streak, setGameStat]);
 
   return (
     <div

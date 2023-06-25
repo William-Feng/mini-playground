@@ -142,22 +142,26 @@ function Memory() {
   // Only update the minimum turns in local storage if the game is solved
   useEffect(() => {
     if (solved) {
-      const savedMinTurns = localStorage.getItem("colour-minTurns");
+      const savedMinTurnsKey = `colour-minTurns-${difficulty}`;
+      const savedMinTurns = localStorage.getItem(savedMinTurnsKey);
       if (!savedMinTurns || turns < parseInt(savedMinTurns)) {
-        localStorage.setItem("colour-minTurns", turns.toString());
+        localStorage.setItem(savedMinTurnsKey, turns.toString());
       }
 
       setGameStat((prevStats) => {
-        const prevMinTurns =
-          prevStats["Colour Matching"]["Minimum Turns"] === "N/A"
-            ? Infinity
-            : prevStats["Colour Matching"]["Minimum Turns"];
+        const prevMinTurnsKey = `Minimum Turns (${
+          difficulty === "easy"
+            ? "Easy"
+            : difficulty === "medium"
+            ? "Medium"
+            : "Hard"
+        })`;
 
         return {
           ...prevStats,
           "Colour Matching": {
             ...prevStats["Colour Matching"],
-            "Minimum Turns": Math.min(prevMinTurns, turns),
+            [prevMinTurnsKey]: Math.min(savedMinTurns || Infinity, turns),
           },
         };
       });

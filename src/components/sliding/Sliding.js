@@ -211,22 +211,22 @@ function Sliding() {
   // Only update the minimum moves in local storage if the game is solved
   useEffect(() => {
     if (solved) {
-      const savedMinMoves = localStorage.getItem("sliding-minMoves");
+      const savedMinMovesKey = `sliding-minMoves-${difficulty}`;
+      const savedMinMoves = localStorage.getItem(savedMinMovesKey);
       if (!savedMinMoves || moves < parseInt(savedMinMoves)) {
-        localStorage.setItem("sliding-minMoves", moves.toString());
+        localStorage.setItem(savedMinMovesKey, moves.toString());
       }
 
       setGameStat((prevStats) => {
-        const prevMinMoves =
-          prevStats["Sliding Puzzle"]["Minimum Moves"] === "N/A"
-            ? Infinity
-            : prevStats["Sliding Puzzle"]["Minimum Moves"];
+        const prevMinMovesKey = `Minimum Moves (${
+          difficulty === "easy" ? "Easy" : "Hard"
+        })`;
 
         return {
           ...prevStats,
           "Sliding Puzzle": {
             ...prevStats["Sliding Puzzle"],
-            "Minimum Moves": Math.min(prevMinMoves, moves),
+            [prevMinMovesKey]: Math.min(savedMinMoves || Infinity, moves),
           },
         };
       });

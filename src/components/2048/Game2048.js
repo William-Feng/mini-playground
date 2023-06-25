@@ -296,7 +296,7 @@ function Game2048() {
     }
   }, []);
 
-  // Save the state of the game to local storage
+  // Save the state of the game to local storage and update the maximum score
   useEffect(() => {
     localStorage.setItem("2048-board", JSON.stringify(board));
     localStorage.setItem("2048-currentScore", score.toString());
