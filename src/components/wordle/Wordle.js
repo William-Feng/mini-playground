@@ -106,11 +106,16 @@ function Wordle() {
       return;
     }
 
+    // Ensure all 5 letters have been flipped before changing the gameOver state
     if (currWord === secret) {
-      setGameOver({ gameOver: true, guessedWord: true });
+      setTimeout(() => {
+        setGameOver({ gameOver: true, guessedWord: true });
+      }, 1500);
       return;
     } else if (curr.attempt === MAX_ATTEMPTS - 1) {
-      setGameOver({ gameOver: true, guessedWord: false });
+      setTimeout(() => {
+        setGameOver({ gameOver: true, guessedWord: false });
+      }, 1500);
     }
   };
 
