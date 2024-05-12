@@ -112,6 +112,22 @@
   font-size: 40px;
 }
 
+@keyframes cellEnlarge {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cell.new {
+  animation: cellEnlarge 0.5s ease-in-out;
+}
+
 @media screen and (max-height: 778px) {
   .background.game2048 {
     height: 100%;

@@ -9,7 +9,8 @@ function Game2048() {
   const SIZE = 4;
   let prevBoard = [];
   const [score, setScore] = useState(0);
-  const [gameStatus, setGameStatus] = useState("in-progress");
+  const [gameStatus, setGameStatus] = useState(false);
+  const [newCell, setNewCell] = useState(null);
 
   const gameInitialisation = () => {
     setScore(0);
@@ -48,6 +49,10 @@ function Game2048() {
     return newBoard;
   };
 
+  const isNewlyGenerated = (row, column) => {
+    return newCell && newCell.row === row && newCell.column === column;
+  };
+
   // Generate a new number within the board
   const generateCell = () => {
     while (true) {
@@ -63,6 +68,10 @@ function Game2048() {
           board[row][column] = 2;
         }
         setBoard([...board]);
+        setNewCell({ row, column });
+        setTimeout(() => {
+          setNewCell(null);
+        }, 500);
         return;
       }
     }
@@ -272,14 +281,15 @@ function Game2048() {
   });
 
   // Update the colour of a cell (after the board has shifted)
-  const cellClass = (num) => {
-    if (!num) {
-      return "cell";
-    } else if (num <= 2048) {
-      return "cell num" + num;
-    } else {
-      return "cell num4096";
+  const cellClass = (num, row, column) => {
+    let classes = "cell";
+    if (num) {
+      classes += num <= 2048 ? " num" + num : " num4096";
+      if (isNewlyGenerated(row, column)) {
+        classes += " new";
+      }
     }
+    return classes;
   };
 
   // On component mount, load any saved state from local storage
@@ -321,7 +331,7 @@ function Game2048() {
       <div className="board" {...handleSwipe}>
         {board.map((row, i) =>
           row.map((value, j) => (
-            <div className={cellClass(value)} key={`${i}-${j}`}>
+            <div className={cellClass(value, i, j)} key={`${i}-${j}`}>
               {value}
             </div>
           ))
