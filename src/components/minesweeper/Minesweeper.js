@@ -21,6 +21,7 @@ function Minesweeper() {
     gameOver: false,
     solutionInitialised: false,
   });
+  const [numFlags, setNumFlags] = useState(0);
   const [timer, setTimer] = useState("00:00");
 
   useEffect(() => {
@@ -40,6 +41,7 @@ function Minesweeper() {
       gameOver: false,
       solutionInitialised: false,
     });
+    setNumFlags(numMines);
     setTimer("00:00");
   };
 
@@ -56,7 +58,6 @@ function Minesweeper() {
       }
     }
     setGameStatus({ ...gameStatus, solutionInitialised: true });
-    console.log(solution);
     return solution;
   };
 
@@ -64,6 +65,11 @@ function Minesweeper() {
     if (row < 0 || row >= size || col < 0 || col >= size) return;
 
     visited[row][col] = true;
+    if (board[row][col] === "🚩") {
+      board[row][col] = "";
+      setNumFlags((flags) => flags + 1);
+    }
+
     let adjacentMines = 0;
     for (let i = row - 1; i <= row + 1; i++) {
       for (let j = col - 1; j <= col + 1; j++) {
@@ -136,12 +142,14 @@ function Minesweeper() {
 
   const handleFlag = (e, i, j) => {
     e.preventDefault();
-    if (board[i][j] === "") {
+    if (revealedCells.some((cell) => cell.row === i && cell.col === j)) {
+      return;
+    } else if (board[i][j] === "") {
       board[i][j] = "🚩";
+      setNumFlags((flags) => flags - 1);
     } else if (board[i][j] === "🚩") {
       board[i][j] = "";
-    } else {
-      return;
+      setNumFlags((flags) => flags + 1);
     }
     setBoard([...board]);
   };
@@ -153,6 +161,41 @@ function Minesweeper() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [solution]);
+
+  useEffect(() => {
+    let startTime = null;
+    let intervalId = null;
+
+    const updateTimer = () => {
+      let currentTime = new Date().getTime();
+      let elapsedTime = Math.floor((currentTime - startTime) / 1000);
+      let minutes = Math.floor(elapsedTime / 60);
+      let seconds = elapsedTime % 60;
+
+      if (minutes > 59) {
+        minutes = 59;
+        seconds = 59;
+      }
+
+      let minutesStr = minutes < 10 ? `0${minutes}` : `${minutes}`;
+      let secondsStr = seconds < 10 ? `0${seconds}` : `${seconds}`;
+
+      setTimer(`${minutesStr}:${secondsStr}`);
+    };
+
+    // Update the timer every second only if the user has selected the first cell
+    if (gameStatus.solutionInitialised && gameStatus.inProgress) {
+      startTime = new Date().getTime();
+      intervalId = setInterval(updateTimer, 1000);
+    }
+
+    // Keep the timer value upon game won/lost, and only reset it upon pressing Restart
+    return () => {
+      if (gameStatus.inProgress) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [gameStatus]);
 
   const cellClass = (i, j, value) => {
     let classes = "cell";
@@ -201,15 +244,22 @@ function Minesweeper() {
         )}
       </div>
       <div className="message">
-        {gameStatus.solutionInitialised && !gameStatus.inProgress && (
+        {!gameStatus.inProgress && (
           <h2>{gameStatus.gameOver ? "Game Over!" : "Well Done!"}</h2>
         )}
-        <h3>
-          Time Elapsed: <b>{timer}</b>
-        </h3>
-        <button className="restart" onClick={gameInitialisation}>
-          Restart
-        </button>
+        <div className="stats">
+          <h3 className="metric">🚩 {numFlags}</h3>
+          <h3 className="metric">⏱️ {timer}</h3>
+        </div>
+        {gameStatus.inProgress && gameStatus.solutionInitialised ? (
+          <button className="restart" onClick={handleGameOver}>
+            Solution
+          </button>
+        ) : (
+          <button className="restart" onClick={gameInitialisation}>
+            Restart
+          </button>
+        )}
       </div>
     </div>
   );
