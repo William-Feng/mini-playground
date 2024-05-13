@@ -4,12 +4,17 @@ import "./Minesweeper.css";
 import ModeTab from "../misc/ModeTab";
 
 function Minesweeper() {
-  const { theme } = useContext(AppContext);
+  const { theme, setGameStat } = useContext(AppContext);
 
-  const [difficulty, setDifficulty] = useState("easy");
-  const size = useMemo(() => (difficulty === "easy" ? 8 : 16), [difficulty]);
+  const [difficulty, setDifficulty] = useState(
+    localStorage.getItem("minesweeper-difficulty") || "easy"
+  );
+  const size = useMemo(
+    () => (difficulty === "easy" ? 8 : difficulty === "medium" ? 12 : 16),
+    [difficulty]
+  );
   const numMines = useMemo(
-    () => (difficulty === "easy" ? 10 : 40),
+    () => (difficulty === "easy" ? 10 : difficulty === "medium" ? 25 : 40),
     [difficulty]
   );
 
@@ -26,6 +31,7 @@ function Minesweeper() {
 
   useEffect(() => {
     gameInitialisation();
+    localStorage.setItem("minesweeper-difficulty", difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -58,6 +64,7 @@ function Minesweeper() {
       }
     }
     setGameStatus({ ...gameStatus, solutionInitialised: true });
+    console.log(solution);
     return solution;
   };
 
@@ -216,12 +223,86 @@ function Minesweeper() {
     return classes;
   };
 
+  // Update the game statistics when the game is complete
+  useEffect(() => {
+    if (!gameStatus.inProgress) {
+      if (gameStatus.gameOver) {
+        setGameStat((prevStats) => ({
+          ...prevStats,
+          Minesweeper: {
+            ...prevStats["Minesweeper"],
+            "Games Lost": parseInt(prevStats["Minesweeper"]["Games Lost"]) + 1,
+          },
+        }));
+        localStorage.setItem(
+          "minesweeper-lost",
+          (
+            parseInt(localStorage.getItem("minesweeper-lost")) || 0 + 1
+          ).toString()
+        );
+      } else {
+        const getShorterTime = (time1, time2) => {
+          if (time2 === Infinity) return time1;
+
+          const [min1, sec1] = time1.split(":").map(Number);
+          const [min2, sec2] = time2.split(":").map(Number);
+
+          const totalsecs1 = min1 * 60 + sec1;
+          const totalsecs2 = min2 * 60 + sec2;
+
+          return totalsecs1 <= totalsecs2 ? time1 : time2;
+        };
+
+        const prevMinTimeKey = `Minimum Time (${
+          difficulty === "easy"
+            ? "Easy"
+            : difficulty === "medium"
+            ? "Medium"
+            : "Hard"
+        })`;
+
+        const savedminTimeKey = `minesweeper-minTime-${difficulty}`;
+        const savedMinTime = localStorage.getItem(savedminTimeKey);
+        localStorage.setItem(
+          savedminTimeKey,
+          getShorterTime(timer, savedMinTime || Infinity)
+        );
+        localStorage.setItem(
+          "minesweeper-won",
+          (
+            parseInt(localStorage.getItem("minesweeper-won")) || 0 + 1
+          ).toString()
+        );
+
+        setGameStat((prevStats) => ({
+          ...prevStats,
+          Minesweeper: {
+            ...prevStats["Minesweeper"],
+            "Games Won": parseInt(prevStats["Minesweeper"]["Games Won"]) + 1,
+            [prevMinTimeKey]: getShorterTime(timer, savedMinTime || Infinity),
+          },
+        }));
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameStatus, setGameStat]);
+
   return (
-    <div className="background minesweeper" id={theme}>
+    <div
+      className={
+        "background minesweeper " +
+        (difficulty === "medium"
+          ? "medium"
+          : difficulty === "hard"
+          ? "hard"
+          : "")
+      }
+      id={theme}
+    >
       <ModeTab
         modeType={difficulty}
         handleModeChange={handleDifficultyChange}
-        modes={["easy", "hard"]}
+        modes={["easy", "medium", "hard"]}
       />
       <div className="board">
         {board.map((row, i) =>

@@ -67,6 +67,12 @@ function App() {
     Minesweeper: {
       "Games Won": localStorage.getItem("minesweeper-won") || 0,
       "Games Lost": localStorage.getItem("minesweeper-lost") || 0,
+      "Minimum Time (Easy)":
+        localStorage.getItem("minesweeper-minTime-easy") || "N/A",
+      "Minimum Time (Medium)":
+        localStorage.getItem("minesweeper-minTime-medium") || "N/A",
+      "Minimum Time (Hard)":
+        localStorage.getItem("minesweeper-minTime-hard") || "N/A",
     },
   });
 

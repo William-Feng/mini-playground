@@ -3,6 +3,14 @@
   grid-gap: 0px;
 }
 
+.minesweeper.medium .board {
+  grid-template-columns: repeat(12, auto);
+}
+
+.minesweeper.hard .board {
+  grid-template-columns: repeat(16, auto);
+}
+
 .minesweeper .cell {
   height: 62.5px;
   width: 62.5px;
@@ -11,6 +19,20 @@
   font-weight: bold;
   outline: 1px solid black;
   border-radius: 0;
+}
+
+.minesweeper.medium .cell {
+  height: 41.67px;
+  width: 41.67px;
+  font-size: 30px;
+  line-height: 41.67px;
+}
+
+.minesweeper.hard .cell {
+  height: 31.25px;
+  width: 31.25px;
+  font-size: 20px;
+  line-height: 31.25px;
 }
 
 .minesweeper .stats {
