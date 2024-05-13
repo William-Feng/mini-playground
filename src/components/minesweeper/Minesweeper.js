@@ -27,6 +27,7 @@ function Minesweeper() {
     solutionInitialised: false,
   });
   const [numFlags, setNumFlags] = useState(0);
+  const [flagMode, setFlagMode] = useState(false);
   const [timer, setTimer] = useState("00:00");
 
   useEffect(() => {
@@ -48,6 +49,7 @@ function Minesweeper() {
       solutionInitialised: false,
     });
     setNumFlags(numMines);
+    setFlagMode(false);
     setTimer("00:00");
   };
 
@@ -64,7 +66,6 @@ function Minesweeper() {
       }
     }
     setGameStatus({ ...gameStatus, solutionInitialised: true });
-    console.log(solution);
     return solution;
   };
 
@@ -119,6 +120,9 @@ function Minesweeper() {
   };
 
   const handleClick = (i, j) => {
+    if (flagMode) {
+      return handleFlag(null, i, j);
+    }
     if (!gameStatus.solutionInitialised) {
       setRevealedCells([{ row: i, col: j }]);
       setSolution(initialiseSolution(i, j));
@@ -135,7 +139,8 @@ function Minesweeper() {
   };
 
   const handleFlag = (e, i, j) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
+    if (!gameStatus.inProgress) return;
     if (revealedCells.some((cell) => cell.row === i && cell.col === j)) {
       return;
     } else if (board[i][j] === "") {
@@ -146,6 +151,11 @@ function Minesweeper() {
       setNumFlags((flags) => flags + 1);
     }
     setBoard([...board]);
+  };
+
+  const handleFlagModeToggle = () => {
+    if (!gameStatus.inProgress) return;
+    setFlagMode((prev) => !prev);
   };
 
   useEffect(() => {
@@ -237,7 +247,7 @@ function Minesweeper() {
         localStorage.setItem(
           "minesweeper-lost",
           (
-            parseInt(localStorage.getItem("minesweeper-lost")) || 0 + 1
+            (parseInt(localStorage.getItem("minesweeper-lost")) || 0) + 1
           ).toString()
         );
       } else {
@@ -270,7 +280,7 @@ function Minesweeper() {
         localStorage.setItem(
           "minesweeper-won",
           (
-            parseInt(localStorage.getItem("minesweeper-won")) || 0 + 1
+            (parseInt(localStorage.getItem("minesweeper-won")) || 0) + 1
           ).toString()
         );
 
@@ -323,8 +333,13 @@ function Minesweeper() {
           <h2>{gameStatus.gameOver ? "Game Over!" : "Well Done!"}</h2>
         )}
         <div className="stats">
-          <h3 className="metric">🚩 {numFlags}</h3>
-          <h3 className="metric">⏱️ {timer}</h3>
+          <h3
+            className={`flag ${flagMode ? "flag-mode-active" : ""}`}
+            onClick={handleFlagModeToggle}
+          >
+            🚩 {numFlags}
+          </h3>
+          <h3 className="timer">⏱️ {timer}</h3>
         </div>
         {gameStatus.inProgress && gameStatus.solutionInitialised ? (
           <button className="restart" onClick={handleGameOver}>

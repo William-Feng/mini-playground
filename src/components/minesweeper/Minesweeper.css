@@ -40,7 +40,26 @@
   display: flex;
 }
 
-.minesweeper h3.metric {
+.minesweeper h3.flag {
+  margin: 0 3em;
+  cursor: pointer;
+}
+
+.minesweeper h3.flag-mode-active {
+  color: red;
+  animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.2);
+  }
+}
+
+.minesweeper h3.timer {
   margin: 0 3em;
 }
 
