@@ -12,3 +12,40 @@
   outline: 1px solid black;
   border-radius: 0;
 }
+
+.minesweeper .revealed {
+  background-color: lightgrey;
+  cursor: not-allowed;
+}
+
+.minesweeper .one {
+  color: blue;
+}
+
+.minesweeper .two {
+  color: green;
+}
+
+.minesweeper .three {
+  color: red;
+}
+
+.minesweeper .four {
+  color: darkblue;
+}
+
+.minesweeper .five {
+  color: maroon;
+}
+
+.minesweeper .six {
+  color: teal;
+}
+
+.minesweeper .seven {
+  color: black;
+}
+
+.minesweeper .eight {
+  color: gray;
+}

@@ -15,7 +15,7 @@ function Minesweeper() {
 
   const [board, setBoard] = useState([]);
   const [solution, setSolution] = useState([]);
-  const [currentClick, setCurrentClick] = useState({ i: null, j: null });
+  const [revealedCells, setRevealedCells] = useState([]);
   const [gameStatus, setGameStatus] = useState({
     inProgress: true,
     gameOver: false,
@@ -34,6 +34,7 @@ function Minesweeper() {
 
   const gameInitialisation = () => {
     setBoard([...Array(size)].map(() => Array(size).fill("")));
+    setRevealedCells([]);
     setGameStatus({
       inProgress: true,
       gameOver: false,
@@ -59,23 +60,78 @@ function Minesweeper() {
     return solution;
   };
 
-  const revealLogic = (i, j) => {
-    board[i][j] = 1;
+  const revealLogic = (row, col, visited) => {
+    if (row < 0 || row >= size || col < 0 || col >= size) return;
+
+    visited[row][col] = true;
+    let adjacentMines = 0;
+    for (let i = row - 1; i <= row + 1; i++) {
+      for (let j = col - 1; j <= col + 1; j++) {
+        if (i >= 0 && i < size && j >= 0 && j < size) {
+          if (solution[i][j] === 1) {
+            adjacentMines++;
+          }
+        }
+      }
+    }
+
+    // Recursively reveal cells if there are no neighbouring mines
+    if (adjacentMines === 0) {
+      for (let i = row - 1; i <= row + 1; i++) {
+        for (let j = col - 1; j <= col + 1; j++) {
+          if (i >= 0 && i < size && j >= 0 && j < size && !visited[i][j]) {
+            revealLogic(i, j, visited);
+          }
+        }
+      }
+    } else {
+      board[row][col] = adjacentMines;
+    }
     setBoard([...board]);
+    setRevealedCells((prev) => [...prev, { row, col }]);
+  };
+
+  const checkGameWon = () => {
+    let revealed = 0;
+    for (let i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
+        if (Number.isInteger(board[i][j])) {
+          revealed++;
+        }
+      }
+    }
+    if (revealed === size * size - numMines) {
+      setGameStatus({ ...gameStatus, inProgress: false, gameOver: false });
+    }
+  };
+
+  const handleGameOver = () => {
+    for (let i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
+        if (solution[i][j] === 1) {
+          board[i][j] = "💣";
+        }
+      }
+    }
+    setBoard([...board]);
+    setGameStatus({ ...gameStatus, inProgress: false, gameOver: true });
   };
 
   const handleClick = (i, j) => {
     if (!gameStatus.solutionInitialised) {
-      setCurrentClick({ i, j });
+      setRevealedCells([{ row: i, col: j }]);
       setSolution(initialiseSolution(i, j));
       return;
     }
     if (!gameStatus.inProgress) return;
     if (board[i][j] === "🚩") return;
     if (solution[i][j] === 1) {
-      setGameStatus({ ...gameStatus, gameOver: true });
+      return handleGameOver();
     }
-    revealLogic(i, j);
+
+    const visited = [...Array(size)].map(() => Array(size).fill(false));
+    revealLogic(i, j, visited);
+    checkGameWon();
   };
 
   const handleFlag = (e, i, j) => {
@@ -91,11 +147,37 @@ function Minesweeper() {
   };
 
   useEffect(() => {
-    if (solution.length > 0 && currentClick.i !== null) {
-      revealLogic(currentClick.i, currentClick.j);
+    if (solution.length > 0 && revealedCells.length > 0) {
+      const visited = [...Array(size)].map(() => Array(size).fill(false));
+      revealLogic(revealedCells[0].row, revealedCells[0].col, visited);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [solution, currentClick]);
+  }, [solution]);
+
+  const cellClass = (i, j, value) => {
+    let classes = "cell";
+    if (revealedCells.some((cell) => cell.row === i && cell.col === j)) {
+      classes += " revealed";
+      if (value === 1) {
+        classes += " one";
+      } else if (value === 2) {
+        classes += " two";
+      } else if (value === 3) {
+        classes += " three";
+      } else if (value === 4) {
+        classes += " four";
+      } else if (value === 5) {
+        classes += " five";
+      } else if (value === 6) {
+        classes += " six";
+      } else if (value === 7) {
+        classes += " seven";
+      } else if (value === 8) {
+        classes += " eight";
+      }
+    }
+    return classes;
+  };
 
   return (
     <div className="background minesweeper" id={theme}>
@@ -108,7 +190,7 @@ function Minesweeper() {
         {board.map((row, i) =>
           row.map((value, j) => (
             <div
-              className="cell"
+              className={cellClass(i, j, value)}
               key={`${i}-${j}`}
               onClick={() => handleClick(i, j)}
               onContextMenu={(e) => handleFlag(e, i, j)}
