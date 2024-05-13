@@ -24,6 +24,8 @@ function Navbar({ heading }) {
     "Sliding Puzzle":
       "Sliding Puzzle involves arranging the tiles into ascending order. This is much harder than it seems as the empty tile can only be swapped with an adjacent cell, and the challenge is to move it into the bottom-right corner.",
     2048: "2048 involves combining tiles (swipe or use the arrow keys) with the same number to create a tile of double the value. The goal is to create a tile with the value 2048 and obtain the highest possible score.",
+    Minesweeper:
+      " Minesweeper is a game where you need to clear the board without detonating any mines. Left-click to reveal the number of adjacent mines in a cell and right-click to flag a cell as a mine.",
   };
 
   const gameStats = (game) => {

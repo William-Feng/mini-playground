@@ -9,6 +9,7 @@ import Game2048 from "./components/2048/Game2048";
 import Footer from "./components/misc/Footer";
 import Sliding from "./components/sliding/Sliding";
 import Emoji from "./components/emoji/Emoji";
+import Minesweeper from "./components/minesweeper/Minesweeper";
 import "./App.css";
 
 export const AppContext = createContext();
@@ -62,6 +63,10 @@ function App() {
     },
     2048: {
       "Maximum Score": localStorage.getItem("2048-maxScore") || 0,
+    },
+    Minesweeper: {
+      "Games Won": localStorage.getItem("minesweeper-won") || 0,
+      "Games Lost": localStorage.getItem("minesweeper-lost") || 0,
     },
   });
 
@@ -145,6 +150,18 @@ function App() {
             >
               <Navbar heading="2048" />
               <Game2048 />
+              <Footer />
+            </AppContext.Provider>
+          }
+        />
+        <Route
+          path="/minesweeper"
+          element={
+            <AppContext.Provider
+              value={{ theme, toggleTheme, gameStat, setGameStat }}
+            >
+              <Navbar heading="Minesweeper" />
+              <Minesweeper />
               <Footer />
             </AppContext.Provider>
           }

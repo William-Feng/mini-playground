@@ -1,0 +1,14 @@
+.minesweeper .board {
+  grid-template-columns: repeat(8, auto);
+  grid-gap: 0px;
+}
+
+.minesweeper .cell {
+  height: 62.5px;
+  width: 62.5px;
+  font-size: 40px;
+  line-height: 62.5px;
+  font-weight: bold;
+  outline: 1px solid black;
+  border-radius: 0;
+}
