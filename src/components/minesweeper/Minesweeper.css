@@ -19,6 +19,7 @@
   font-weight: bold;
   outline: 1px solid black;
   border-radius: 0;
+  border: none;
 }
 
 .minesweeper.medium .cell {
@@ -78,4 +79,55 @@
 
 .minesweeper .eight {
   color: gray;
+}
+
+@media screen and (max-height: 845px) {
+  .background.minesweeper {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .background.minesweeper {
+    height: calc(100dvh - 80px);
+  }
+
+  .minesweeper .cell {
+    height: 44px;
+    width: 44px;
+    font-size: 30px;
+    line-height: 44px;
+  }
+
+  .minesweeper.medium .cell {
+    height: 29.25px;
+    width: 29.25px;
+    font-size: 20px;
+    line-height: 29.25px;
+  }
+
+  .minesweeper.hard .cell {
+    height: 22px;
+    width: 22px;
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+  @media screen and (max-height: 695px) {
+    .background.minesweeper {
+      height: 100%;
+    }
+  }
+}
+
+@media screen and (min-width: 380px) and (max-width: 400px) {
+  .background.minesweeper {
+    height: calc(100dvh - 75px);
+  }
+
+  @media screen and (max-height: 623px) {
+    .background.minesweeper {
+      height: 100%;
+    }
+  }
 }
