@@ -94,20 +94,8 @@ function Minesweeper() {
       board[row][col] = adjacentMines;
     }
     setBoard([...board]);
-    setRevealedCells((prev) => [...prev, { row, col }]);
-  };
-
-  const checkGameWon = () => {
-    let revealed = 0;
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
-        if (Number.isInteger(board[i][j])) {
-          revealed++;
-        }
-      }
-    }
-    if (revealed === size * size - numMines) {
-      setGameStatus({ ...gameStatus, inProgress: false, gameOver: false });
+    if (!revealedCells.some((cell) => cell.row === row && cell.col === col)) {
+      setRevealedCells((prev) => [...prev, { row, col }]);
     }
   };
 
@@ -137,7 +125,6 @@ function Minesweeper() {
 
     const visited = [...Array(size)].map(() => Array(size).fill(false));
     revealLogic(i, j, visited);
-    checkGameWon();
   };
 
   const handleFlag = (e, i, j) => {
@@ -153,6 +140,13 @@ function Minesweeper() {
     }
     setBoard([...board]);
   };
+
+  useEffect(() => {
+    if (revealedCells.length === size * size - numMines) {
+      setGameStatus({ ...gameStatus, inProgress: false, gameOver: false });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [revealedCells]);
 
   useEffect(() => {
     if (solution.length > 0 && revealedCells.length > 0) {
