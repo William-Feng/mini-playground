@@ -120,6 +120,8 @@ function Minesweeper() {
   };
 
   const handleClick = (i, j) => {
+    if (!gameStatus.inProgress) return;
+    if (board[i][j] === "🚩") return;
     if (flagMode) {
       return handleFlag(null, i, j);
     }
@@ -128,8 +130,6 @@ function Minesweeper() {
       setSolution(initialiseSolution(i, j));
       return;
     }
-    if (!gameStatus.inProgress) return;
-    if (board[i][j] === "🚩") return;
     if (solution[i][j] === 1) {
       return handleGameOver();
     }
@@ -229,6 +229,9 @@ function Minesweeper() {
       } else if (value === 8) {
         classes += " eight";
       }
+    }
+    if (!gameStatus.inProgress) {
+      classes += " stable";
     }
     return classes;
   };
@@ -334,7 +337,9 @@ function Minesweeper() {
         )}
         <div className="stats">
           <h3
-            className={`flag ${flagMode ? "flag-mode-active" : ""}`}
+            className={`flag ${flagMode ? "flag-mode-active" : ""} ${
+              !gameStatus.inProgress ? "game-over" : ""
+            }`}
             onClick={handleFlagModeToggle}
           >
             🚩 {numFlags}

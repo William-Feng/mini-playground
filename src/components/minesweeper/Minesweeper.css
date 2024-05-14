@@ -50,6 +50,10 @@
   animation: pulse 1s infinite alternate;
 }
 
+.minesweeper h3.game-over {
+  cursor: default;
+}
+
 @keyframes pulse {
   from {
     transform: scale(1);

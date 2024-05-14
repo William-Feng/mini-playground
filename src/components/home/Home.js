@@ -13,6 +13,8 @@ import SlidingLight from "./images/sliding-light.png";
 import SlidingDark from "./images/sliding-dark.png";
 import Game2048Light from "./images/2048-light.png";
 import Game2048Dark from "./images/2048-dark.png";
+import MinesweeperLight from "./images/minesweeper-light.png";
+import MinesweeperDark from "./images/minesweeper-dark.png";
 import HomeHeading from "./HomeHeading";
 import { AppContext } from "../../App";
 
@@ -81,6 +83,16 @@ function Home() {
               <img src={Game2048Dark} alt="2048" />
             )}
             <div className="gameTitle">2048</div>
+          </div>
+        </Link>
+        <Link to="/minesweeper">
+          <div className="game">
+            {theme === "light" ? (
+              <img src={MinesweeperLight} alt="Minesweeper" />
+            ) : (
+              <img src={MinesweeperDark} alt="Minesweeper" />
+            )}
+            <div className="gameTitle">Minesweeper</div>
           </div>
         </Link>
       </div>
