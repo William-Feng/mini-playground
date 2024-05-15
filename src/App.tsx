@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/home/Home";
-// import Wordle from "./components/wordle/Wordle";
+import Wordle from "./components/wordle/Wordle";
 import TicTacToe from "./components/tic-tac-toe/TicTacToe";
 import Navbar from "./components/misc/Navbar";
 // import Memory from "./components/memory/Memory";
@@ -18,7 +18,7 @@ import Footer from "./components/misc/Footer";
 // import Minesweeper from "./components/minesweeper/Minesweeper";
 import "./App.css";
 
-interface GameStat {
+export interface GameStat {
   [key: string]: {
     [key: string]: string | number;
   };
@@ -109,7 +109,7 @@ function App() {
             </AppContext.Provider>
           }
         />
-        {/*<Route
+        <Route
           path="/wordle"
           element={
             <AppContext.Provider
@@ -120,7 +120,7 @@ function App() {
               <Footer isWordle />
             </AppContext.Provider>
           }
-        /> */}
+        />
         <Route
           path="/tic-tac-toe"
           element={

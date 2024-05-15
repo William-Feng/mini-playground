@@ -1,7 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { WordleContext } from "./Wordle";
 
-function Letter({ attemptNum, letterPos }) {
+type LetterProps = {
+  attemptNum: number;
+  letterPos: number;
+};
+
+const Letter: FC<LetterProps> = ({ attemptNum, letterPos }) => {
   const {
     grid,
     secret,
@@ -48,6 +53,6 @@ function Letter({ attemptNum, letterPos }) {
       {letter}
     </div>
   );
-}
+};
 
 export default Letter;

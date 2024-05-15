@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-// import WordleLight from "./images/wordle-light.png";
-// import WordleDark from "./images/wordle-dark.png";
+import WordleLight from "./images/wordle-light.png";
+import WordleDark from "./images/wordle-dark.png";
 import TicTacToeLight from "./images/tic-tac-toe-light.png";
 import TicTacToeDark from "./images/tic-tac-toe-dark.png";
 // import MemoryLight from "./images/memory-light.png";
@@ -25,7 +25,7 @@ function Home() {
     <div className="home" id={theme}>
       <HomeHeading />
       <div className="games">
-        {/*<Link to="/wordle">
+        <Link to="/wordle">
           <div className="game">
             {theme === "light" ? (
               <img src={WordleLight} alt="Wordle" />
@@ -34,7 +34,7 @@ function Home() {
             )}
             <div className="gameTitle">Wordle</div>
           </div>
-        </Link> */}
+        </Link>
         <Link to="/tic-tac-toe">
           <div className="game">
             {theme === "light" ? (

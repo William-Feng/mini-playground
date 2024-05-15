@@ -1,32 +1,73 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import "./Wordle.css";
-import { AppContext } from "../../App";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { AppContext, AppContextType } from "../../App";
 import GameOver from "./GameOver";
 import Grid from "./Grid";
 import Keyboard from "./Keyboard";
 import { generateWordbank } from "./Words";
+import "./Wordle.css";
+import { incrementStat } from "../../utils/Stats";
 
-export const WordleContext = createContext();
+export interface WordleContextType {
+  grid: string[][];
+  setGrid: Dispatch<SetStateAction<string[][]>>;
+  curr: { attempt: number; letterPos: number };
+  setCurr: Dispatch<SetStateAction<{ attempt: number; letterPos: number }>>;
+  handleRestart: () => void;
+  onLetter: (letter: string) => void;
+  onEnter: () => void;
+  onDelete: () => void;
+  MAX_ATTEMPTS: number;
+  MAX_LETTERS: number;
+  secret: string;
+  correctLetters: string[];
+  setCorrectLetters: Dispatch<SetStateAction<string[]>>;
+  partialLetters: string[];
+  setPartialLetters: Dispatch<SetStateAction<string[]>>;
+  incorrectLetters: string[];
+  setIncorrectLetters: Dispatch<SetStateAction<string[]>>;
+  gameOver: { gameOver: boolean; guessedWord: boolean };
+  setGameOver: Dispatch<
+    SetStateAction<{ gameOver: boolean; guessedWord: boolean }>
+  >;
+}
 
-function Wordle() {
-  const { theme, setGameStat } = useContext(AppContext);
+export const WordleContext = createContext<WordleContextType>(
+  {} as WordleContextType
+);
+
+const Wordle: FC = () => {
+  const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const MAX_ATTEMPTS = 6;
   const MAX_LETTERS = 5;
-  const [grid, setGrid] = useState(
+  const [grid, setGrid] = useState<string[][]>(
     [...Array(MAX_ATTEMPTS)].map(() => Array(MAX_LETTERS).fill(""))
   );
-  const [curr, setCurr] = useState({ attempt: 0, letterPos: 0 });
-  const [wordbank, setWordbank] = useState(new Set());
-  const [secret, setSecret] = useState("");
-  const [correctLetters, setCorrectLetters] = useState([]);
-  const [partialLetters, setPartialLetters] = useState([]);
-  const [incorrectLetters, setIncorrectLetters] = useState([]);
-  const [gameOver, setGameOver] = useState({
+  const [curr, setCurr] = useState<{ attempt: number; letterPos: number }>({
+    attempt: 0,
+    letterPos: 0,
+  });
+  const [wordbank, setWordbank] = useState<Set<string>>(new Set());
+  const [secret, setSecret] = useState<string>("");
+  const [correctLetters, setCorrectLetters] = useState<string[]>([]);
+  const [partialLetters, setPartialLetters] = useState<string[]>([]);
+  const [incorrectLetters, setIncorrectLetters] = useState<string[]>([]);
+  const [gameOver, setGameOver] = useState<{
+    gameOver: boolean;
+    guessedWord: boolean;
+  }>({
     gameOver: false,
     guessedWord: false,
   });
-  const [statsUpdated, setStatsUpdated] = useState(false);
+  const [statsUpdated, setStatsUpdated] = useState<boolean>(false);
 
   // Load any saved state from local storage and initialise the game
   useEffect(() => {
@@ -82,7 +123,7 @@ function Wordle() {
   };
 
   // Include the letter onto the grid
-  const onLetter = (letter) => {
+  const onLetter = (letter: string) => {
     if (curr.letterPos >= MAX_LETTERS) return;
     const newGrid = [...grid];
     newGrid[curr.attempt][curr.letterPos] = letter;
@@ -160,27 +201,13 @@ function Wordle() {
     statsUpdated,
   ]);
 
-  // Update the number of words guessed/missed only once per game
+  // Update the game statistics when the game is over
   useEffect(() => {
-    const incrementGameStat = (statLabel) => {
-      setGameStat((prevStats) => ({
-        ...prevStats,
-        Wordle: {
-          ...prevStats["Wordle"],
-          [statLabel]: parseInt(prevStats["Wordle"][statLabel]) + 1,
-        },
-      }));
-    };
-
-    const incrementStatAndStore = (statLabel, item) => {
-      let savedStat = parseInt(localStorage.getItem(item)) || 0;
-      localStorage.setItem(item, (savedStat + 1).toString());
-      incrementGameStat(statLabel);
-    };
-
-    const incrementAttemptAndStore = (attempts) => {
-      let savedAttemptCount =
-        parseInt(localStorage.getItem(`wordle-${attempts}attempts`)) || 0;
+    // Tracking the number of attempts is used for the nav bar pie chart display
+    const incrementWordleAttempts = (attempts: number) => {
+      let savedAttemptCount = parseInt(
+        localStorage.getItem(`wordle-${attempts}attempts`) || "0"
+      );
       localStorage.setItem(
         `wordle-${attempts}attempts`,
         (savedAttemptCount + 1).toString()
@@ -190,10 +217,10 @@ function Wordle() {
     if (gameOver.gameOver && !statsUpdated) {
       setStatsUpdated(true);
       if (gameOver.guessedWord) {
-        incrementStatAndStore("Words Guessed", "wordle-guessed");
-        incrementAttemptAndStore(curr.attempt);
+        incrementStat("Wordle", "Words Guessed", "wordle-guessed", setGameStat);
+        incrementWordleAttempts(curr.attempt);
       } else {
-        incrementStatAndStore("Words Missed", "wordle-missed");
+        incrementStat("Wordle", "Words Missed", "wordle-missed", setGameStat);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -211,6 +238,7 @@ function Wordle() {
           onLetter,
           onEnter,
           onDelete,
+          MAX_ATTEMPTS,
           MAX_LETTERS,
           secret,
           correctLetters,
@@ -230,6 +258,6 @@ function Wordle() {
       </WordleContext.Provider>
     </div>
   );
-}
+};
 
 export default Wordle;

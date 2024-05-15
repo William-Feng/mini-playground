@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
-import { WordleContext } from "./Wordle";
+import React, { FC, useContext } from "react";
+import { WordleContext, WordleContextType } from "./Wordle";
 
-function GameOver() {
-  const { handleRestart, gameOver, secret, curr } = useContext(WordleContext);
+const GameOver: FC = () => {
+  const { handleRestart, gameOver, secret, curr } =
+    useContext<WordleContextType>(WordleContext);
 
   return (
     <div className="gameOver">
@@ -22,6 +23,6 @@ function GameOver() {
       </button>
     </div>
   );
-}
+};
 
 export default GameOver;

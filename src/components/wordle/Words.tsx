@@ -1,9 +1,14 @@
 import lessWords from "./words-less.txt";
 import moreWords from "./words-more.txt";
 
-export const generateWordbank = async () => {
-  let wordbank;
-  let secret;
+type WordbankResult = {
+  wordbank: Set<string>;
+  secret: string;
+};
+
+export const generateWordbank = async (): Promise<WordbankResult> => {
+  let wordbank: Set<string> = new Set();
+  let secret: string = "";
   // The user is able to guess from a larger bank of valid words
   await fetch(moreWords)
     .then((response) => response.text())

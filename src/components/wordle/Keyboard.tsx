@@ -1,8 +1,8 @@
-import React, { useCallback, useContext, useEffect } from "react";
-import { WordleContext } from "./Wordle";
+import React, { FC, useCallback, useContext, useEffect } from "react";
+import { WordleContext, WordleContextType } from "./Wordle";
 import Key from "./Key";
 
-function Keyboard() {
+const Keyboard: FC = () => {
   const {
     onLetter,
     onEnter,
@@ -11,14 +11,14 @@ function Keyboard() {
     correctLetters,
     partialLetters,
     incorrectLetters,
-  } = useContext(WordleContext);
+  } = useContext<WordleContextType>(WordleContext);
 
   const row1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const row2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
   const row3 = ["Z", "X", "C", "V", "B", "N", "M"];
 
   const handleKeyboard = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         onEnter();
       } else if (e.key === "Backspace") {
@@ -36,6 +36,10 @@ function Keyboard() {
     [curr]
   );
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    handleKeyboard(e.nativeEvent as KeyboardEvent);
+  };
+
   useEffect(() => {
     document.addEventListener("keydown", handleKeyboard);
     return () => {
@@ -44,7 +48,7 @@ function Keyboard() {
   }, [handleKeyboard]);
 
   return (
-    <div className="keyboard" onKeyDown={handleKeyboard}>
+    <div className="keyboard" onKeyDown={handleKeyDown}>
       <div className="row">
         {row1.map((value, i) => {
           return (
@@ -88,6 +92,6 @@ function Keyboard() {
       </div>
     </div>
   );
-}
+};
 
 export default Keyboard;
