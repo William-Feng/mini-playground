@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import "./TicTacToe.css";
+import { incrementStat } from "../../utils/Stats";
 
 function TicTacToe() {
   const { theme, setGameStat } = useContext<AppContextType>(AppContext);
@@ -184,35 +185,48 @@ function TicTacToe() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
 
-  // Update the game statistics when a winner has been determined
+  // Update the game statistics when the game is over
   useEffect(() => {
-    const incrementGameStat = (statLabel: string, item: string) => {
-      let savedStat = parseInt(localStorage.getItem(item) || "0");
-      localStorage.setItem(item, (savedStat + 1).toString());
-      setGameStat((prevStats) => ({
-        ...prevStats,
-        "Tic Tac Toe": {
-          ...prevStats["Tic Tac Toe"],
-          [statLabel]: savedStat + 1,
-        },
-      }));
-    };
-
     if (!winner) return;
 
     if (numPlayers === "1 player") {
       if (winner === "draw") {
-        incrementGameStat("Rounds Drew (1P)", "tictactoe-drew");
+        incrementStat(
+          "Tic Tac Toe",
+          "Rounds Drew (1P)",
+          "tictactoe-drew",
+          setGameStat
+        );
       } else if (winner === "O") {
-        incrementGameStat("Rounds Lost (1P)", "tictactoe-lost");
+        incrementStat(
+          "Tic Tac Toe",
+          "Rounds Lost (1P)",
+          "tictactoe-lost",
+          setGameStat
+        );
       }
     } else {
       if (winner === "X") {
-        incrementGameStat("Player X Won (2P)", "tictactoe-xWon");
+        incrementStat(
+          "Tic Tac Toe",
+          "Player X Won (2P)",
+          "tictactoe-xWon",
+          setGameStat
+        );
       } else if (winner === "O") {
-        incrementGameStat("Player O Won (2P)", "tictactoe-oWon");
+        incrementStat(
+          "Tic Tac Toe",
+          "Player O Won (2P)",
+          "tictactoe-oWon",
+          setGameStat
+        );
       } else {
-        incrementGameStat("Players Drew (2P)", "tictactoe-drew2P");
+        incrementStat(
+          "Tic Tac Toe",
+          "Players Drew (2P)",
+          "tictactoe-drew2P",
+          setGameStat
+        );
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
