@@ -1,22 +1,27 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { FC, useContext, useEffect, useMemo, useState } from "react";
 import { easyEmojis, hardEmojis } from "./EmojiBank";
-import { AppContext } from "../../App";
-import "./Emoji.css";
+import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
+import { newMaxStat } from "../../utils/Stats";
+import "./Emoji.css";
 
-function Emoji() {
-  const { theme, setGameStat } = useContext(AppContext);
+type Difficulty = "easy" | "medium" | "hard";
+type GameStatus = "in-progress" | "game-over" | "game-won";
+type LastClicked = { row: number; col: number } | null;
 
-  const [difficulty, setDifficulty] = useState(
-    localStorage.getItem("emoji-difficulty") || "easy"
+const Emoji: FC = () => {
+  const { theme, setGameStat } = useContext<AppContextType>(AppContext);
+
+  const [difficulty, setDifficulty] = useState<Difficulty>(
+    (localStorage.getItem("emoji-difficulty") as Difficulty) || "easy"
   );
-  const [selected, setSelected] = useState(new Set());
-  const [streak, setStreak] = useState(0);
-  const [lives, setLives] = useState(3);
-  const [lastClicked, setlastClicked] = useState(null);
-  const [gameStatus, setGameStatus] = useState("in-progress");
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [streak, setStreak] = useState<number>(0);
+  const [lives, setLives] = useState<number>(3);
+  const [lastClicked, setlastClicked] = useState<LastClicked>(null);
+  const [gameStatus, setGameStatus] = useState<GameStatus>("in-progress");
 
-  const size = useMemo(
+  const size = useMemo<number>(
     () => (difficulty === "easy" ? 4 : difficulty === "medium" ? 5 : 6),
     [difficulty]
   );
@@ -31,12 +36,14 @@ function Emoji() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
-  const handleDifficultyChange = (newDifficulty) => {
-    setDifficulty(newDifficulty);
+  const handleDifficultyChange = (newDifficulty: string) => {
+    if (["easy", "medium", "hard"].includes(newDifficulty)) {
+      setDifficulty(newDifficulty as Difficulty);
+    }
   };
 
   // Reset the board and all variables for a new game
-  const gameInitialisation = (difficulty) => {
+  const gameInitialisation = (difficulty: Difficulty) => {
     setSelected(new Set());
     setStreak(0);
     setLives(3);
@@ -49,8 +56,8 @@ function Emoji() {
   };
 
   // Randomise the emojis for the difficult 5x5 or 6x6 boards from the bank
-  const randomiseEmojis = (emojis) => {
-    const hardEmojis = [];
+  const randomiseEmojis = (emojis: string[]) => {
+    const hardEmojis: string[] = [];
     while (hardEmojis.length < size * size) {
       const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
       if (!hardEmojis.includes(randomEmoji)) {
@@ -61,7 +68,7 @@ function Emoji() {
   };
 
   // Randomise the order of the cells (Fisher-Yates shuffle algorithm)
-  const shuffleBoard = (emojis) => {
+  const shuffleBoard = (emojis: string[]) => {
     for (let i = emojis.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [emojis[i], emojis[j]] = [emojis[j], emojis[i]];
@@ -82,7 +89,7 @@ function Emoji() {
   const [board, setBoard] = useState(() => gameInitialisation(difficulty));
 
   // Determine whether the cell has been selected before and update states accordingly
-  const handleClick = (row, col) => {
+  const handleClick = (row: number, col: number) => {
     if (gameStatus !== "in-progress") return;
 
     const clickedEmoji = board[row][col];
@@ -115,34 +122,24 @@ function Emoji() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [streak]);
 
-  // Save the maximum streak to local storage
+  // Update the game statistics on each turn
   useEffect(() => {
-    const savedMaxStreakKey = `emoji-maxStreak-${difficulty}`;
-    const savedMaxStreak = localStorage.getItem(savedMaxStreakKey);
-    if (!savedMaxStreak || streak > parseInt(savedMaxStreak)) {
-      localStorage.setItem(savedMaxStreakKey, streak.toString());
-    }
+    const statLabel = `Maximum Streak (${
+      difficulty === "easy"
+        ? "Easy"
+        : difficulty === "medium"
+        ? "Medium"
+        : "Hard"
+    })`;
 
-    setGameStat((prevStats) => {
-      const prevMaxStreakKey = `Maximum Streak (${
-        difficulty === "easy"
-          ? "Easy"
-          : difficulty === "medium"
-          ? "Medium"
-          : "Hard"
-      })`;
+    newMaxStat(
+      "Emoji Streak",
+      statLabel,
+      `emoji-maxStreak-${difficulty}`,
+      streak,
+      setGameStat
+    );
 
-      return {
-        ...prevStats,
-        "Emoji Streak": {
-          ...prevStats["Emoji Streak"],
-          [prevMaxStreakKey]: Math.max(
-            prevStats["Emoji Streak"][prevMaxStreakKey],
-            streak
-          ),
-        },
-      };
-    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [streak, setGameStat]);
 
@@ -204,6 +201,6 @@ function Emoji() {
       </div>
     </div>
   );
-}
+};
 
 export default Emoji;

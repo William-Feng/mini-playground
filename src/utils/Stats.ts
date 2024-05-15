@@ -37,3 +37,23 @@ export const newMinStat = (
     },
   }));
 };
+
+export const newMaxStat = (
+  game: string,
+  statLabel: string,
+  item: string,
+  value: number,
+  setGameStat: Dispatch<SetStateAction<GameStat>>
+) => {
+  let savedStatStr = localStorage.getItem(item);
+  let savedStat = savedStatStr ? parseInt(savedStatStr) : -Infinity;
+  let newValue = Math.max(savedStat, value);
+  localStorage.setItem(item, newValue.toString());
+  setGameStat((prevStats) => ({
+    ...prevStats,
+    [game]: {
+      ...prevStats[game],
+      [statLabel]: newValue,
+    },
+  }));
+};

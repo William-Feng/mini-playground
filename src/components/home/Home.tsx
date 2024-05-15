@@ -6,8 +6,8 @@ import TicTacToeLight from "./images/tic-tac-toe-light.png";
 import TicTacToeDark from "./images/tic-tac-toe-dark.png";
 import MemoryLight from "./images/memory-light.png";
 import MemoryDark from "./images/memory-dark.png";
-// import EmojiLight from "./images/emoji-light.png";
-// import EmojiDark from "./images/emoji-dark.png";
+import EmojiLight from "./images/emoji-light.png";
+import EmojiDark from "./images/emoji-dark.png";
 // import SlidingLight from "./images/sliding-light.png";
 // import SlidingDark from "./images/sliding-dark.png";
 // import Game2048Light from "./images/2048-light.png";
@@ -55,7 +55,7 @@ function Home() {
             <div className="gameTitle">Colour Matching</div>
           </div>
         </Link>
-        {/* <Link to="/emoji">
+        <Link to="/emoji">
           <div className="game">
             {theme === "light" ? (
               <img src={EmojiLight} alt="Emoji Streak" />
@@ -65,7 +65,7 @@ function Home() {
             <div className="gameTitle">Emoji Streak</div>
           </div>
         </Link>
-        <Link to="/sliding">
+        {/* <Link to="/sliding">
           <div className="game">
             {theme === "light" ? (
               <img src={SlidingLight} alt="Sliding Puzzle" />

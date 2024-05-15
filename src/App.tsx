@@ -14,7 +14,7 @@ import Memory from "./components/memory/Memory";
 // import Game2048 from "./components/2048/Game2048";
 import Footer from "./components/misc/Footer";
 // import Sliding from "./components/sliding/Sliding";
-// import Emoji from "./components/emoji/Emoji";
+import Emoji from "./components/emoji/Emoji";
 // import Minesweeper from "./components/minesweeper/Minesweeper";
 import "./App.css";
 
@@ -145,7 +145,7 @@ function App() {
             </AppContext.Provider>
           }
         />
-        {/* <Route
+        <Route
           path="/emoji"
           element={
             <AppContext.Provider
@@ -157,7 +157,7 @@ function App() {
             </AppContext.Provider>
           }
         />
-        <Route
+        {/* <Route
           path="/sliding"
           element={
             <AppContext.Provider

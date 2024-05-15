@@ -1,4 +1,4 @@
-export const easyEmojis = [
+export const easyEmojis: string[] = [
   "😁",
   "😆",
   "😅",
@@ -17,7 +17,7 @@ export const easyEmojis = [
   "🤔",
 ];
 
-export const hardEmojis = [
+export const hardEmojis: string[] = [
   "😀",
   "😃",
   "😄",
