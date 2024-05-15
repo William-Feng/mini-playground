@@ -1,8 +1,13 @@
-import React, { useContext } from "react";
+import React, { FC, useContext } from "react";
 import { AppContext } from "../../App";
 import "./Footer.css";
 
-function Footer({ isHome, isWordle }) {
+type FooterProps = {
+  isHome?: boolean;
+  isWordle?: boolean;
+};
+
+const Footer: FC<FooterProps> = ({ isHome, isWordle }) => {
   const { theme } = useContext(AppContext);
   const isPhoneView = window.innerWidth < 480;
 
@@ -20,6 +25,6 @@ function Footer({ isHome, isWordle }) {
       {(!isPhoneView || isHome) && "2022"}
     </div>
   );
-}
+};
 
 export default Footer;

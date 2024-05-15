@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { AppContext } from "../../App";
+import React, { FC, useContext } from "react";
+import { AppContext, AppContextType } from "../../App";
 import { Link } from "react-router-dom";
 import { BsInfoCircle } from "react-icons/bs";
 import { FaMoon, FaSun } from "react-icons/fa";
@@ -9,10 +9,11 @@ import ReactSwitch from "react-switch";
 import { PieChart as RechartsPieChart, Pie, Cell, Legend } from "recharts";
 import "./Navbar.css";
 
-function Navbar({ heading }) {
-  const { theme, toggleTheme, gameStat } = useContext(AppContext);
+const Navbar: FC<{ heading: string }> = ({ heading }) => {
+  const { theme, toggleTheme, gameStat } =
+    useContext<AppContextType>(AppContext);
 
-  const gameDescriptions = {
+  const gameDescriptions: { [key: string]: string } = {
     Wordle:
       "Wordle is a word guessing game where you have a six attempts to guess a secret five-letter word. Letters in the correct position will be green, letters in the wrong position will be yellow and incorrect letters will be grey.",
     "Tic Tac Toe":
@@ -28,42 +29,48 @@ function Navbar({ heading }) {
       "Minesweeper is a game where you need to clear the board without detonating any hidden mines. Left-click to reveal the adjacent mine counts and right-click (or toggle the flag mode) to mark a cell as a mine.",
   };
 
-  const gameStats = (game) => {
+  const gameStats = (game: string) => {
     const stats = gameStat[game];
     return Object.entries(stats).map(([statName, statValue]) => {
       return `${statName}: ${statValue}`;
     });
   };
 
-  const wordleData = [
+  type WordleData = {
+    title: string;
+    value: number;
+    color: string;
+  };
+
+  const wordleData: WordleData[] = [
     {
       title: "1 Attempt",
-      value: parseInt(localStorage.getItem("wordle-1attempts")) || 0,
+      value: parseInt(localStorage.getItem("wordle-1attempts") || "0"),
       color: "#fb8072",
     },
     {
       title: "2 Attempts",
-      value: parseInt(localStorage.getItem("wordle-2attempts")) || 0,
+      value: parseInt(localStorage.getItem("wordle-2attempts") || "0"),
       color: "#ffffb3",
     },
     {
       title: "3 Attempts",
-      value: parseInt(localStorage.getItem("wordle-3attempts")) || 0,
+      value: parseInt(localStorage.getItem("wordle-3attempts") || "0"),
       color: "#bebada",
     },
     {
       title: "4 Attempts",
-      value: parseInt(localStorage.getItem("wordle-4attempts")) || 0,
+      value: parseInt(localStorage.getItem("wordle-4attempts") || "0"),
       color: "#b3de69",
     },
     {
       title: "5 Attempts",
-      value: parseInt(localStorage.getItem("wordle-5attempts")) || 0,
+      value: parseInt(localStorage.getItem("wordle-5attempts") || "0"),
       color: "#fdb462",
     },
     {
       title: "6 Attempts",
-      value: parseInt(localStorage.getItem("wordle-6attempts")) || 0,
+      value: parseInt(localStorage.getItem("wordle-6attempts") || "0"),
       color: "#80b1d3",
     },
   ].filter((data) => data.value !== 0);
@@ -119,6 +126,6 @@ function Navbar({ heading }) {
       </div>
     </div>
   );
-}
+};
 
 export default Navbar;

@@ -1,12 +1,18 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useEffect,
+  useState,
+} from "react";
 import { Route, Routes } from "react-router-dom";
-// import Home from "./components/home/Home";
+import Home from "./components/home/Home";
 // import Wordle from "./components/wordle/Wordle";
 import TicTacToe from "./components/tic-tac-toe/TicTacToe";
-// import Navbar from "./components/misc/Navbar";
+import Navbar from "./components/misc/Navbar";
 // import Memory from "./components/memory/Memory";
 // import Game2048 from "./components/2048/Game2048";
-// import Footer from "./components/misc/Footer";
+import Footer from "./components/misc/Footer";
 // import Sliding from "./components/sliding/Sliding";
 // import Emoji from "./components/emoji/Emoji";
 // import Minesweeper from "./components/minesweeper/Minesweeper";
@@ -22,7 +28,7 @@ export interface AppContextType {
   theme: string;
   toggleTheme: () => void;
   gameStat: GameStat;
-  setGameStat: React.Dispatch<React.SetStateAction<GameStat>>;
+  setGameStat: Dispatch<SetStateAction<GameStat>>;
 }
 
 export const AppContext = createContext<AppContextType>({} as AppContextType);
@@ -92,16 +98,18 @@ function App() {
   return (
     <>
       <Routes>
-        {/*<Route
+        <Route
           path="/"
           element={
-            <AppContext.Provider value={{ theme, toggleTheme }}>
+            <AppContext.Provider
+              value={{ theme, toggleTheme, gameStat, setGameStat }}
+            >
               <Home />
               <Footer isHome />
             </AppContext.Provider>
           }
         />
-         <Route
+        {/*<Route
           path="/wordle"
           element={
             <AppContext.Provider
@@ -119,9 +127,9 @@ function App() {
             <AppContext.Provider
               value={{ theme, toggleTheme, gameStat, setGameStat }}
             >
-              {/* <Navbar heading="Tic Tac Toe" /> */}
+              <Navbar heading="Tic Tac Toe" />
               <TicTacToe />
-              {/* <Footer /> */}
+              <Footer />
             </AppContext.Provider>
           }
         />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import "./ModeTab.css";
 
 type ModeTabProps = {
@@ -7,11 +7,7 @@ type ModeTabProps = {
   modes: string[];
 };
 
-const ModeTab: React.FC<ModeTabProps> = ({
-  modeType,
-  handleModeChange,
-  modes,
-}) => {
+const ModeTab: FC<ModeTabProps> = ({ modeType, handleModeChange, modes }) => {
   return (
     <div className="mode-tab">
       {modes.map((mode) => (

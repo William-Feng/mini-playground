@@ -1,22 +1,22 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import "./Home.css";
-import WordleLight from "./images/wordle-light.png";
-import WordleDark from "./images/wordle-dark.png";
+// import WordleLight from "./images/wordle-light.png";
+// import WordleDark from "./images/wordle-dark.png";
 import TicTacToeLight from "./images/tic-tac-toe-light.png";
 import TicTacToeDark from "./images/tic-tac-toe-dark.png";
-import MemoryLight from "./images/memory-light.png";
-import MemoryDark from "./images/memory-dark.png";
-import EmojiLight from "./images/emoji-light.png";
-import EmojiDark from "./images/emoji-dark.png";
-import SlidingLight from "./images/sliding-light.png";
-import SlidingDark from "./images/sliding-dark.png";
-import Game2048Light from "./images/2048-light.png";
-import Game2048Dark from "./images/2048-dark.png";
-import MinesweeperLight from "./images/minesweeper-light.png";
-import MinesweeperDark from "./images/minesweeper-dark.png";
+// import MemoryLight from "./images/memory-light.png";
+// import MemoryDark from "./images/memory-dark.png";
+// import EmojiLight from "./images/emoji-light.png";
+// import EmojiDark from "./images/emoji-dark.png";
+// import SlidingLight from "./images/sliding-light.png";
+// import SlidingDark from "./images/sliding-dark.png";
+// import Game2048Light from "./images/2048-light.png";
+// import Game2048Dark from "./images/2048-dark.png";
+// import MinesweeperLight from "./images/minesweeper-light.png";
+// import MinesweeperDark from "./images/minesweeper-dark.png";
 import HomeHeading from "./HomeHeading";
 import { AppContext } from "../../App";
+import "./Home.css";
 
 function Home() {
   const { theme } = useContext(AppContext);
@@ -25,7 +25,7 @@ function Home() {
     <div className="home" id={theme}>
       <HomeHeading />
       <div className="games">
-        <Link to="/wordle">
+        {/*<Link to="/wordle">
           <div className="game">
             {theme === "light" ? (
               <img src={WordleLight} alt="Wordle" />
@@ -34,7 +34,7 @@ function Home() {
             )}
             <div className="gameTitle">Wordle</div>
           </div>
-        </Link>
+        </Link> */}
         <Link to="/tic-tac-toe">
           <div className="game">
             {theme === "light" ? (
@@ -45,7 +45,7 @@ function Home() {
             <div className="gameTitle">Tic Tac Toe</div>
           </div>
         </Link>
-        <Link to="/memory">
+        {/* <Link to="/memory">
           <div className="game">
             {theme === "light" ? (
               <img src={MemoryLight} alt="Colour Matching" />
@@ -94,7 +94,7 @@ function Home() {
             )}
             <div className="gameTitle">Minesweeper</div>
           </div>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

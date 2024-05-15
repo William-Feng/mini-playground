@@ -157,7 +157,11 @@ function TicTacToe() {
     let bestScore = -Infinity;
     let bestMove = 0;
 
-    for (let i = 0; i < SIZE; i++) {
+    // Randomise the starting move for the AI
+    let indices = Array.from({ length: SIZE }, (_, i) => i);
+    indices = indices.sort(() => Math.random() - 0.5);
+
+    for (let i of indices) {
       if (!board[i]) {
         board[i] = "O";
         let score = minimax(board, 0, false);
