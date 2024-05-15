@@ -1,4 +1,4 @@
-export const hardColours = [
+export const hardColours: string[] = [
   "orangered",
   "orangered",
   "saddlebrown",
@@ -65,9 +65,9 @@ export const hardColours = [
   "lime",
 ];
 
-export const mediumColours = hardColours.slice(0, 36);
+export const mediumColours: string[] = hardColours.slice(0, 36);
 
-export const easyColours = [
+export const easyColours: string[] = [
   "orangered",
   "orangered",
   "saddlebrown",

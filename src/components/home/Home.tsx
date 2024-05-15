@@ -4,8 +4,8 @@ import WordleLight from "./images/wordle-light.png";
 import WordleDark from "./images/wordle-dark.png";
 import TicTacToeLight from "./images/tic-tac-toe-light.png";
 import TicTacToeDark from "./images/tic-tac-toe-dark.png";
-// import MemoryLight from "./images/memory-light.png";
-// import MemoryDark from "./images/memory-dark.png";
+import MemoryLight from "./images/memory-light.png";
+import MemoryDark from "./images/memory-dark.png";
 // import EmojiLight from "./images/emoji-light.png";
 // import EmojiDark from "./images/emoji-dark.png";
 // import SlidingLight from "./images/sliding-light.png";
@@ -45,7 +45,7 @@ function Home() {
             <div className="gameTitle">Tic Tac Toe</div>
           </div>
         </Link>
-        {/* <Link to="/memory">
+        <Link to="/memory">
           <div className="game">
             {theme === "light" ? (
               <img src={MemoryLight} alt="Colour Matching" />
@@ -55,7 +55,7 @@ function Home() {
             <div className="gameTitle">Colour Matching</div>
           </div>
         </Link>
-        <Link to="/emoji">
+        {/* <Link to="/emoji">
           <div className="game">
             {theme === "light" ? (
               <img src={EmojiLight} alt="Emoji Streak" />

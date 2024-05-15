@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
-import "./TicTacToe.css";
 import { incrementStat } from "../../utils/Stats";
+import "./TicTacToe.css";
 
-function TicTacToe() {
+const TicTacToe: FC = () => {
   const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const SIZE = 9;
@@ -266,6 +266,6 @@ function TicTacToe() {
       </div>
     </div>
   );
-}
+};
 
 export default TicTacToe;

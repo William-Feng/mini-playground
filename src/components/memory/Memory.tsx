@@ -1,24 +1,39 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { easyColours, mediumColours, hardColours } from "./MemoryColours";
-import { AppContext } from "../../App";
+import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
+import { newMinStat } from "../../utils/Stats";
 import "./Memory.css";
 
-function Memory() {
-  const { theme, setGameStat } = useContext(AppContext);
+type Difficulty = "easy" | "medium" | "hard";
+type Colour = string;
+type Status = "hidden" | "stable" | "";
 
-  const COLOUR_HIDDEN = "hidden";
-  const CELL_STABLE = "stable";
+interface Cell {
+  colour: Colour;
+  status: Status;
+}
 
-  const [difficulty, setDifficulty] = useState(
-    localStorage.getItem("colour-difficulty") || "easy"
+interface Previous {
+  colour: Colour;
+  index: number;
+}
+
+const Memory: FC = () => {
+  const { theme, setGameStat } = useContext<AppContextType>(AppContext);
+
+  const COLOUR_HIDDEN: Status = "hidden";
+  const CELL_STABLE: Status = "stable";
+
+  const [difficulty, setDifficulty] = useState<Difficulty>(
+    (localStorage.getItem("colour-difficulty") as Difficulty) || "easy"
   );
-  const [board, setBoard] = useState([]);
-  const [previous, setPrevious] = useState(null);
-  const [lockBoard, setLockBoard] = useState(false);
-  const [turns, setTurns] = useState(0);
-  const [numMatching, setNumMatching] = useState(0);
-  const [solved, setSolved] = useState(false);
+  const [board, setBoard] = useState<Cell[]>([]);
+  const [previous, setPrevious] = useState<Previous | null>(null);
+  const [lockBoard, setLockBoard] = useState<boolean>(false);
+  const [turns, setTurns] = useState<number>(0);
+  const [numMatching, setNumMatching] = useState<number>(0);
+  const [solved, setSolved] = useState<boolean>(false);
 
   useEffect(() => {
     setBoard(gameInitialisation(difficulty));
@@ -26,19 +41,21 @@ function Memory() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
-  const handleDifficultyChange = (newDifficulty) => {
-    setDifficulty(newDifficulty);
+  const handleDifficultyChange = (newDifficulty: string) => {
+    if (["easy", "medium", "hard"].includes(newDifficulty)) {
+      setDifficulty(newDifficulty as Difficulty);
+    }
   };
 
   // Reset the board and all variables for a new game
-  const gameInitialisation = (difficulty) => {
+  const gameInitialisation = (difficulty: Difficulty): Cell[] => {
     setPrevious(null);
     setLockBoard(false);
     setTurns(0);
     setNumMatching(0);
     setSolved(false);
 
-    let colours;
+    let colours: Colour[];
 
     if (difficulty === "easy") {
       colours = easyColours;
@@ -56,7 +73,7 @@ function Memory() {
   };
 
   // Randomise the order of the cells (Fisher-Yates shuffle algorithm)
-  const shuffleBoard = (colours) => {
+  const shuffleBoard = (colours: string[]) => {
     const shuffledBoard = [...colours];
     for (let i = shuffledBoard.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -69,22 +86,22 @@ function Memory() {
   };
 
   // Check if the exact same cell is selected twice
-  const checkSame = (i) => {
+  const checkSame = (i: number) => {
     return board[i].status !== COLOUR_HIDDEN;
   };
 
   // Check if the two selected cells have the same underlying colour
-  const checkMatching = (i) => {
-    return board[i].colour === previous.colour;
+  const checkMatching = (i: number) => {
+    return board[i].colour === previous?.colour;
   };
 
   // Prevent clicking if board is locked or the new cell is already correct
-  const allowedClick = (i) => {
+  const allowedClick = (i: number) => {
     return !lockBoard && board[i].status !== CELL_STABLE;
   };
 
   // Show the colour of the cell if nothing was selected before in this turn
-  const firstSelected = (i) => {
+  const firstSelected = (i: number) => {
     const updatedBoard = [...board];
     updatedBoard[i].status = "";
     setBoard(updatedBoard);
@@ -92,7 +109,7 @@ function Memory() {
   };
 
   // Another cell was previously selected in this turn
-  const secondSelected = (i) => {
+  const secondSelected = (i: number) => {
     setTurns(turns + 1);
     const updatedBoard = [...board];
     if (checkSame(i)) {
@@ -102,7 +119,7 @@ function Memory() {
       setPrevious(null);
     } else if (checkMatching(i)) {
       // Set both cells to be stable if they match
-      updatedBoard[previous.index].status = CELL_STABLE;
+      updatedBoard[previous!.index].status = CELL_STABLE;
       updatedBoard[i].status = CELL_STABLE;
       setBoard(updatedBoard);
       setPrevious(null);
@@ -115,7 +132,7 @@ function Memory() {
       setLockBoard(true);
       setTimeout(() => {
         const resetBoard = [...board];
-        resetBoard[previous.index].status = COLOUR_HIDDEN;
+        resetBoard[previous!.index].status = COLOUR_HIDDEN;
         resetBoard[i].status = COLOUR_HIDDEN;
         setBoard(resetBoard);
         setPrevious(null);
@@ -125,7 +142,7 @@ function Memory() {
   };
 
   // A cell within the board is clicked
-  const handleClick = (i) => {
+  const handleClick = (i: number) => {
     if (allowedClick(i)) {
       if (!previous) {
         firstSelected(i);
@@ -139,33 +156,26 @@ function Memory() {
     setSolved(board.length > 0 && numMatching === board.length / 2);
   }, [numMatching, board]);
 
-  // Only update the minimum turns in local storage if the game is solved
+  // Update the game statistics when the game is over
   useEffect(() => {
-    if (solved) {
-      const savedMinTurnsKey = `colour-minTurns-${difficulty}`;
-      const savedMinTurns = localStorage.getItem(savedMinTurnsKey);
-      if (!savedMinTurns || turns < parseInt(savedMinTurns)) {
-        localStorage.setItem(savedMinTurnsKey, turns.toString());
-      }
+    if (!solved) return;
 
-      setGameStat((prevStats) => {
-        const prevMinTurnsKey = `Minimum Turns (${
-          difficulty === "easy"
-            ? "Easy"
-            : difficulty === "medium"
-            ? "Medium"
-            : "Hard"
-        })`;
+    const statLabel = `Minimum Turns (${
+      difficulty === "easy"
+        ? "Easy"
+        : difficulty === "medium"
+        ? "Medium"
+        : "Hard"
+    })`;
 
-        return {
-          ...prevStats,
-          "Colour Matching": {
-            ...prevStats["Colour Matching"],
-            [prevMinTurnsKey]: Math.min(savedMinTurns || Infinity, turns),
-          },
-        };
-      });
-    }
+    newMinStat(
+      "Colour Matching",
+      statLabel,
+      `colour-minTurns-${difficulty}`,
+      turns,
+      setGameStat
+    );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [solved, setGameStat]);
 
@@ -211,6 +221,6 @@ function Memory() {
       </div>
     </div>
   );
-}
+};
 
 export default Memory;

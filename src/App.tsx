@@ -10,7 +10,7 @@ import Home from "./components/home/Home";
 import Wordle from "./components/wordle/Wordle";
 import TicTacToe from "./components/tic-tac-toe/TicTacToe";
 import Navbar from "./components/misc/Navbar";
-// import Memory from "./components/memory/Memory";
+import Memory from "./components/memory/Memory";
 // import Game2048 from "./components/2048/Game2048";
 import Footer from "./components/misc/Footer";
 // import Sliding from "./components/sliding/Sliding";
@@ -133,7 +133,7 @@ function App() {
             </AppContext.Provider>
           }
         />
-        {/* <Route
+        <Route
           path="/memory"
           element={
             <AppContext.Provider
@@ -145,7 +145,7 @@ function App() {
             </AppContext.Provider>
           }
         />
-        <Route
+        {/* <Route
           path="/emoji"
           element={
             <AppContext.Provider
