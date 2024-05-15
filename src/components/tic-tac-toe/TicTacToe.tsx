@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../App";
-import "./TicTacToe.css";
+import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
+import "./TicTacToe.css";
 
 function TicTacToe() {
-  const { theme, setGameStat } = useContext(AppContext);
+  const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const SIZE = 9;
-  const [numPlayers, setNumPlayers] = useState(
+  const [numPlayers, setNumPlayers] = useState<string>(
     localStorage.getItem("tictactoe-numPlayers") || "1 player"
   );
-  const [board, setBoard] = useState(Array(SIZE).fill(null));
-  const [initialPlayer, setInitialPlayer] = useState("X");
-  const [turn, setTurn] = useState("X");
-  const [winner, setWinner] = useState(null);
+  const [board, setBoard] = useState<(string | null)[]>(Array(SIZE).fill(null));
+  const [initialPlayer, setInitialPlayer] = useState<string>("X");
+  const [turn, setTurn] = useState<string>("X");
+  const [winner, setWinner] = useState<string | null>(null);
 
-  const WIN_STATES = [
+  const WIN_STATES: number[][] = [
     // Horizontal
     [0, 1, 2],
     [3, 4, 5],
@@ -35,12 +35,15 @@ function TicTacToe() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numPlayers]);
 
-  const handleModeChange = (newDifficulty) => {
+  const handleModeChange = (newDifficulty: string) => {
     setNumPlayers(newDifficulty);
   };
 
   // Check if a given combination of cells is a winning combination
-  const isWinningCombination = (board, combination) => {
+  const isWinningCombination = (
+    board: (string | null)[],
+    combination: number[]
+  ) => {
     const [cell0, cell1, cell2] = combination;
     return (
       board[cell0] &&
@@ -50,7 +53,7 @@ function TicTacToe() {
   };
 
   // If there is a winner, return the winning combination
-  const getWinner = (board) => {
+  const getWinner = (board: (string | null)[]) => {
     for (let combination of WIN_STATES) {
       if (isWinningCombination(board, combination)) {
         return combination;
@@ -60,13 +63,13 @@ function TicTacToe() {
   };
 
   // Check if a cell index is part of the winning combination
-  const isWinningCell = (index) => {
+  const isWinningCell = (index: number) => {
     const winningCombination = getWinner(board);
     return winningCombination && winningCombination.includes(index);
   };
 
   // Game results in a draw if all the cells are filled up (without a winner)
-  const checkDraw = (board) => {
+  const checkDraw = (board: (string | null)[]) => {
     for (let cell of board) {
       if (!cell) return false;
     }
@@ -82,7 +85,7 @@ function TicTacToe() {
   };
 
   // Update the board, check for any winners and swap turns
-  const handleClick = (i) => {
+  const handleClick = (i: number) => {
     if (!winner && !board[i]) {
       let newBoard = [...board];
       newBoard[i] = turn === "X" ? "X" : "O";
@@ -100,7 +103,7 @@ function TicTacToe() {
   };
 
   // Evaluate the current board state to determine the score
-  const calculateScore = (board, depth) => {
+  const calculateScore = (board: (string | null)[], depth: number) => {
     for (let combination of WIN_STATES) {
       const [cell0, cell1, cell2] = combination;
       if (
@@ -115,7 +118,11 @@ function TicTacToe() {
   };
 
   // Minimax algorithm that gets called recursively
-  const minimax = (board, depth, maximisingPlayer) => {
+  const minimax = (
+    board: (string | null)[],
+    depth: number,
+    maximisingPlayer: boolean
+  ) => {
     // Prioritise winning as quickly as possible and vice versa
     let score = calculateScore(board, depth);
     if (score !== 0) return score;
@@ -148,7 +155,7 @@ function TicTacToe() {
   // Find the index of the best move for the AI
   const makeAIMove = () => {
     let bestScore = -Infinity;
-    let bestMove;
+    let bestMove = 0;
 
     for (let i = 0; i < SIZE; i++) {
       if (!board[i]) {
@@ -175,37 +182,33 @@ function TicTacToe() {
 
   // Update the game statistics when a winner has been determined
   useEffect(() => {
-    const incrementGameStat = (statLabel) => {
+    const incrementGameStat = (statLabel: string, item: string) => {
+      let savedStat = parseInt(localStorage.getItem(item) || "0");
+      localStorage.setItem(item, (savedStat + 1).toString());
       setGameStat((prevStats) => ({
         ...prevStats,
         "Tic Tac Toe": {
           ...prevStats["Tic Tac Toe"],
-          [statLabel]: parseInt(prevStats["Tic Tac Toe"][statLabel]) + 1,
+          [statLabel]: savedStat + 1,
         },
       }));
-    };
-
-    const incrementStatAndStore = (statLabel, item) => {
-      let savedStat = parseInt(localStorage.getItem(item)) || 0;
-      localStorage.setItem(item, (savedStat + 1).toString());
-      incrementGameStat(statLabel);
     };
 
     if (!winner) return;
 
     if (numPlayers === "1 player") {
       if (winner === "draw") {
-        incrementStatAndStore("Rounds Drew (1P)", "tictactoe-drew");
+        incrementGameStat("Rounds Drew (1P)", "tictactoe-drew");
       } else if (winner === "O") {
-        incrementStatAndStore("Rounds Lost (1P)", "tictactoe-lost");
+        incrementGameStat("Rounds Lost (1P)", "tictactoe-lost");
       }
     } else {
       if (winner === "X") {
-        incrementStatAndStore("Player X Won (2P)", "tictactoe-xWon");
+        incrementGameStat("Player X Won (2P)", "tictactoe-xWon");
       } else if (winner === "O") {
-        incrementStatAndStore("Player O Won (2P)", "tictactoe-oWon");
+        incrementGameStat("Player O Won (2P)", "tictactoe-oWon");
       } else {
-        incrementStatAndStore("Players Drew (2P)", "tictactoe-drew2P");
+        incrementGameStat("Players Drew (2P)", "tictactoe-drew2P");
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

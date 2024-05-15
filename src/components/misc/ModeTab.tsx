@@ -1,7 +1,17 @@
 import React from "react";
 import "./ModeTab.css";
 
-function ModeTab({ modeType, handleModeChange, modes }) {
+type ModeTabProps = {
+  modeType: string;
+  handleModeChange: (mode: string) => void;
+  modes: string[];
+};
+
+const ModeTab: React.FC<ModeTabProps> = ({
+  modeType,
+  handleModeChange,
+  modes,
+}) => {
   return (
     <div className="mode-tab">
       {modes.map((mode) => (
@@ -15,6 +25,6 @@ function ModeTab({ modeType, handleModeChange, modes }) {
       ))}
     </div>
   );
-}
+};
 
 export default ModeTab;

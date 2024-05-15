@@ -1,21 +1,34 @@
 import React, { createContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import Home from "./components/home/Home";
-import Wordle from "./components/wordle/Wordle";
+// import Home from "./components/home/Home";
+// import Wordle from "./components/wordle/Wordle";
 import TicTacToe from "./components/tic-tac-toe/TicTacToe";
-import Navbar from "./components/misc/Navbar";
-import Memory from "./components/memory/Memory";
-import Game2048 from "./components/2048/Game2048";
-import Footer from "./components/misc/Footer";
-import Sliding from "./components/sliding/Sliding";
-import Emoji from "./components/emoji/Emoji";
-import Minesweeper from "./components/minesweeper/Minesweeper";
+// import Navbar from "./components/misc/Navbar";
+// import Memory from "./components/memory/Memory";
+// import Game2048 from "./components/2048/Game2048";
+// import Footer from "./components/misc/Footer";
+// import Sliding from "./components/sliding/Sliding";
+// import Emoji from "./components/emoji/Emoji";
+// import Minesweeper from "./components/minesweeper/Minesweeper";
 import "./App.css";
 
-export const AppContext = createContext();
+interface GameStat {
+  [key: string]: {
+    [key: string]: string | number;
+  };
+}
+
+export interface AppContextType {
+  theme: string;
+  toggleTheme: () => void;
+  gameStat: GameStat;
+  setGameStat: React.Dispatch<React.SetStateAction<GameStat>>;
+}
+
+export const AppContext = createContext<AppContextType>({} as AppContextType);
 
 function App() {
-  const [theme, setTheme] = useState(
+  const [theme, setTheme] = useState<string>(
     () => window.localStorage.getItem("theme") || "light"
   );
 
@@ -27,7 +40,7 @@ function App() {
     setTheme((curr) => (curr === "light" ? "dark" : "light"));
   };
 
-  const [gameStat, setGameStat] = useState({
+  const [gameStat, setGameStat] = useState<GameStat>({
     Wordle: {
       "Words Guessed": localStorage.getItem("wordle-guessed") || 0,
       "Words Missed": localStorage.getItem("wordle-missed") || 0,
@@ -79,7 +92,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route
+        {/*<Route
           path="/"
           element={
             <AppContext.Provider value={{ theme, toggleTheme }}>
@@ -88,7 +101,7 @@ function App() {
             </AppContext.Provider>
           }
         />
-        <Route
+         <Route
           path="/wordle"
           element={
             <AppContext.Provider
@@ -99,20 +112,20 @@ function App() {
               <Footer isWordle />
             </AppContext.Provider>
           }
-        />
+        /> */}
         <Route
           path="/tic-tac-toe"
           element={
             <AppContext.Provider
               value={{ theme, toggleTheme, gameStat, setGameStat }}
             >
-              <Navbar heading="Tic Tac Toe" />
+              {/* <Navbar heading="Tic Tac Toe" /> */}
               <TicTacToe />
-              <Footer />
+              {/* <Footer /> */}
             </AppContext.Provider>
           }
         />
-        <Route
+        {/* <Route
           path="/memory"
           element={
             <AppContext.Provider
@@ -171,7 +184,7 @@ function App() {
               <Footer />
             </AppContext.Provider>
           }
-        />
+        /> */}
       </Routes>
     </>
   );
