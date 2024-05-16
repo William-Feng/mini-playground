@@ -1,17 +1,20 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { AppContext } from "../../App";
+import React, { FC, useContext, useEffect, useMemo, useState } from "react";
+import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
+import { newMinStat } from "../../utils/Stats";
 import "./Sliding.css";
 
-function Sliding() {
-  const { theme, setGameStat } = useContext(AppContext);
+type Difficulty = "easy" | "hard";
+
+const Sliding: FC = () => {
+  const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const [difficulty, setDifficulty] = useState(
-    localStorage.getItem("sliding-difficulty") || "easy"
+    (localStorage.getItem("sliding-difficulty") as Difficulty) || "easy"
   );
-  const [board, setBoard] = useState([]);
-  const [moves, setMoves] = useState(0);
-  const [solved, setSolved] = useState(false);
+  const [board, setBoard] = useState<number[][]>([]);
+  const [moves, setMoves] = useState<number>(0);
+  const [solved, setSolved] = useState<boolean>(false);
 
   const size = useMemo(() => (difficulty === "easy" ? 3 : 4), [difficulty]);
 
@@ -38,8 +41,10 @@ function Sliding() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
-  const handleDifficultyChange = (newDifficulty) => {
-    setDifficulty(newDifficulty);
+  const handleDifficultyChange = (newDifficulty: string) => {
+    if (["easy", "hard"].includes(newDifficulty)) {
+      setDifficulty(newDifficulty as Difficulty);
+    }
   };
 
   // The solution is a 2D array of numbers in ascending order
@@ -54,7 +59,7 @@ function Sliding() {
       result.push(row);
     }
     // There should be an empty cell in the bottom right corner
-    result[size - 1][size - 1] = "";
+    result[size - 1][size - 1] = 0;
     return result;
   }, [size]);
 
@@ -71,7 +76,7 @@ function Sliding() {
       { length: size * size - 1 },
       (_, index) => index + 1
     );
-    numbers.push("");
+    numbers.push(0);
 
     for (let i = numbers.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -101,7 +106,7 @@ function Sliding() {
   };
 
   // Check whether the board after the randomised shuffling is solvable
-  const solvable = (size, inversions) => {
+  const solvable = (size: number, inversions: number) => {
     // If odd (3x3 for 8-puzzle), the number of inversions must be even for solvability
     if (size % 2 === 1) {
       return inversions % 2 === 0;
@@ -113,7 +118,7 @@ function Sliding() {
   };
 
   // Count the number of inversions in an array
-  const countInversions = (arr) => {
+  const countInversions = (arr: number[]) => {
     let inversions = 0;
     for (let i = 0; i < arr.length - 1; i++) {
       for (let j = i + 1; j < arr.length; j++) {
@@ -126,10 +131,10 @@ function Sliding() {
   };
 
   // Find the empty cell in the board to determine whether a move is valid
-  const findEmptyCell = (board) => {
+  const findEmptyCell = (board: number[][]) => {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
-        if (board[i][j] === "") {
+        if (board[i][j] === 0) {
           return [i, j];
         }
       }
@@ -138,18 +143,19 @@ function Sliding() {
   };
 
   // Swap the empty cell with the target cell
-  const swapCells = (row, col, x, y) => {
+  const swapCells = (row: number, col: number, x: number, y: number) => {
     const newBoard = board.map((row) => [...row]);
     newBoard[x][y] = board[row][col];
-    newBoard[row][col] = "";
+    newBoard[row][col] = 0;
     setBoard(newBoard);
     setMoves(moves + 1);
   };
 
   // Check if the clicked cell is cardinally adjacent to the empty cell, then swap cells
-  const handleClick = (row, col) => {
+  const handleClick = (row: number, col: number) => {
     if (solved) return;
     const empty_cell = findEmptyCell(board);
+    if (!empty_cell) return;
     const directions = [
       [1, 0],
       [-1, 0],
@@ -165,26 +171,6 @@ function Sliding() {
     }
   };
 
-  // Check if the pressed key is a valid arrow key, then swap cells
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleKeyPress = (e) => {
-    if (solved) return;
-    const empty_cell = findEmptyCell(board);
-
-    const directions = {
-      ArrowUp: [1, 0],
-      ArrowDown: [-1, 0],
-      ArrowLeft: [0, 1],
-      ArrowRight: [0, -1],
-    };
-    const offset = directions[e.key];
-    if (!offset) return;
-
-    const [row, col] = [empty_cell[0] + offset[0], empty_cell[1] + offset[1]];
-    if (row < 0 || row >= size || col < 0 || col >= size) return;
-    swapCells(row, col, empty_cell[0], empty_cell[1]);
-  };
-
   // Check if the board is solved whenever it's updated
   useEffect(() => {
     if (JSON.stringify(board) === JSON.stringify(solution)) {
@@ -195,11 +181,30 @@ function Sliding() {
 
   // Add event listener for arrow keys
   useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      const directions: Record<string, number[]> = {
+        ArrowUp: [1, 0],
+        ArrowDown: [-1, 0],
+        ArrowLeft: [0, 1],
+        ArrowRight: [0, -1],
+      };
+      const empty_cell = findEmptyCell(board);
+      const offset = directions[e.key as keyof typeof directions];
+
+      if (solved || !empty_cell || !offset) return;
+
+      const [row, col] = [empty_cell[0] + offset[0], empty_cell[1] + offset[1]];
+      if (row < 0 || row >= size || col < 0 || col >= size) return;
+
+      swapCells(row, col, empty_cell[0], empty_cell[1]);
+    };
+
     window.addEventListener("keydown", handleKeyPress);
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [handleKeyPress]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [board]);
 
   // Save the state of the game to local storage
   useEffect(() => {
@@ -208,29 +213,22 @@ function Sliding() {
     localStorage.setItem("sliding-solved", solved.toString());
   }, [board, moves, solved]);
 
-  // Only update the minimum moves in local storage if the game is solved
+  // Update the game statistics when the game is over
   useEffect(() => {
-    if (solved) {
-      const savedMinMovesKey = `sliding-minMoves-${difficulty}`;
-      const savedMinMoves = localStorage.getItem(savedMinMovesKey);
-      if (!savedMinMoves || moves < parseInt(savedMinMoves)) {
-        localStorage.setItem(savedMinMovesKey, moves.toString());
-      }
+    if (!solved) return;
 
-      setGameStat((prevStats) => {
-        const prevMinMovesKey = `Minimum Moves (${
-          difficulty === "easy" ? "Easy" : "Hard"
-        })`;
+    const statLabel = `Minimum Moves (${
+      difficulty === "easy" ? "Easy" : "Hard"
+    })`;
 
-        return {
-          ...prevStats,
-          "Sliding Puzzle": {
-            ...prevStats["Sliding Puzzle"],
-            [prevMinMovesKey]: Math.min(savedMinMoves || Infinity, moves),
-          },
-        };
-      });
-    }
+    newMinStat(
+      "Sliding Puzzle",
+      statLabel,
+      `sliding-minTurns-${difficulty}`,
+      moves,
+      setGameStat
+    );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [solved, setGameStat]);
 
@@ -249,12 +247,12 @@ function Sliding() {
           row.map((value, j) => (
             <div
               className={
-                value === "" ? "cell empty" : solved ? "cell stable" : "cell"
+                value === 0 ? "cell empty" : solved ? "cell stable" : "cell"
               }
               key={`${i}-${j}`}
               onClick={() => handleClick(i, j)}
             >
-              {value}
+              {value === 0 ? "" : value}
             </div>
           ))
         )}
@@ -268,6 +266,6 @@ function Sliding() {
       </div>
     </div>
   );
-}
+};
 
 export default Sliding;

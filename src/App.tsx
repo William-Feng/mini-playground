@@ -7,14 +7,14 @@ import React, {
 } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/home/Home";
+import Navbar from "./components/misc/Navbar";
+import Footer from "./components/misc/Footer";
 import Wordle from "./components/wordle/Wordle";
 import TicTacToe from "./components/tic-tac-toe/TicTacToe";
-import Navbar from "./components/misc/Navbar";
 import Memory from "./components/memory/Memory";
-// import Game2048 from "./components/2048/Game2048";
-import Footer from "./components/misc/Footer";
-// import Sliding from "./components/sliding/Sliding";
 import Emoji from "./components/emoji/Emoji";
+import Sliding from "./components/sliding/Sliding";
+// import Game2048 from "./components/2048/Game2048";
 // import Minesweeper from "./components/minesweeper/Minesweeper";
 import "./App.css";
 
@@ -157,7 +157,7 @@ function App() {
             </AppContext.Provider>
           }
         />
-        {/* <Route
+        <Route
           path="/sliding"
           element={
             <AppContext.Provider
@@ -169,7 +169,7 @@ function App() {
             </AppContext.Provider>
           }
         />
-        <Route
+        {/* <Route
           path="/2048"
           element={
             <AppContext.Provider
