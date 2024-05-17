@@ -14,7 +14,7 @@ import TicTacToe from "./components/tic-tac-toe/TicTacToe";
 import Memory from "./components/memory/Memory";
 import Emoji from "./components/emoji/Emoji";
 import Sliding from "./components/sliding/Sliding";
-// import Game2048 from "./components/2048/Game2048";
+import Game2048 from "./components/2048/Game2048";
 // import Minesweeper from "./components/minesweeper/Minesweeper";
 import "./App.css";
 
@@ -169,7 +169,7 @@ function App() {
             </AppContext.Provider>
           }
         />
-        {/* <Route
+        <Route
           path="/2048"
           element={
             <AppContext.Provider
@@ -181,7 +181,7 @@ function App() {
             </AppContext.Provider>
           }
         />
-        <Route
+        {/* <Route
           path="/minesweeper"
           element={
             <AppContext.Provider
