@@ -15,7 +15,7 @@ import Memory from "./components/memory/Memory";
 import Emoji from "./components/emoji/Emoji";
 import Sliding from "./components/sliding/Sliding";
 import Game2048 from "./components/2048/Game2048";
-// import Minesweeper from "./components/minesweeper/Minesweeper";
+import Minesweeper from "./components/minesweeper/Minesweeper";
 import "./App.css";
 
 export interface GameStat {
@@ -181,7 +181,7 @@ function App() {
             </AppContext.Provider>
           }
         />
-        {/* <Route
+        <Route
           path="/minesweeper"
           element={
             <AppContext.Provider
@@ -192,7 +192,7 @@ function App() {
               <Footer />
             </AppContext.Provider>
           }
-        /> */}
+        />
       </Routes>
     </>
   );

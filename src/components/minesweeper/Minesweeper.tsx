@@ -1,34 +1,42 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { FC, useContext, useEffect, useMemo, useState } from "react";
 import { AppContext } from "../../App";
-import "./Minesweeper.css";
 import ModeTab from "../misc/ModeTab";
+import { incrementStat, newMinTime } from "../../utils/Stats";
+import "./Minesweeper.css";
 
-function Minesweeper() {
+type Difficulty = "easy" | "medium" | "hard";
+type Cell = { row: number; col: number };
+
+const Minesweeper: FC = () => {
   const { theme, setGameStat } = useContext(AppContext);
 
   const [difficulty, setDifficulty] = useState(
-    localStorage.getItem("minesweeper-difficulty") || "easy"
+    (localStorage.getItem("minesweeper-difficulty") as Difficulty) || "easy"
   );
-  const size = useMemo(
+  const size = useMemo<number>(
     () => (difficulty === "easy" ? 8 : difficulty === "medium" ? 12 : 16),
     [difficulty]
   );
-  const numMines = useMemo(
+  const numMines = useMemo<number>(
     () => (difficulty === "easy" ? 10 : difficulty === "medium" ? 25 : 40),
     [difficulty]
   );
 
-  const [board, setBoard] = useState([]);
-  const [solution, setSolution] = useState([]);
-  const [revealedCells, setRevealedCells] = useState([]);
-  const [gameStatus, setGameStatus] = useState({
+  const [board, setBoard] = useState<string[][]>([]);
+  const [solution, setSolution] = useState<number[][]>([]);
+  const [revealedCells, setRevealedCells] = useState<Cell[]>([]);
+  const [gameStatus, setGameStatus] = useState<{
+    inProgress: boolean;
+    gameOver: boolean;
+    solutionInitialised: boolean;
+  }>({
     inProgress: true,
     gameOver: false,
     solutionInitialised: false,
   });
-  const [numFlags, setNumFlags] = useState(0);
-  const [flagMode, setFlagMode] = useState(false);
-  const [timer, setTimer] = useState("00:00");
+  const [numFlags, setNumFlags] = useState<number>(0);
+  const [flagMode, setFlagMode] = useState<boolean>(false);
+  const [timer, setTimer] = useState<string>("00:00");
 
   useEffect(() => {
     gameInitialisation();
@@ -36,8 +44,10 @@ function Minesweeper() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
-  const handleDifficultyChange = (newDifficulty) => {
-    setDifficulty(newDifficulty);
+  const handleDifficultyChange = (newDifficulty: string) => {
+    if (["easy", "medium", "hard"].includes(newDifficulty)) {
+      setDifficulty(newDifficulty as Difficulty);
+    }
   };
 
   const gameInitialisation = () => {
@@ -53,7 +63,7 @@ function Minesweeper() {
     setTimer("00:00");
   };
 
-  const initialiseSolution = (i, j) => {
+  const initialiseSolution = (i: number, j: number) => {
     let solution = [...Array(size)].map(() => Array(size).fill(0));
     let mines = 0;
     while (mines < numMines) {
@@ -69,7 +79,7 @@ function Minesweeper() {
     return solution;
   };
 
-  const revealLogic = (row, col, visited) => {
+  const revealLogic = (row: number, col: number, visited: boolean[][]) => {
     if (row < 0 || row >= size || col < 0 || col >= size) return;
 
     visited[row][col] = true;
@@ -99,7 +109,7 @@ function Minesweeper() {
         }
       }
     } else {
-      board[row][col] = adjacentMines;
+      board[row][col] = adjacentMines.toString();
     }
     setBoard([...board]);
     if (!revealedCells.some((cell) => cell.row === row && cell.col === col)) {
@@ -119,7 +129,7 @@ function Minesweeper() {
     setGameStatus({ ...gameStatus, inProgress: false, gameOver: true });
   };
 
-  const handleClick = (i, j) => {
+  const handleClick = (i: number, j: number) => {
     if (!gameStatus.inProgress) return;
     if (board[i][j] === "🚩") return;
     if (flagMode) {
@@ -138,7 +148,11 @@ function Minesweeper() {
     revealLogic(i, j, visited);
   };
 
-  const handleFlag = (e, i, j) => {
+  const handleFlag = (
+    e: React.MouseEvent<HTMLDivElement> | null,
+    i: number,
+    j: number
+  ) => {
     if (e) e.preventDefault();
     if (!gameStatus.inProgress) return;
     if (revealedCells.some((cell) => cell.row === i && cell.col === j)) {
@@ -174,11 +188,12 @@ function Minesweeper() {
   }, [solution]);
 
   useEffect(() => {
-    let startTime = null;
-    let intervalId = null;
+    let startTime: number | null = null;
+    let intervalId: NodeJS.Timeout | null = null;
 
     const updateTimer = () => {
       let currentTime = new Date().getTime();
+      if (!startTime) return;
       let elapsedTime = Math.floor((currentTime - startTime) / 1000);
       let minutes = Math.floor(elapsedTime / 60);
       let seconds = elapsedTime % 60;
@@ -202,32 +217,35 @@ function Minesweeper() {
 
     // Keep the timer value upon game won/lost, and only reset it upon pressing Restart
     return () => {
-      if (gameStatus.inProgress) {
+      if (gameStatus.inProgress && intervalId) {
         clearInterval(intervalId);
       }
     };
   }, [gameStatus]);
 
-  const cellClass = (i, j, value) => {
+  const cellClass = (i: number, j: number, value: string | number) => {
     let classes = "cell";
     if (revealedCells.some((cell) => cell.row === i && cell.col === j)) {
       classes += " revealed";
-      if (value === 1) {
-        classes += " one";
-      } else if (value === 2) {
-        classes += " two";
-      } else if (value === 3) {
-        classes += " three";
-      } else if (value === 4) {
-        classes += " four";
-      } else if (value === 5) {
-        classes += " five";
-      } else if (value === 6) {
-        classes += " six";
-      } else if (value === 7) {
-        classes += " seven";
-      } else if (value === 8) {
-        classes += " eight";
+      const parsedValue = parseInt(value.toString());
+      if (!isNaN(parsedValue)) {
+        if (parsedValue === 1) {
+          classes += " one";
+        } else if (parsedValue === 2) {
+          classes += " two";
+        } else if (parsedValue === 3) {
+          classes += " three";
+        } else if (parsedValue === 4) {
+          classes += " four";
+        } else if (parsedValue === 5) {
+          classes += " five";
+        } else if (parsedValue === 6) {
+          classes += " six";
+        } else if (parsedValue === 7) {
+          classes += " seven";
+        } else if (parsedValue === 8) {
+          classes += " eight";
+        }
       }
     }
     if (!gameStatus.inProgress) {
@@ -240,31 +258,19 @@ function Minesweeper() {
   useEffect(() => {
     if (!gameStatus.inProgress) {
       if (gameStatus.gameOver) {
-        setGameStat((prevStats) => ({
-          ...prevStats,
-          Minesweeper: {
-            ...prevStats["Minesweeper"],
-            "Games Lost": parseInt(prevStats["Minesweeper"]["Games Lost"]) + 1,
-          },
-        }));
-        localStorage.setItem(
+        incrementStat(
+          "Minesweeper",
+          "Games Lost",
           "minesweeper-lost",
-          (
-            (parseInt(localStorage.getItem("minesweeper-lost")) || 0) + 1
-          ).toString()
+          setGameStat
         );
       } else {
-        const getShorterTime = (time1, time2) => {
-          if (time2 === Infinity) return time1;
-
-          const [min1, sec1] = time1.split(":").map(Number);
-          const [min2, sec2] = time2.split(":").map(Number);
-
-          const totalsecs1 = min1 * 60 + sec1;
-          const totalsecs2 = min2 * 60 + sec2;
-
-          return totalsecs1 <= totalsecs2 ? time1 : time2;
-        };
+        incrementStat(
+          "Minesweeper",
+          "Games Won",
+          "minesweeper-won",
+          setGameStat
+        );
 
         const prevMinTimeKey = `Minimum Time (${
           difficulty === "easy"
@@ -274,27 +280,13 @@ function Minesweeper() {
             : "Hard"
         })`;
 
-        const savedminTimeKey = `minesweeper-minTime-${difficulty}`;
-        const savedMinTime = localStorage.getItem(savedminTimeKey);
-        localStorage.setItem(
-          savedminTimeKey,
-          getShorterTime(timer, savedMinTime || Infinity)
+        newMinTime(
+          "Minesweeper",
+          prevMinTimeKey,
+          `minesweeper-minTime-${difficulty}`,
+          timer,
+          setGameStat
         );
-        localStorage.setItem(
-          "minesweeper-won",
-          (
-            (parseInt(localStorage.getItem("minesweeper-won")) || 0) + 1
-          ).toString()
-        );
-
-        setGameStat((prevStats) => ({
-          ...prevStats,
-          Minesweeper: {
-            ...prevStats["Minesweeper"],
-            "Games Won": parseInt(prevStats["Minesweeper"]["Games Won"]) + 1,
-            [prevMinTimeKey]: getShorterTime(timer, savedMinTime || Infinity),
-          },
-        }));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -358,6 +350,6 @@ function Minesweeper() {
       </div>
     </div>
   );
-}
+};
 
 export default Minesweeper;
