@@ -29,6 +29,8 @@ const Navbar: FC<{ heading: string }> = ({ heading }) => {
       "Minesweeper is a game where you need to clear the board without detonating any hidden mines. Left-click to reveal the adjacent mine counts and right-click (or toggle the flag mode) to mark a cell as a mine.",
     "Lights Out":
       "Lights Out is a game where you need to turn off all the lights on the board in the fewest number of moves. Clicking a cell will toggle the state of that cell and its adjacent cells.",
+    Othello:
+      "Othello is a game where you need to flip your opponent's pieces to your colour by trapping them between your pieces. The game ends when the board is full or no more moves can be made, with the winner having more pieces.",
   };
 
   const gameStats = (game: string) => {

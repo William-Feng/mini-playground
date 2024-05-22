@@ -1,0 +1,36 @@
+.othello .board {
+  grid-template-columns: repeat(8, auto);
+  grid-gap: 0px;
+  background-color: forestgreen;
+}
+
+.othello#dark .board {
+  background-color: darkgreen;
+}
+
+.othello .cell {
+  height: 62.5px;
+  width: 62.5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: 1px solid black;
+  border-radius: 0;
+  border: none;
+}
+
+.othello .tile-light,
+.othello .tile-dark {
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.othello .tile-light {
+  background: linear-gradient(145deg, #ffffff, #cdcdcd);
+}
+
+.othello .tile-dark {
+  background: linear-gradient(145deg, #000000, #434343);
+}

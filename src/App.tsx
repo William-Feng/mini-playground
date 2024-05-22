@@ -16,8 +16,9 @@ import Emoji from "./components/emoji/Emoji";
 import Sliding from "./components/sliding/Sliding";
 import Game2048 from "./components/2048/Game2048";
 import Minesweeper from "./components/minesweeper/Minesweeper";
-import "./App.css";
 import LightsOut from "./components/lights-out/LightsOut";
+import Othello from "./components/othello/Othello";
+import "./App.css";
 
 export interface GameStat {
   [key: string]: {
@@ -101,6 +102,11 @@ function App() {
         localStorage.getItem("lights-minTurns-medium") || "N/A",
       "Minimum Turns (Hard)":
         localStorage.getItem("lights-minTurns-hard") || "N/A",
+    },
+    Othello: {
+      "Light Won": localStorage.getItem("othello-lightWon") || 0,
+      "Dark Won": localStorage.getItem("othello-darkWon") || 0,
+      "Players Drew": localStorage.getItem("othello-drew") || 0,
     },
   });
 
@@ -210,6 +216,18 @@ function App() {
             >
               <Navbar heading="Lights Out" />
               <LightsOut />
+              <Footer />
+            </AppContext.Provider>
+          }
+        />
+        <Route
+          path="/othello"
+          element={
+            <AppContext.Provider
+              value={{ theme, toggleTheme, gameStat, setGameStat }}
+            >
+              <Navbar heading="Othello" />
+              <Othello />
               <Footer />
             </AppContext.Provider>
           }
