@@ -55,8 +55,59 @@ const LightsOut: FC = () => {
   const gameInitialisation = () => {
     setTurns(0);
     setSolved(false);
-    setBoard(Array.from({ length: size }, () => Array(size).fill(false)));
+    setBoard(shuffleBoard());
   };
+
+  // Randomise the board by toggling cells to ensure it's solvable
+  const shuffleBoard = () => {
+    const board = Array.from({ length: size }, () => Array(size).fill(false));
+    const directions = [
+      [0, 0],
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+    ];
+    for (let iteration = 0; iteration < 100; iteration++) {
+      let row = Math.floor(Math.random() * size);
+      let col = Math.floor(Math.random() * size);
+      for (const [i, j] of directions) {
+        const [x, y] = [row + i, col + j];
+        if (x >= 0 && x < size && y >= 0 && y < size) {
+          board[x][y] = !board[x][y];
+        }
+      }
+    }
+    return board;
+  };
+
+  // Toggle the cell and its neighbours
+  const handleClick = (row: number, col: number) => {
+    if (solved) return;
+    const directions = [
+      [0, 0],
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+    ];
+    const newBoard = board.map((row) => [...row]);
+    for (const [i, j] of directions) {
+      const [x, y] = [row + i, col + j];
+      if (x >= 0 && x < size && y >= 0 && y < size) {
+        newBoard[x][y] = !newBoard[x][y];
+      }
+    }
+    setBoard(newBoard);
+    setTurns(turns + 1);
+  };
+
+  // Check if the board is solved whenever it's updated
+  useEffect(() => {
+    if (board.length > 0 && board.every((row) => row.every((cell) => !cell))) {
+      setSolved(true);
+    }
+  }, [board]);
 
   // Save the state of the game to local storage
   useEffect(() => {
@@ -109,8 +160,11 @@ const LightsOut: FC = () => {
         {board.map((row, i) =>
           row.map((value, j) => (
             <div
-              className={"cell " + (value ? "on" : "off")}
+              className={
+                "cell " + (value ? "on" : "off") + (solved ? " stable" : "")
+              }
               key={`${i}-${j}`}
+              onClick={() => handleClick(i, j)}
             ></div>
           ))
         )}

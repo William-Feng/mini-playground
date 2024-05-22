@@ -12,6 +12,8 @@
 }
 
 .lights-out .cell {
+  height: 124px;
+  width: 124px;
   outline: 1px solid black;
   border-radius: 0;
   border: none;
@@ -25,4 +27,20 @@
 .lights-out.hard .cell {
   height: 55.75px;
   width: 55.75px;
+}
+
+.lights-out#light .cell.on {
+  background-color: cyan;
+}
+
+.lights-out#dark .cell.on {
+  background-color: royalblue;
+}
+
+.lights-out#light .cell.off {
+  background-color: darkgrey;
+}
+
+.lights-out#dark .cell.off {
+  background-color: lightgrey;
 }
