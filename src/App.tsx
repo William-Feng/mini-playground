@@ -17,6 +17,7 @@ import Sliding from "./components/sliding/Sliding";
 import Game2048 from "./components/2048/Game2048";
 import Minesweeper from "./components/minesweeper/Minesweeper";
 import "./App.css";
+import LightsOut from "./components/lights-out/LightsOut";
 
 export interface GameStat {
   [key: string]: {
@@ -92,6 +93,14 @@ function App() {
         localStorage.getItem("minesweeper-minTime-medium") || "N/A",
       "Minimum Time (Hard)":
         localStorage.getItem("minesweeper-minTime-hard") || "N/A",
+    },
+    "Lights Out": {
+      "Minimum Turns (Easy)":
+        localStorage.getItem("lights-minTurns-easy") || "N/A",
+      "Minimum Turns (Medium)":
+        localStorage.getItem("lights-minTurns-medium") || "N/A",
+      "Minimum Turns (Hard)":
+        localStorage.getItem("lights-minTurns-hard") || "N/A",
     },
   });
 
@@ -189,6 +198,18 @@ function App() {
             >
               <Navbar heading="Minesweeper" />
               <Minesweeper />
+              <Footer />
+            </AppContext.Provider>
+          }
+        />
+        <Route
+          path="/lights-out"
+          element={
+            <AppContext.Provider
+              value={{ theme, toggleTheme, gameStat, setGameStat }}
+            >
+              <Navbar heading="Lights Out" />
+              <LightsOut />
               <Footer />
             </AppContext.Provider>
           }

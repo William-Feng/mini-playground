@@ -1,0 +1,28 @@
+.lights-out .board {
+  grid-template-columns: repeat(3, auto);
+  grid-gap: 0px;
+}
+
+.lights-out.medium .board {
+  grid-template-columns: repeat(5, auto);
+}
+
+.lights-out.hard .board {
+  grid-template-columns: repeat(9, auto);
+}
+
+.lights-out .cell {
+  outline: 1px solid black;
+  border-radius: 0;
+  border: none;
+}
+
+.lights-out.medium .cell {
+  height: 100px;
+  width: 100px;
+}
+
+.lights-out.hard .cell {
+  height: 55.75px;
+  width: 55.75px;
+}

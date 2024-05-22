@@ -27,6 +27,8 @@ const Navbar: FC<{ heading: string }> = ({ heading }) => {
     2048: "2048 involves combining tiles (swipe or use the arrow keys) with the same number to create a tile of double the value. The goal is to create a tile with the value 2048 and obtain the highest possible score.",
     Minesweeper:
       "Minesweeper is a game where you need to clear the board without detonating any hidden mines. Left-click to reveal the adjacent mine counts and right-click (or toggle the flag mode) to mark a cell as a mine.",
+    "Lights Out":
+      "Lights Out is a game where you need to turn off all the lights on the board in the fewest number of moves. Clicking a cell will toggle the state of that cell and its adjacent cells.",
   };
 
   const gameStats = (game: string) => {
