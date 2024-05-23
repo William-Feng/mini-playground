@@ -1,14 +1,25 @@
-import React, { FC, useContext, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import { AppContext, AppContextType } from "../../App";
 import "./Othello.css";
 
 type Player = "light" | "dark";
 type Cell = Player | null;
+type Position = { row: number; col: number };
 
 const Othello: FC = () => {
   const { theme } = useContext<AppContextType>(AppContext);
 
   const SIZE = 8;
+  const directions = [
+    [-1, -1],
+    [-1, 0],
+    [-1, 1],
+    [0, -1],
+    [0, 1],
+    [1, -1],
+    [1, 0],
+    [1, 1],
+  ];
 
   const createInitialBoard = (): Cell[][] => {
     const board: Cell[][] = Array.from({ length: SIZE }, () =>
@@ -22,13 +33,95 @@ const Othello: FC = () => {
   };
 
   const [board, setBoard] = useState<Cell[][]>(createInitialBoard());
-  const [turn, setTurn] = useState<Player>("dark");
+  const [player, setPlayer] = useState<Player>("dark");
   const [winner, setWinner] = useState<Player | "draw" | null>(null);
+  const [validMoves, setValidMoves] = useState<Position[]>([]);
 
   const handleRestart = () => {
     setBoard(createInitialBoard());
-    setTurn("dark");
+    setPlayer("dark");
     setWinner(null);
+    setValidMoves([]);
+  };
+
+  // Flip the tiles between the player's starting position and the chosen position
+  const flipTiles = (
+    board: Cell[][],
+    row: number,
+    col: number,
+    player: Player
+  ) => {
+    for (const [i, j] of directions) {
+      let [x, y] = [row + i, col + j];
+      let tilesToFlip = [];
+      while (x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
+        if (!board[x][y]) break;
+        if (board[x][y] === player) {
+          for (const piece of tilesToFlip) {
+            board[piece.row][piece.col] = player;
+          }
+          break;
+        }
+        tilesToFlip.push({ row: x, col: y });
+        x += i;
+        y += j;
+      }
+    }
+  };
+
+  const handleClick = (i: number, j: number) => {
+    if (winner) return;
+    if (
+      validMoves.some((position) => position.row === i && position.col === j)
+    ) {
+      let newBoard = [...board];
+      newBoard[i][j] = player;
+      flipTiles(newBoard, i, j, player);
+      setBoard(newBoard);
+      setPlayer(player === "light" ? "dark" : "light");
+    }
+  };
+
+  // Determine the valid moves for the upcoming player
+  useEffect(() => {
+    const validMoves: Position[] = [];
+    for (let row = 0; row < SIZE; row++) {
+      for (let col = 0; col < SIZE; col++) {
+        if (board[row][col]) continue;
+        for (const [i, j] of directions) {
+          let [x, y] = [row + i, col + j];
+          let valid = false;
+          let tilesToFlip: Position[] = [];
+          while (x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
+            if (!board[x][y]) break;
+            if (board[x][y] === player) {
+              valid = tilesToFlip.length > 0;
+              break;
+            }
+            tilesToFlip.push({ row: x, col: y });
+            x += i;
+            y += j;
+          }
+          if (valid) {
+            validMoves.push({ row, col });
+          }
+        }
+      }
+    }
+    setValidMoves(validMoves);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [board, player]);
+
+  const cellClass = (i: number, j: number, value: Cell) => {
+    let classes = "cell";
+    if (value || winner) {
+      classes += " stable";
+    } else if (validMoves.some((move) => move.row === i && move.col === j)) {
+      classes += " valid";
+    } else {
+      classes += " stable";
+    }
+    return classes;
   };
 
   const capitalise = (str: string) =>
@@ -40,8 +133,9 @@ const Othello: FC = () => {
         {board.map((row, i) =>
           row.map((value, j) => (
             <div
-              className={"cell " + (value || winner ? "stable" : "")}
+              className={cellClass(i, j, value)}
               key={`${i}-${j}`}
+              onClick={() => handleClick(i, j)}
             >
               {value && <div className={`tile-${value}`}></div>}
             </div>
@@ -50,7 +144,7 @@ const Othello: FC = () => {
       </div>
       <div className="message">
         {!winner ? (
-          <h3>{capitalise(turn)}'s Turn</h3>
+          <h3>{capitalise(player)}'s Turn</h3>
         ) : winner === "draw" ? (
           <h2>Draw!</h2>
         ) : (

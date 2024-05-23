@@ -34,3 +34,11 @@
 .othello .tile-dark {
   background: linear-gradient(145deg, #000000, #434343);
 }
+
+.othello#light .cell.valid {
+  background: lightgreen;
+}
+
+.othello#dark .cell.valid {
+  background: lawngreen;
+}
