@@ -1,5 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { AppContext, AppContextType } from "../../App";
+import { incrementStat } from "../../utils/Stats";
 import "./Othello.css";
 
 type Player = "light" | "dark";
@@ -7,7 +8,7 @@ type Cell = Player | null;
 type Position = { row: number; col: number };
 
 const Othello: FC = () => {
-  const { theme } = useContext<AppContextType>(AppContext);
+  const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const SIZE = 8;
   const directions = [
@@ -36,6 +37,7 @@ const Othello: FC = () => {
   const [player, setPlayer] = useState<Player>("dark");
   const [winner, setWinner] = useState<Player | "draw" | null>(null);
   const [validMoves, setValidMoves] = useState<Position[]>([]);
+  const [skipped, setSkipped] = useState<boolean>(false);
 
   const handleRestart = () => {
     setBoard(createInitialBoard());
@@ -71,16 +73,53 @@ const Othello: FC = () => {
 
   const handleClick = (i: number, j: number) => {
     if (winner) return;
-    if (
+    if (validMoves.length === 0) {
+      if (skipped === true) {
+        setWinner(determineWinner());
+        return;
+      }
+      setSkipped(true);
+      setPlayer(player === "light" ? "dark" : "light");
+    } else if (
       validMoves.some((position) => position.row === i && position.col === j)
     ) {
       let newBoard = [...board];
       newBoard[i][j] = player;
       flipTiles(newBoard, i, j, player);
       setBoard(newBoard);
+      setSkipped(false);
       setPlayer(player === "light" ? "dark" : "light");
     }
   };
+
+  // Winner has more tiles on the board
+  const determineWinner = () => {
+    let lightTiles = 0;
+    let darkTiles = 0;
+    for (let row = 0; row < SIZE; row++) {
+      for (let col = 0; col < SIZE; col++) {
+        if (!board[row][col]) {
+          continue;
+        } else if (board[row][col] === "light") {
+          lightTiles++;
+        } else {
+          darkTiles++;
+        }
+      }
+    }
+    return lightTiles > darkTiles
+      ? "light"
+      : lightTiles < darkTiles
+      ? "dark"
+      : "draw";
+  };
+
+  useEffect(() => {
+    if (board.every((row) => row.every((cell) => cell !== null))) {
+      determineWinner();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [board]);
 
   // Determine the valid moves for the upcoming player
   useEffect(() => {
@@ -126,6 +165,21 @@ const Othello: FC = () => {
 
   const capitalise = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1);
+
+  // Update the game statistics when the game is over
+  useEffect(() => {
+    if (!winner) return;
+
+    if (winner === "light") {
+      incrementStat("Othello", "Light Won", "othello-lightWon", setGameStat);
+    } else if (winner === "dark") {
+      incrementStat("Othello", "Dark Won", "othello-darkWon", setGameStat);
+    } else {
+      incrementStat("Othello", "Players Drew", "othello-drew", setGameStat);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [winner, setGameStat]);
 
   return (
     <div className="background othello" id={theme}>
