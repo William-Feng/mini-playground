@@ -38,12 +38,15 @@ const Othello: FC = () => {
   const [winner, setWinner] = useState<Player | "draw" | null>(null);
   const [validMoves, setValidMoves] = useState<Position[]>([]);
   const [skipped, setSkipped] = useState<boolean>(false);
+  const [skippedPlayer, setSkippedPlayer] = useState<Player | null>(null);
 
   const handleRestart = () => {
     setBoard(createInitialBoard());
     setPlayer("dark");
     setWinner(null);
     setValidMoves([]);
+    setSkipped(false);
+    setSkippedPlayer(null);
   };
 
   // Flip the tiles between the player's starting position and the chosen position
@@ -73,23 +76,18 @@ const Othello: FC = () => {
 
   const handleClick = (i: number, j: number) => {
     if (winner) return;
-    if (validMoves.length === 0) {
-      if (skipped === true) {
-        setWinner(determineWinner());
-        return;
-      }
-      setSkipped(true);
-      setPlayer(player === "light" ? "dark" : "light");
-    } else if (
-      validMoves.some((position) => position.row === i && position.col === j)
-    ) {
-      let newBoard = [...board];
-      newBoard[i][j] = player;
-      flipTiles(newBoard, i, j, player);
-      setBoard(newBoard);
-      setSkipped(false);
-      setPlayer(player === "light" ? "dark" : "light");
-    }
+    if (
+      !validMoves.some((position) => position.row === i && position.col === j)
+    )
+      return;
+
+    let newBoard = [...board];
+    newBoard[i][j] = player;
+    flipTiles(newBoard, i, j, player);
+    setBoard(newBoard);
+    setSkipped(false);
+    setSkippedPlayer(null);
+    setPlayer(player === "light" ? "dark" : "light");
   };
 
   // Winner has more tiles on the board
@@ -121,33 +119,51 @@ const Othello: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
 
-  // Determine the valid moves for the upcoming player
+  // Calculate the valid moves for the upcoming player and check for skipped turns
   useEffect(() => {
-    const validMoves: Position[] = [];
-    for (let row = 0; row < SIZE; row++) {
-      for (let col = 0; col < SIZE; col++) {
-        if (board[row][col]) continue;
-        for (const [i, j] of directions) {
-          let [x, y] = [row + i, col + j];
-          let valid = false;
-          let tilesToFlip: Position[] = [];
-          while (x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
-            if (!board[x][y]) break;
-            if (board[x][y] === player) {
-              valid = tilesToFlip.length > 0;
-              break;
+    const calculateValidMoves = (board: Cell[][], player: Player) => {
+      const validMoves: Position[] = [];
+      for (let row = 0; row < SIZE; row++) {
+        for (let col = 0; col < SIZE; col++) {
+          if (board[row][col]) continue;
+          for (const [i, j] of directions) {
+            let [x, y] = [row + i, col + j];
+            let valid = false;
+            let tilesToFlip: Position[] = [];
+            while (x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
+              if (!board[x][y]) break;
+              if (board[x][y] === player) {
+                valid = tilesToFlip.length > 0;
+                break;
+              }
+              tilesToFlip.push({ row: x, col: y });
+              x += i;
+              y += j;
             }
-            tilesToFlip.push({ row: x, col: y });
-            x += i;
-            y += j;
-          }
-          if (valid) {
-            validMoves.push({ row, col });
+            if (valid) {
+              validMoves.push({ row, col });
+            }
           }
         }
       }
+      return validMoves;
+    };
+
+    const currentValidMoves = calculateValidMoves(board, player);
+    setValidMoves(currentValidMoves);
+
+    if (currentValidMoves.length === 0) {
+      if (skipped) {
+        setWinner(determineWinner());
+      } else {
+        setSkipped(true);
+        setSkippedPlayer(player);
+        setPlayer(player === "light" ? "dark" : "light");
+      }
+    } else {
+      setSkipped(false);
     }
-    setValidMoves(validMoves);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board, player]);
 
@@ -156,6 +172,8 @@ const Othello: FC = () => {
     if (value || winner) {
       classes += " stable";
     } else if (validMoves.some((move) => move.row === i && move.col === j)) {
+      classes += " valid";
+    } else if (skipped) {
       classes += " valid";
     } else {
       classes += " stable";
@@ -198,7 +216,10 @@ const Othello: FC = () => {
       </div>
       <div className="message">
         {!winner ? (
-          <h3>{capitalise(player)}'s Turn</h3>
+          <h3>
+            {capitalise(player)}'s Turn
+            {skippedPlayer && <em> (skipped {capitalise(skippedPlayer)})</em>}
+          </h3>
         ) : winner === "draw" ? (
           <h2>Draw!</h2>
         ) : (
