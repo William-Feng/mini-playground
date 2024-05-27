@@ -2,6 +2,7 @@ import React, { FC, useContext, useEffect, useState } from "react";
 import { AppContext, AppContextType } from "../../App";
 import { incrementStat } from "../../utils/Stats";
 import "./Othello.css";
+import ModeTab from "../misc/ModeTab";
 
 type Player = "light" | "dark";
 type Cell = Player | null;
@@ -34,11 +35,20 @@ const Othello: FC = () => {
   };
 
   const [board, setBoard] = useState<Cell[][]>(createInitialBoard());
+  const [numPlayers, setNumPlayers] = useState<string>(
+    localStorage.getItem("othello-numPlayers") || "1 player"
+  );
   const [player, setPlayer] = useState<Player>("dark");
   const [winner, setWinner] = useState<Player | "draw" | null>(null);
   const [validMoves, setValidMoves] = useState<Position[]>([]);
   const [skipped, setSkipped] = useState<boolean>(false);
   const [skippedPlayer, setSkippedPlayer] = useState<Player | null>(null);
+
+  useEffect(() => {
+    handleRestart();
+    localStorage.setItem("othello-numPlayers", numPlayers);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [numPlayers]);
 
   const handleRestart = () => {
     setBoard(createInitialBoard());
@@ -62,8 +72,8 @@ const Othello: FC = () => {
       while (x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
         if (!board[x][y]) break;
         if (board[x][y] === player) {
-          for (const piece of tilesToFlip) {
-            board[piece.row][piece.col] = player;
+          for (const tile of tilesToFlip) {
+            board[tile.row][tile.col] = player;
           }
           break;
         }
@@ -74,9 +84,10 @@ const Othello: FC = () => {
     }
   };
 
-  const handleClick = (i: number, j: number) => {
+  const handleClick = ({ row: i, col: j }: Position) => {
     if (winner) return;
     if (
+      numPlayers === "2 players" &&
       !validMoves.some((position) => position.row === i && position.col === j)
     )
       return;
@@ -119,36 +130,38 @@ const Othello: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
 
-  // Calculate the valid moves for the upcoming player and check for skipped turns
-  useEffect(() => {
-    const calculateValidMoves = (board: Cell[][], player: Player) => {
-      const validMoves: Position[] = [];
-      for (let row = 0; row < SIZE; row++) {
-        for (let col = 0; col < SIZE; col++) {
-          if (board[row][col]) continue;
-          for (const [i, j] of directions) {
-            let [x, y] = [row + i, col + j];
-            let valid = false;
-            let tilesToFlip: Position[] = [];
-            while (x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
-              if (!board[x][y]) break;
-              if (board[x][y] === player) {
-                valid = tilesToFlip.length > 0;
-                break;
-              }
-              tilesToFlip.push({ row: x, col: y });
-              x += i;
-              y += j;
+  // Calculate the valid moves for the particular player
+  const calculateValidMoves = (board: Cell[][], player: Player) => {
+    const validMoves: Position[] = [];
+    for (let row = 0; row < SIZE; row++) {
+      for (let col = 0; col < SIZE; col++) {
+        if (board[row][col]) continue;
+        for (const [i, j] of directions) {
+          let [x, y] = [row + i, col + j];
+          let valid = false;
+          let tilesToFlip: Position[] = [];
+          while (x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
+            if (!board[x][y]) break;
+            if (board[x][y] === player) {
+              valid = tilesToFlip.length > 0;
+              break;
             }
-            if (valid) {
-              validMoves.push({ row, col });
-            }
+            tilesToFlip.push({ row: x, col: y });
+            x += i;
+            y += j;
+          }
+          if (valid) {
+            validMoves.push({ row, col });
           }
         }
       }
-      return validMoves;
-    };
+    }
+    return validMoves;
+  };
 
+  // AI makes a randomised move if it is the AI's turn in 1 player mode
+  // Check for skipped turns or a new winner and switch the player
+  useEffect(() => {
     const currentValidMoves = calculateValidMoves(board, player);
     setValidMoves(currentValidMoves);
 
@@ -162,10 +175,66 @@ const Othello: FC = () => {
       }
     } else {
       setSkipped(false);
-    }
 
+      if (numPlayers === "1 player" && player === "light" && !winner) {
+        const randomisedMove =
+          currentValidMoves[
+            Math.floor(Math.random() * currentValidMoves.length)
+          ];
+        setTimeout(() => handleClick(randomisedMove), 1000);
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board, player]);
+
+  // Update the game statistics when the game is over
+  useEffect(() => {
+    if (!winner) return;
+
+    if (numPlayers === "1 player") {
+      if (winner === "light") {
+        incrementStat(
+          "Othello",
+          "Games Lost (1P)",
+          "othello-lost",
+          setGameStat
+        );
+      } else if (winner === "dark") {
+        incrementStat("Othello", "Games Won (1P)", "othello-won", setGameStat);
+      } else {
+        incrementStat(
+          "Othello",
+          "Games Drew (1P)",
+          "othello-drew",
+          setGameStat
+        );
+      }
+    } else {
+      if (winner === "light") {
+        incrementStat(
+          "Othello",
+          "Light Won (2P)",
+          "othello-lightWon",
+          setGameStat
+        );
+      } else if (winner === "dark") {
+        incrementStat(
+          "Othello",
+          "Dark Won (2P)",
+          "othello-darkWon",
+          setGameStat
+        );
+      } else {
+        incrementStat(
+          "Othello",
+          "Players Drew (2P)",
+          "othello-drew2P",
+          setGameStat
+        );
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [winner, setGameStat]);
 
   // Display the number of tiles for each player
   const countTiles = (player: Player) => {
@@ -189,23 +258,15 @@ const Othello: FC = () => {
   const capitalise = (str: string) =>
     str.charAt(0).toUpperCase() + str.slice(1);
 
-  // Update the game statistics when the game is over
-  useEffect(() => {
-    if (!winner) return;
-
-    if (winner === "light") {
-      incrementStat("Othello", "Light Won", "othello-lightWon", setGameStat);
-    } else if (winner === "dark") {
-      incrementStat("Othello", "Dark Won", "othello-darkWon", setGameStat);
-    } else {
-      incrementStat("Othello", "Players Drew", "othello-drew", setGameStat);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [winner, setGameStat]);
-
   return (
     <div className="background othello" id={theme}>
+      <ModeTab
+        modeType={numPlayers}
+        handleModeChange={(mode: string) => {
+          setNumPlayers(mode);
+        }}
+        modes={["1 player", "2 players"]}
+      />
       <div className="tile-counter">
         <div className="light-counter">
           <div className="tile-light"></div>
@@ -222,7 +283,7 @@ const Othello: FC = () => {
             <div
               className={cellClass(i, j, value)}
               key={`${i}-${j}`}
-              onClick={() => handleClick(i, j)}
+              onClick={() => handleClick({ row: i, col: j })}
             >
               {value && <div className={`tile-${value}`}></div>}
             </div>

@@ -104,9 +104,12 @@ function App() {
         localStorage.getItem("lights-minTurns-hard") || "N/A",
     },
     Othello: {
-      "Light Won": localStorage.getItem("othello-lightWon") || 0,
-      "Dark Won": localStorage.getItem("othello-darkWon") || 0,
-      "Players Drew": localStorage.getItem("othello-drew") || 0,
+      "Games Won (1P)": localStorage.getItem("othello-won") || 0,
+      "Games Lost (1P)": localStorage.getItem("othello-lost") || 0,
+      "Games Drew (1P)": localStorage.getItem("othello-drew") || 0,
+      "Light Won (2P)": localStorage.getItem("othello-lightWon") || 0,
+      "Dark Won (2P)": localStorage.getItem("othello-darkWon") || 0,
+      "Players Drew (2P)": localStorage.getItem("othello-drew2P") || 0,
     },
   });
 

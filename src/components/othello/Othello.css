@@ -64,7 +64,7 @@
   font-weight: bold;
 }
 
-@media screen and (max-height: 845px) {
+@media screen and (max-height: 888px) {
   .background.othello {
     height: 100%;
   }
@@ -94,7 +94,7 @@
     font-size: 1.3rem;
   }
 
-  @media screen and (max-height: 695px) {
+  @media screen and (max-height: 735px) {
     .background.othello {
       height: 100%;
     }
@@ -106,7 +106,7 @@
     height: calc(100dvh - 75px);
   }
 
-  @media screen and (max-height: 582px) {
+  @media screen and (max-height: 666px) {
     .background.othello {
       height: 100%;
     }
