@@ -44,3 +44,48 @@
 .lights-out#dark .cell.off {
   background-color: lightgrey;
 }
+
+@media screen and (max-height: 845px) {
+  .background.lights-out {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .background.lights-out {
+    height: calc(100dvh - 80px);
+  }
+
+  .lights-out .cell {
+    height: 117px;
+    width: 117px;
+  }
+
+  .lights-out.medium .cell {
+    height: 70px;
+    width: 70px;
+  }
+
+  .lights-out.hard .cell {
+    height: 39px;
+    width: 39px;
+  }
+
+  @media screen and (max-height: 695px) {
+    .background.lights-out {
+      height: 100%;
+    }
+  }
+}
+
+@media screen and (min-width: 380px) and (max-width: 400px) {
+  .background.lights-out {
+    height: calc(100dvh - 75px);
+  }
+
+  @media screen and (max-height: 623px) {
+    .background.lights-out {
+      height: 100%;
+    }
+  }
+}

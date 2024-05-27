@@ -63,3 +63,52 @@
   font-size: 1.5rem;
   font-weight: bold;
 }
+
+@media screen and (max-height: 845px) {
+  .background.othello {
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .background.othello {
+    height: calc(100dvh - 80px);
+  }
+
+  .othello .cell {
+    height: 44px;
+    width: 44px;
+  }
+
+  .othello .tile-counter > div {
+    margin: 0 2em;
+  }
+
+  .othello .tile-counter .tile-light,
+  .othello .tile-counter .tile-dark {
+    width: 25px;
+    height: 25px;
+  }
+
+  .othello .tile-counter span {
+    font-size: 1.3rem;
+  }
+
+  @media screen and (max-height: 695px) {
+    .background.othello {
+      height: 100%;
+    }
+  }
+}
+
+@media screen and (min-width: 380px) and (max-width: 400px) {
+  .background.othello {
+    height: calc(100dvh - 75px);
+  }
+
+  @media screen and (max-height: 582px) {
+    .background.othello {
+      height: 100%;
+    }
+  }
+}
