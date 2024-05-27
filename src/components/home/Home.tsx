@@ -16,6 +16,8 @@ import MinesweeperLight from "./images/minesweeper-light.png";
 import MinesweeperDark from "./images/minesweeper-dark.png";
 import LightsOutLight from "./images/lights-out-light.png";
 import LightsOutDark from "./images/lights-out-dark.png";
+import OthelloLight from "./images/othello-light.png";
+import OthelloDark from "./images/othello-dark.png";
 import HomeHeading from "./HomeHeading";
 import { AppContext } from "../../App";
 import "./Home.css";
@@ -105,6 +107,16 @@ function Home() {
               <img src={LightsOutDark} alt="Lights Out" />
             )}
             <div className="gameTitle">Lights Out</div>
+          </div>
+        </Link>
+        <Link to="/othello">
+          <div className="game">
+            {theme === "light" ? (
+              <img src={OthelloLight} alt="Othello" />
+            ) : (
+              <img src={OthelloDark} alt="Othello" />
+            )}
+            <div className="gameTitle">Othello</div>
           </div>
         </Link>
       </div>

@@ -167,6 +167,11 @@ const Othello: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board, player]);
 
+  // Display the number of tiles for each player
+  const countTiles = (player: Player) => {
+    return board.flat().filter((cell) => cell === player).length;
+  };
+
   const cellClass = (i: number, j: number, value: Cell) => {
     let classes = "cell";
     if (value || winner) {
@@ -201,6 +206,16 @@ const Othello: FC = () => {
 
   return (
     <div className="background othello" id={theme}>
+      <div className="tile-counter">
+        <div className="light-counter">
+          <div className="tile-light"></div>
+          <span>{countTiles("light")}</span>
+        </div>
+        <div className="dark-counter">
+          <div className="tile-dark"></div>
+          <span>{countTiles("dark")}</span>
+        </div>
+      </div>
       <div className="board">
         {board.map((row, i) =>
           row.map((value, j) => (
