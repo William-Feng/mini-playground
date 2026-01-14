@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { GameStat } from "../App";
+import { Storage } from "./Storage";
 
 export const incrementStat = (
   game: string,
@@ -7,8 +8,8 @@ export const incrementStat = (
   item: string,
   setGameStat: Dispatch<SetStateAction<GameStat>>
 ) => {
-  let savedStat = parseInt(localStorage.getItem(item) || "0");
-  localStorage.setItem(item, (savedStat + 1).toString());
+  const savedStat = Storage.getNumber(item);
+  Storage.setNumber(item, savedStat + 1);
   setGameStat((prevStats) => ({
     ...prevStats,
     [game]: {
@@ -25,10 +26,10 @@ export const newMinStat = (
   value: number,
   setGameStat: Dispatch<SetStateAction<GameStat>>
 ) => {
-  let savedStatStr = localStorage.getItem(item);
-  let savedStat = savedStatStr ? parseInt(savedStatStr) : Infinity;
-  let newValue = Math.min(savedStat, value);
-  localStorage.setItem(item, newValue.toString());
+  const savedStatStr = Storage.getString(item);
+  const savedStat = savedStatStr && savedStatStr !== "N/A" ? parseInt(savedStatStr) : Infinity;
+  const newValue = Math.min(savedStat, value);
+  Storage.setNumber(item, newValue);
   setGameStat((prevStats) => ({
     ...prevStats,
     [game]: {
@@ -45,10 +46,10 @@ export const newMaxStat = (
   value: number,
   setGameStat: Dispatch<SetStateAction<GameStat>>
 ) => {
-  let savedStatStr = localStorage.getItem(item);
-  let savedStat = savedStatStr ? parseInt(savedStatStr) : -Infinity;
-  let newValue = Math.max(savedStat, value);
-  localStorage.setItem(item, newValue.toString());
+  const savedStatStr = Storage.getString(item);
+  const savedStat = savedStatStr ? parseInt(savedStatStr) : -Infinity;
+  const newValue = Math.max(savedStat, value);
+  Storage.setNumber(item, newValue);
   setGameStat((prevStats) => ({
     ...prevStats,
     [game]: {
@@ -65,8 +66,8 @@ export const newMinTime = (
   value: string,
   setGameStat: Dispatch<SetStateAction<GameStat>>
 ) => {
-  const getShorterTime = (time1: string, time2: string) => {
-    if (time2 === Infinity.toString()) return time1;
+  const getShorterTime = (time1: string, time2: string): string => {
+    if (time2 === Infinity.toString() || time2 === "N/A") return time1;
 
     const [min1, sec1] = time1.split(":").map(Number);
     const [min2, sec2] = time2.split(":").map(Number);
@@ -77,9 +78,9 @@ export const newMinTime = (
     return totalsecs1 <= totalsecs2 ? time1 : time2;
   };
 
-  let savedStat = localStorage.getItem(item) ?? Infinity.toString();
-  let newValue = getShorterTime(value, savedStat);
-  localStorage.setItem(item, newValue.toString());
+  const savedStat = Storage.getString(item, "N/A");
+  const newValue = getShorterTime(value, savedStat);
+  Storage.setString(item, newValue);
   setGameStat((prevStats) => ({
     ...prevStats,
     [game]: {

@@ -19,6 +19,7 @@ import Minesweeper from "./components/minesweeper/Minesweeper";
 import LightsOut from "./components/lights-out/LightsOut";
 import Othello from "./components/othello/Othello";
 import "./App.css";
+import { Storage } from "./utils/Storage";
 
 export interface GameStat {
   [key: string]: {
@@ -37,11 +38,11 @@ export const AppContext = createContext<AppContextType>({} as AppContextType);
 
 function App() {
   const [theme, setTheme] = useState<string>(
-    () => window.localStorage.getItem("theme") || "light"
+    () => Storage.getString("theme", "light")
   );
 
   useEffect(() => {
-    window.localStorage.setItem("theme", theme);
+    Storage.setString("theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {
@@ -50,66 +51,52 @@ function App() {
 
   const [gameStat, setGameStat] = useState<GameStat>({
     Wordle: {
-      "Words Guessed": localStorage.getItem("wordle-guessed") || 0,
-      "Words Missed": localStorage.getItem("wordle-missed") || 0,
+      "Words Guessed": Storage.getNumber("wordle-guessed"),
+      "Words Missed": Storage.getNumber("wordle-missed"),
     },
     "Tic Tac Toe": {
-      "Rounds Drew (1P)": localStorage.getItem("tictactoe-drew") || 0,
-      "Rounds Lost (1P)": localStorage.getItem("tictactoe-lost") || 0,
-      "Player X Won (2P)": localStorage.getItem("tictactoe-xWon") || 0,
-      "Player O Won (2P)": localStorage.getItem("tictactoe-oWon") || 0,
-      "Players Drew (2P)": localStorage.getItem("tictactoe-drew2P") || 0,
+      "Rounds Drew (1P)": Storage.getNumber("tictactoe-drew"),
+      "Rounds Lost (1P)": Storage.getNumber("tictactoe-lost"),
+      "Player X Won (2P)": Storage.getNumber("tictactoe-xWon"),
+      "Player O Won (2P)": Storage.getNumber("tictactoe-oWon"),
+      "Players Drew (2P)": Storage.getNumber("tictactoe-drew2P"),
     },
     "Colour Matching": {
-      "Minimum Turns (Easy)":
-        localStorage.getItem("colour-minTurns-easy") || "N/A",
-      "Minimum Turns (Medium)":
-        localStorage.getItem("colour-minTurns-medium") || "N/A",
-      "Minimum Turns (Hard)":
-        localStorage.getItem("colour-minTurns-hard") || "N/A",
+      "Minimum Turns (Easy)": Storage.getString("colour-minTurns-easy", "N/A"),
+      "Minimum Turns (Medium)": Storage.getString("colour-minTurns-medium", "N/A"),
+      "Minimum Turns (Hard)": Storage.getString("colour-minTurns-hard", "N/A"),
     },
     "Emoji Streak": {
-      "Maximum Streak (Easy)":
-        localStorage.getItem("emoji-maxStreak-easy") || 0,
-      "Maximum Streak (Medium)":
-        localStorage.getItem("emoji-maxStreak-medium") || 0,
-      "Maximum Streak (Hard)":
-        localStorage.getItem("emoji-maxStreak-hard") || 0,
+      "Maximum Streak (Easy)": Storage.getNumber("emoji-maxStreak-easy"),
+      "Maximum Streak (Medium)": Storage.getNumber("emoji-maxStreak-medium"),
+      "Maximum Streak (Hard)": Storage.getNumber("emoji-maxStreak-hard"),
     },
     "Sliding Puzzle": {
-      "Minimum Moves (Easy)":
-        localStorage.getItem("sliding-minMoves-easy") || "N/A",
-      "Minimum Moves (Hard)":
-        localStorage.getItem("sliding-minMoves-hard") || "N/A",
+      "Minimum Moves (Easy)": Storage.getString("sliding-minMoves-easy", "N/A"),
+      "Minimum Moves (Hard)": Storage.getString("sliding-minMoves-hard", "N/A"),
     },
     2048: {
-      "Maximum Score": localStorage.getItem("2048-maxScore") || 0,
+      "Maximum Score": Storage.getNumber("2048-maxScore"),
     },
     Minesweeper: {
-      "Games Won": localStorage.getItem("minesweeper-won") || 0,
-      "Games Lost": localStorage.getItem("minesweeper-lost") || 0,
-      "Minimum Time (Easy)":
-        localStorage.getItem("minesweeper-minTime-easy") || "N/A",
-      "Minimum Time (Medium)":
-        localStorage.getItem("minesweeper-minTime-medium") || "N/A",
-      "Minimum Time (Hard)":
-        localStorage.getItem("minesweeper-minTime-hard") || "N/A",
+      "Games Won": Storage.getNumber("minesweeper-won"),
+      "Games Lost": Storage.getNumber("minesweeper-lost"),
+      "Minimum Time (Easy)": Storage.getString("minesweeper-minTime-easy", "N/A"),
+      "Minimum Time (Medium)": Storage.getString("minesweeper-minTime-medium", "N/A"),
+      "Minimum Time (Hard)": Storage.getString("minesweeper-minTime-hard", "N/A"),
     },
     "Lights Out": {
-      "Minimum Turns (Easy)":
-        localStorage.getItem("lights-minTurns-easy") || "N/A",
-      "Minimum Turns (Medium)":
-        localStorage.getItem("lights-minTurns-medium") || "N/A",
-      "Minimum Turns (Hard)":
-        localStorage.getItem("lights-minTurns-hard") || "N/A",
+      "Minimum Turns (Easy)": Storage.getString("lights-minTurns-easy", "N/A"),
+      "Minimum Turns (Medium)": Storage.getString("lights-minTurns-medium", "N/A"),
+      "Minimum Turns (Hard)": Storage.getString("lights-minTurns-hard", "N/A"),
     },
     Othello: {
-      "Games Won (1P)": localStorage.getItem("othello-won") || 0,
-      "Games Lost (1P)": localStorage.getItem("othello-lost") || 0,
-      "Games Drew (1P)": localStorage.getItem("othello-drew") || 0,
-      "Light Won (2P)": localStorage.getItem("othello-lightWon") || 0,
-      "Dark Won (2P)": localStorage.getItem("othello-darkWon") || 0,
-      "Players Drew (2P)": localStorage.getItem("othello-drew2P") || 0,
+      "Games Won (1P)": Storage.getNumber("othello-won"),
+      "Games Lost (1P)": Storage.getNumber("othello-lost"),
+      "Games Drew (1P)": Storage.getNumber("othello-drew"),
+      "Light Won (2P)": Storage.getNumber("othello-lightWon"),
+      "Dark Won (2P)": Storage.getNumber("othello-darkWon"),
+      "Players Drew (2P)": Storage.getNumber("othello-drew2P"),
     },
   });
 
