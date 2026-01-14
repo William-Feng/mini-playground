@@ -15,7 +15,7 @@ const Footer: FC<FooterProps> = ({ isHome, isWordle }) => {
     <div className={"footer " + (isWordle ? "wordle" : "")} id={theme}>
       Created by{" "}
       <a
-        href="https://williamfeng.com.au/"
+        href="https://williamfeng.xyz/"
         target="_blank"
         className="author"
         rel="noopener noreferrer"
