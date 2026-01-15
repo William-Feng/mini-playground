@@ -7,8 +7,8 @@ import {
 } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/home/Home";
-import Navbar from "./components/misc/Navbar";
 import Footer from "./components/misc/Footer";
+import GameLayout from "./components/misc/GameLayout";
 import Wordle from "./components/wordle/Wordle";
 import TicTacToe from "./components/tic-tac-toe/TicTacToe";
 import Memory from "./components/memory/Memory";
@@ -118,129 +118,93 @@ function App() {
   const [gameStat, setGameStat] = useState<GameStat>(() => getInitialGameStat());
 
   return (
-    <>
+    <AppContext.Provider
+      value={{ theme, toggleTheme, gameStat, setGameStat }}
+    >
       <Routes>
         <Route
           path="/"
           element={
-            <AppContext.Provider
-              value={{ theme, toggleTheme, gameStat, setGameStat }}
-            >
+            <>
               <Home />
               <Footer isHome />
-            </AppContext.Provider>
+            </>
           }
         />
         <Route
           path="/wordle"
           element={
-            <AppContext.Provider
-              value={{ theme, toggleTheme, gameStat, setGameStat }}
-            >
-              <Navbar heading="Wordle" />
+            <GameLayout heading="Wordle" isWordle>
               <Wordle />
-              <Footer isWordle />
-            </AppContext.Provider>
+            </GameLayout>
           }
         />
         <Route
           path="/tic-tac-toe"
           element={
-            <AppContext.Provider
-              value={{ theme, toggleTheme, gameStat, setGameStat }}
-            >
-              <Navbar heading="Tic Tac Toe" />
+            <GameLayout heading="Tic Tac Toe">
               <TicTacToe />
-              <Footer />
-            </AppContext.Provider>
+            </GameLayout>
           }
         />
         <Route
           path="/memory"
           element={
-            <AppContext.Provider
-              value={{ theme, toggleTheme, gameStat, setGameStat }}
-            >
-              <Navbar heading="Colour Matching" />
+            <GameLayout heading="Colour Matching">
               <Memory />
-              <Footer />
-            </AppContext.Provider>
+            </GameLayout>
           }
         />
         <Route
           path="/emoji"
           element={
-            <AppContext.Provider
-              value={{ theme, toggleTheme, gameStat, setGameStat }}
-            >
-              <Navbar heading="Emoji Streak" />
+            <GameLayout heading="Emoji Streak">
               <Emoji />
-              <Footer />
-            </AppContext.Provider>
+            </GameLayout>
           }
         />
         <Route
           path="/sliding"
           element={
-            <AppContext.Provider
-              value={{ theme, toggleTheme, gameStat, setGameStat }}
-            >
-              <Navbar heading="Sliding Puzzle" />
+            <GameLayout heading="Sliding Puzzle">
               <Sliding />
-              <Footer />
-            </AppContext.Provider>
+            </GameLayout>
           }
         />
         <Route
           path="/2048"
           element={
-            <AppContext.Provider
-              value={{ theme, toggleTheme, gameStat, setGameStat }}
-            >
-              <Navbar heading="2048" />
+            <GameLayout heading="2048">
               <Game2048 />
-              <Footer />
-            </AppContext.Provider>
+            </GameLayout>
           }
         />
         <Route
           path="/minesweeper"
           element={
-            <AppContext.Provider
-              value={{ theme, toggleTheme, gameStat, setGameStat }}
-            >
-              <Navbar heading="Minesweeper" />
+            <GameLayout heading="Minesweeper">
               <Minesweeper />
-              <Footer />
-            </AppContext.Provider>
+            </GameLayout>
           }
         />
         <Route
           path="/lights-out"
           element={
-            <AppContext.Provider
-              value={{ theme, toggleTheme, gameStat, setGameStat }}
-            >
-              <Navbar heading="Lights Out" />
+            <GameLayout heading="Lights Out">
               <LightsOut />
-              <Footer />
-            </AppContext.Provider>
+            </GameLayout>
           }
         />
         <Route
           path="/othello"
           element={
-            <AppContext.Provider
-              value={{ theme, toggleTheme, gameStat, setGameStat }}
-            >
-              <Navbar heading="Othello" />
+            <GameLayout heading="Othello">
               <Othello />
-              <Footer />
-            </AppContext.Provider>
+            </GameLayout>
           }
         />
       </Routes>
-    </>
+    </AppContext.Provider>
   );
 }
 
