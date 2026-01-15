@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import { FC, useContext } from "react";
 import Letter from "./Letter";
 import { WordleContext, WordleContextType } from "./Wordle";
 

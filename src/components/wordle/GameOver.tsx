@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import { FC, useContext } from "react";
 import { WordleContext, WordleContextType } from "./Wordle";
 
 const GameOver: FC = () => {

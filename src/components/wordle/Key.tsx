@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import { FC, useContext } from "react";
 import { WordleContext } from "./Wordle";
 import { MdOutlineBackspace } from "react-icons/md";
 

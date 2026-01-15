@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import { FC, useContext } from "react";
 import { AppContext, AppContextType } from "../../App";
 import { Link } from "react-router-dom";
 import { BsInfoCircle } from "react-icons/bs";

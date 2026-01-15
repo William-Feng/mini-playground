@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { AppContext, AppContextType } from "../../App";
 import { newMaxStat } from "../../utils/Stats";

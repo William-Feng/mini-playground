@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import WordleLight from "./images/wordle-light.png";
 import WordleDark from "./images/wordle-dark.png";

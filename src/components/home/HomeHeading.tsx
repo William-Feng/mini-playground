@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
 import ReactSwitch from "react-switch";
 import { AppContext, AppContextType } from "../../App";

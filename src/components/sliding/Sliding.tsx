@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useMemo, useState } from "react";
+import { FC, useContext, useEffect, useMemo, useState } from "react";
 import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { newMinStat } from "../../utils/Stats";
