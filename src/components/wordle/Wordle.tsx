@@ -39,9 +39,27 @@ export interface WordleContextType {
   >;
 }
 
-export const WordleContext = createContext<WordleContextType>(
-  {} as WordleContextType
-);
+export const WordleContext = createContext<WordleContextType>({
+  grid: Array(6).fill(Array(5).fill("")),
+  setGrid: () => {},
+  curr: { attempt: 0, letterPos: 0 },
+  setCurr: () => {},
+  handleRestart: () => {},
+  onLetter: () => {},
+  onEnter: () => {},
+  onDelete: () => {},
+  MAX_ATTEMPTS: 6,
+  MAX_LETTERS: 5,
+  secret: "",
+  correctLetters: [],
+  setCorrectLetters: () => {},
+  partialLetters: [],
+  setPartialLetters: () => {},
+  incorrectLetters: [],
+  setIncorrectLetters: () => {},
+  gameOver: { gameOver: false, guessedWord: false },
+  setGameOver: () => {},
+});
 
 const Wordle: FC = () => {
   const { theme, setGameStat } = useContext<AppContextType>(AppContext);

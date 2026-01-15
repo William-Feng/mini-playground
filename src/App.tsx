@@ -34,7 +34,73 @@ export interface AppContextType {
   setGameStat: Dispatch<SetStateAction<GameStat>>;
 }
 
-export const AppContext = createContext<AppContextType>({} as AppContextType);
+const getInitialGameStat = (fromStorage: boolean = true): GameStat => {
+  const getStatValue = (key: string, defaultValue: string | number) => {
+    if (!fromStorage) return defaultValue;
+    if (typeof defaultValue === "number") {
+      return Storage.getNumber(key, defaultValue);
+    }
+    return Storage.getString(key, defaultValue as string);
+  };
+
+  return {
+    Wordle: {
+      "Words Guessed": getStatValue("wordle-guessed", 0) as number,
+      "Words Missed": getStatValue("wordle-missed", 0) as number,
+    },
+    "Tic Tac Toe": {
+      "Rounds Drew (1P)": getStatValue("tictactoe-drew", 0) as number,
+      "Rounds Lost (1P)": getStatValue("tictactoe-lost", 0) as number,
+      "Player X Won (2P)": getStatValue("tictactoe-xWon", 0) as number,
+      "Player O Won (2P)": getStatValue("tictactoe-oWon", 0) as number,
+      "Players Drew (2P)": getStatValue("tictactoe-drew2P", 0) as number,
+    },
+    "Colour Matching": {
+      "Minimum Turns (Easy)": getStatValue("colour-minTurns-easy", "N/A") as string,
+      "Minimum Turns (Medium)": getStatValue("colour-minTurns-medium", "N/A") as string,
+      "Minimum Turns (Hard)": getStatValue("colour-minTurns-hard", "N/A") as string,
+    },
+    "Emoji Streak": {
+      "Maximum Streak (Easy)": getStatValue("emoji-maxStreak-easy", 0) as number,
+      "Maximum Streak (Medium)": getStatValue("emoji-maxStreak-medium", 0) as number,
+      "Maximum Streak (Hard)": getStatValue("emoji-maxStreak-hard", 0) as number,
+    },
+    "Sliding Puzzle": {
+      "Minimum Moves (Easy)": getStatValue("sliding-minMoves-easy", "N/A") as string,
+      "Minimum Moves (Hard)": getStatValue("sliding-minMoves-hard", "N/A") as string,
+    },
+    2048: {
+      "Maximum Score": getStatValue("2048-maxScore", 0) as number,
+    },
+    Minesweeper: {
+      "Games Won": getStatValue("minesweeper-won", 0) as number,
+      "Games Lost": getStatValue("minesweeper-lost", 0) as number,
+      "Minimum Time (Easy)": getStatValue("minesweeper-minTime-easy", "N/A") as string,
+      "Minimum Time (Medium)": getStatValue("minesweeper-minTime-medium", "N/A") as string,
+      "Minimum Time (Hard)": getStatValue("minesweeper-minTime-hard", "N/A") as string,
+    },
+    "Lights Out": {
+      "Minimum Turns (Easy)": getStatValue("lights-minTurns-easy", "N/A") as string,
+      "Minimum Turns (Medium)": getStatValue("lights-minTurns-medium", "N/A") as string,
+      "Minimum Turns (Hard)": getStatValue("lights-minTurns-hard", "N/A") as string,
+    },
+    Othello: {
+      "Games Won (1P)": getStatValue("othello-won", 0) as number,
+      "Games Lost (1P)": getStatValue("othello-lost", 0) as number,
+      "Games Drew (1P)": getStatValue("othello-drew", 0) as number,
+      "Light Won (2P)": getStatValue("othello-lightWon", 0) as number,
+      "Dark Won (2P)": getStatValue("othello-darkWon", 0) as number,
+      "Players Drew (2P)": getStatValue("othello-drew2P", 0) as number,
+    },
+  };
+};
+
+export const AppContext = createContext<AppContextType>({
+  theme: "light",
+  toggleTheme: () => {},
+  gameStat: getInitialGameStat(false),
+  setGameStat: () => {},
+});
 
 function App() {
   const [theme, setTheme] = useState<string>(
@@ -49,56 +115,7 @@ function App() {
     setTheme((curr) => (curr === "light" ? "dark" : "light"));
   };
 
-  const [gameStat, setGameStat] = useState<GameStat>({
-    Wordle: {
-      "Words Guessed": Storage.getNumber("wordle-guessed"),
-      "Words Missed": Storage.getNumber("wordle-missed"),
-    },
-    "Tic Tac Toe": {
-      "Rounds Drew (1P)": Storage.getNumber("tictactoe-drew"),
-      "Rounds Lost (1P)": Storage.getNumber("tictactoe-lost"),
-      "Player X Won (2P)": Storage.getNumber("tictactoe-xWon"),
-      "Player O Won (2P)": Storage.getNumber("tictactoe-oWon"),
-      "Players Drew (2P)": Storage.getNumber("tictactoe-drew2P"),
-    },
-    "Colour Matching": {
-      "Minimum Turns (Easy)": Storage.getString("colour-minTurns-easy", "N/A"),
-      "Minimum Turns (Medium)": Storage.getString("colour-minTurns-medium", "N/A"),
-      "Minimum Turns (Hard)": Storage.getString("colour-minTurns-hard", "N/A"),
-    },
-    "Emoji Streak": {
-      "Maximum Streak (Easy)": Storage.getNumber("emoji-maxStreak-easy"),
-      "Maximum Streak (Medium)": Storage.getNumber("emoji-maxStreak-medium"),
-      "Maximum Streak (Hard)": Storage.getNumber("emoji-maxStreak-hard"),
-    },
-    "Sliding Puzzle": {
-      "Minimum Moves (Easy)": Storage.getString("sliding-minMoves-easy", "N/A"),
-      "Minimum Moves (Hard)": Storage.getString("sliding-minMoves-hard", "N/A"),
-    },
-    2048: {
-      "Maximum Score": Storage.getNumber("2048-maxScore"),
-    },
-    Minesweeper: {
-      "Games Won": Storage.getNumber("minesweeper-won"),
-      "Games Lost": Storage.getNumber("minesweeper-lost"),
-      "Minimum Time (Easy)": Storage.getString("minesweeper-minTime-easy", "N/A"),
-      "Minimum Time (Medium)": Storage.getString("minesweeper-minTime-medium", "N/A"),
-      "Minimum Time (Hard)": Storage.getString("minesweeper-minTime-hard", "N/A"),
-    },
-    "Lights Out": {
-      "Minimum Turns (Easy)": Storage.getString("lights-minTurns-easy", "N/A"),
-      "Minimum Turns (Medium)": Storage.getString("lights-minTurns-medium", "N/A"),
-      "Minimum Turns (Hard)": Storage.getString("lights-minTurns-hard", "N/A"),
-    },
-    Othello: {
-      "Games Won (1P)": Storage.getNumber("othello-won"),
-      "Games Lost (1P)": Storage.getNumber("othello-lost"),
-      "Games Drew (1P)": Storage.getNumber("othello-drew"),
-      "Light Won (2P)": Storage.getNumber("othello-lightWon"),
-      "Dark Won (2P)": Storage.getNumber("othello-darkWon"),
-      "Players Drew (2P)": Storage.getNumber("othello-drew2P"),
-    },
-  });
+  const [gameStat, setGameStat] = useState<GameStat>(() => getInitialGameStat());
 
   return (
     <>
