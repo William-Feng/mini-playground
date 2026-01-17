@@ -2,6 +2,7 @@ import { FC, useContext, useEffect, useMemo, useState } from "react";
 import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { newMinStat } from "../../utils/Stats";
+import { Storage } from "../../utils/Storage";
 import "./LightsOut.css";
 
 type Difficulty = "easy" | "medium" | "hard";
@@ -10,7 +11,7 @@ const LightsOut: FC = () => {
   const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const [difficulty, setDifficulty] = useState(
-    (localStorage.getItem("lights-difficulty") as Difficulty) || "easy"
+    (Storage.getString("lights-difficulty") as Difficulty) || "easy"
   );
 
   const [board, setBoard] = useState<boolean[][]>([]);
@@ -24,24 +25,22 @@ const LightsOut: FC = () => {
 
   // After the difficulty is set, load any saved state from local storage and initialise the game
   useEffect(() => {
-    const savedBoard = localStorage.getItem("lights-board");
-    const savedTurns = localStorage.getItem("lights-currentTurns");
-    const savedSolved = localStorage.getItem("lights-solved");
+    const savedBoard = Storage.getItem<boolean[][]>("lights-board", []);
+    const savedTurns = Storage.getNumber("lights-currentTurns", 0);
+    const savedSolved = Storage.getBoolean("lights-solved", false);
 
     if (
-      savedBoard &&
-      savedTurns &&
-      savedSolved &&
-      JSON.parse(savedBoard).length === size
+      savedBoard.length > 0 &&
+      savedBoard.length === size
     ) {
-      setBoard(JSON.parse(savedBoard));
-      setTurns(parseInt(savedTurns));
-      setSolved(savedSolved === "true");
+      setBoard(savedBoard);
+      setTurns(savedTurns);
+      setSolved(savedSolved);
     } else {
       gameInitialisation();
     }
 
-    localStorage.setItem("lights-difficulty", difficulty);
+    Storage.setString("lights-difficulty", difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -111,9 +110,9 @@ const LightsOut: FC = () => {
 
   // Save the state of the game to local storage
   useEffect(() => {
-    localStorage.setItem("lights-board", JSON.stringify(board));
-    localStorage.setItem("lights-currentTurns", turns.toString());
-    localStorage.setItem("lights-solved", solved.toString());
+    Storage.setItem("lights-board", board);
+    Storage.setNumber("lights-currentTurns", turns);
+    Storage.setBoolean("lights-solved", solved);
   }, [board, turns, solved]);
 
   // Update the game statistics when the game is over

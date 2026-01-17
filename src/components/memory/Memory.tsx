@@ -3,6 +3,7 @@ import { easyColours, mediumColours, hardColours } from "./MemoryColours";
 import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { newMinStat } from "../../utils/Stats";
+import { Storage } from "../../utils/Storage";
 import "./Memory.css";
 
 type Difficulty = "easy" | "medium" | "hard";
@@ -26,7 +27,7 @@ const Memory: FC = () => {
   const CELL_STABLE: Status = "stable";
 
   const [difficulty, setDifficulty] = useState<Difficulty>(
-    (localStorage.getItem("colour-difficulty") as Difficulty) || "easy"
+    (Storage.getString("colour-difficulty", "easy") as Difficulty)
   );
   const [board, setBoard] = useState<Cell[]>([]);
   const [previous, setPrevious] = useState<Previous | null>(null);
@@ -37,7 +38,7 @@ const Memory: FC = () => {
 
   useEffect(() => {
     setBoard(gameInitialisation(difficulty));
-    localStorage.setItem("colour-difficulty", difficulty);
+    Storage.setString("colour-difficulty", difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 

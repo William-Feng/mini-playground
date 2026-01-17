@@ -3,6 +3,7 @@ import { easyEmojis, hardEmojis } from "./EmojiBank";
 import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { newMaxStat } from "../../utils/Stats";
+import { Storage } from "../../utils/Storage";
 import "./Emoji.css";
 
 type Difficulty = "easy" | "medium" | "hard";
@@ -13,7 +14,7 @@ const Emoji: FC = () => {
   const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const [difficulty, setDifficulty] = useState<Difficulty>(
-    (localStorage.getItem("emoji-difficulty") as Difficulty) || "easy"
+    (Storage.getString("emoji-difficulty", "easy") as Difficulty)
   );
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [streak, setStreak] = useState<number>(0);
@@ -32,7 +33,7 @@ const Emoji: FC = () => {
 
   useEffect(() => {
     setBoard(gameInitialisation(difficulty));
-    localStorage.setItem("emoji-difficulty", difficulty);
+    Storage.setString("emoji-difficulty", difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 

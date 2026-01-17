@@ -2,6 +2,7 @@ import { FC, useContext, useEffect, useState } from "react";
 import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { incrementStat } from "../../utils/Stats";
+import { Storage } from "../../utils/Storage";
 import "./TicTacToe.css";
 
 const TicTacToe: FC = () => {
@@ -9,7 +10,7 @@ const TicTacToe: FC = () => {
 
   const SIZE = 9;
   const [numPlayers, setNumPlayers] = useState<string>(
-    localStorage.getItem("tictactoe-numPlayers") || "1 player"
+    Storage.getString("tictactoe-numPlayers", "1 player")
   );
   const [board, setBoard] = useState<(string | null)[]>(Array(SIZE).fill(null));
   const [initialPlayer, setInitialPlayer] = useState<string>("X");
@@ -32,7 +33,7 @@ const TicTacToe: FC = () => {
 
   useEffect(() => {
     handleRestart();
-    localStorage.setItem("tictactoe-numPlayers", numPlayers);
+    Storage.setString("tictactoe-numPlayers", numPlayers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numPlayers]);
 

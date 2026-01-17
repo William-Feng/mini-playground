@@ -2,6 +2,7 @@ import React, { FC, useContext, useEffect, useMemo, useState } from "react";
 import { AppContext } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { incrementStat, newMinTime } from "../../utils/Stats";
+import { Storage } from "../../utils/Storage";
 import "./Minesweeper.css";
 
 type Difficulty = "easy" | "medium" | "hard";
@@ -11,7 +12,7 @@ const Minesweeper: FC = () => {
   const { theme, setGameStat } = useContext(AppContext);
 
   const [difficulty, setDifficulty] = useState(
-    (localStorage.getItem("minesweeper-difficulty") as Difficulty) || "easy"
+    (Storage.getString("minesweeper-difficulty") as Difficulty) || "easy"
   );
   const size = useMemo<number>(
     () => (difficulty === "easy" ? 8 : difficulty === "medium" ? 12 : 16),
@@ -40,7 +41,7 @@ const Minesweeper: FC = () => {
 
   useEffect(() => {
     gameInitialisation();
-    localStorage.setItem("minesweeper-difficulty", difficulty);
+    Storage.setString("minesweeper-difficulty", difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 

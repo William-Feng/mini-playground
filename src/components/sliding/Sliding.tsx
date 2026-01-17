@@ -2,6 +2,7 @@ import { FC, useContext, useEffect, useMemo, useState } from "react";
 import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { newMinStat } from "../../utils/Stats";
+import { Storage } from "../../utils/Storage";
 import "./Sliding.css";
 
 type Difficulty = "easy" | "hard";
@@ -10,7 +11,7 @@ const Sliding: FC = () => {
   const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const [difficulty, setDifficulty] = useState(
-    (localStorage.getItem("sliding-difficulty") as Difficulty) || "easy"
+    (Storage.getString("sliding-difficulty") as Difficulty) || "easy"
   );
   const [board, setBoard] = useState<number[][]>([]);
   const [moves, setMoves] = useState<number>(0);
@@ -20,24 +21,22 @@ const Sliding: FC = () => {
 
   // After the difficulty is set, load any saved state from local storage and initialise the game
   useEffect(() => {
-    const savedBoard = localStorage.getItem("sliding-board");
-    const savedMoves = localStorage.getItem("sliding-currentMoves");
-    const savedSolved = localStorage.getItem("sliding-solved");
+    const savedBoard = Storage.getItem<number[][]>("sliding-board", []);
+    const savedMoves = Storage.getNumber("sliding-currentMoves", 0);
+    const savedSolved = Storage.getBoolean("sliding-solved", false);
 
     if (
-      savedBoard &&
-      savedMoves &&
-      savedSolved &&
-      JSON.parse(savedBoard).length === size
+      savedBoard.length > 0 &&
+      savedBoard.length === size
     ) {
-      setBoard(JSON.parse(savedBoard));
-      setMoves(parseInt(savedMoves));
-      setSolved(savedSolved === "true");
+      setBoard(savedBoard);
+      setMoves(savedMoves);
+      setSolved(savedSolved);
     } else {
       gameInitialisation();
     }
 
-    localStorage.setItem("sliding-difficulty", difficulty);
+    Storage.setString("sliding-difficulty", difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -208,9 +207,9 @@ const Sliding: FC = () => {
 
   // Save the state of the game to local storage
   useEffect(() => {
-    localStorage.setItem("sliding-board", JSON.stringify(board));
-    localStorage.setItem("sliding-currentMoves", moves.toString());
-    localStorage.setItem("sliding-solved", solved.toString());
+    Storage.setItem("sliding-board", board);
+    Storage.setNumber("sliding-currentMoves", moves);
+    Storage.setBoolean("sliding-solved", solved);
   }, [board, moves, solved]);
 
   // Update the game statistics when the game is over

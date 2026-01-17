@@ -2,6 +2,7 @@ import { FC, useContext, useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { AppContext, AppContextType } from "../../App";
 import { newMaxStat } from "../../utils/Stats";
+import { Storage } from "../../utils/Storage";
 import "./Game2048.css";
 
 type GameStatus = "in-progress" | "game-over" | "game-won";
@@ -294,23 +295,22 @@ const Game2048: FC = () => {
 
   // On component mount, load any saved state from local storage
   useEffect(() => {
-    const savedBoard = localStorage.getItem("2048-board");
-    const savedScore = localStorage.getItem("2048-currentScore");
-    const savedMaxScore = localStorage.getItem("2048-maxScore");
-    const savedGameStatus = localStorage.getItem("2048-gameStatus");
+    const savedBoard = Storage.getItem<number[][]>("2048-board", []);
+    const savedScore = Storage.getNumber("2048-currentScore", 0);
+    const savedGameStatus = Storage.getString("2048-gameStatus", "in-progress");
 
-    if (savedBoard && savedScore && savedMaxScore && savedGameStatus) {
-      setBoard(JSON.parse(savedBoard));
-      setScore(parseInt(savedScore));
+    if (savedBoard.length > 0) {
+      setBoard(savedBoard);
+      setScore(savedScore);
       setGameStatus(savedGameStatus as GameStatus);
     }
   }, []);
 
   // Update the game statistics on each turn
   useEffect(() => {
-    localStorage.setItem("2048-board", JSON.stringify(board));
-    localStorage.setItem("2048-currentScore", score.toString());
-    localStorage.setItem("2048-gameStatus", gameStatus);
+    Storage.setItem("2048-board", board);
+    Storage.setNumber("2048-currentScore", score);
+    Storage.setString("2048-gameStatus", gameStatus);
 
     newMaxStat("2048", "Maximum Score", "2048-maxScore", score, setGameStat);
   }, [board, score, gameStatus, setGameStat]);

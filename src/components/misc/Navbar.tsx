@@ -7,6 +7,7 @@ import { RiArrowGoBackFill } from "react-icons/ri";
 import { Tooltip } from "react-tooltip";
 import ReactSwitch from "react-switch";
 import { PieChart as RechartsPieChart, Pie, Cell, Legend } from "recharts";
+import { Storage } from "../../utils/Storage";
 import "./Navbar.css";
 
 const Navbar: FC<{ heading: string }> = ({ heading }) => {
@@ -49,32 +50,32 @@ const Navbar: FC<{ heading: string }> = ({ heading }) => {
   const wordleData: WordleData[] = [
     {
       title: "1 Attempt",
-      value: parseInt(localStorage.getItem("wordle-1attempts") || "0"),
+      value: Storage.getNumber("wordle-1attempts", 0),
       color: "#fb8072",
     },
     {
       title: "2 Attempts",
-      value: parseInt(localStorage.getItem("wordle-2attempts") || "0"),
+      value: Storage.getNumber("wordle-2attempts", 0),
       color: "#ffffb3",
     },
     {
       title: "3 Attempts",
-      value: parseInt(localStorage.getItem("wordle-3attempts") || "0"),
+      value: Storage.getNumber("wordle-3attempts", 0),
       color: "#bebada",
     },
     {
       title: "4 Attempts",
-      value: parseInt(localStorage.getItem("wordle-4attempts") || "0"),
+      value: Storage.getNumber("wordle-4attempts", 0),
       color: "#b3de69",
     },
     {
       title: "5 Attempts",
-      value: parseInt(localStorage.getItem("wordle-5attempts") || "0"),
+      value: Storage.getNumber("wordle-5attempts", 0),
       color: "#fdb462",
     },
     {
       title: "6 Attempts",
-      value: parseInt(localStorage.getItem("wordle-6attempts") || "0"),
+      value: Storage.getNumber("wordle-6attempts", 0),
       color: "#80b1d3",
     },
   ].filter((data) => data.value !== 0);

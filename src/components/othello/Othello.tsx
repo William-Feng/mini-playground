@@ -1,6 +1,7 @@
 import { FC, useContext, useEffect, useState } from "react";
 import { AppContext, AppContextType } from "../../App";
 import { incrementStat } from "../../utils/Stats";
+import { Storage } from "../../utils/Storage";
 import "./Othello.css";
 import ModeTab from "../misc/ModeTab";
 
@@ -36,7 +37,7 @@ const Othello: FC = () => {
 
   const [board, setBoard] = useState<Cell[][]>(createInitialBoard());
   const [numPlayers, setNumPlayers] = useState<string>(
-    localStorage.getItem("othello-numPlayers") || "1 player"
+    Storage.getString("othello-numPlayers", "1 player")
   );
   const [player, setPlayer] = useState<Player>("dark");
   const [winner, setWinner] = useState<Player | "draw" | null>(null);
@@ -46,7 +47,7 @@ const Othello: FC = () => {
 
   useEffect(() => {
     handleRestart();
-    localStorage.setItem("othello-numPlayers", numPlayers);
+    Storage.setString("othello-numPlayers", numPlayers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numPlayers]);
 
