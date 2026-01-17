@@ -9,15 +9,7 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./components/home/Home";
 import Footer from "./components/misc/Footer";
 import GameLayout from "./components/misc/GameLayout";
-import Wordle from "./components/wordle/Wordle";
-import TicTacToe from "./components/tic-tac-toe/TicTacToe";
-import Memory from "./components/memory/Memory";
-import Emoji from "./components/emoji/Emoji";
-import Sliding from "./components/sliding/Sliding";
-import Game2048 from "./components/2048/Game2048";
-import Minesweeper from "./components/minesweeper/Minesweeper";
-import LightsOut from "./components/lights-out/LightsOut";
-import Othello from "./components/othello/Othello";
+import { gameRoutes } from "./config/routes";
 import "./App.css";
 import { Storage } from "./utils/Storage";
 
@@ -131,78 +123,17 @@ function App() {
             </>
           }
         />
-        <Route
-          path="/wordle"
-          element={
-            <GameLayout heading="Wordle" isWordle>
-              <Wordle />
-            </GameLayout>
-          }
-        />
-        <Route
-          path="/tic-tac-toe"
-          element={
-            <GameLayout heading="Tic Tac Toe">
-              <TicTacToe />
-            </GameLayout>
-          }
-        />
-        <Route
-          path="/memory"
-          element={
-            <GameLayout heading="Colour Matching">
-              <Memory />
-            </GameLayout>
-          }
-        />
-        <Route
-          path="/emoji"
-          element={
-            <GameLayout heading="Emoji Streak">
-              <Emoji />
-            </GameLayout>
-          }
-        />
-        <Route
-          path="/sliding"
-          element={
-            <GameLayout heading="Sliding Puzzle">
-              <Sliding />
-            </GameLayout>
-          }
-        />
-        <Route
-          path="/2048"
-          element={
-            <GameLayout heading="2048">
-              <Game2048 />
-            </GameLayout>
-          }
-        />
-        <Route
-          path="/minesweeper"
-          element={
-            <GameLayout heading="Minesweeper">
-              <Minesweeper />
-            </GameLayout>
-          }
-        />
-        <Route
-          path="/lights-out"
-          element={
-            <GameLayout heading="Lights Out">
-              <LightsOut />
-            </GameLayout>
-          }
-        />
-        <Route
-          path="/othello"
-          element={
-            <GameLayout heading="Othello">
-              <Othello />
-            </GameLayout>
-          }
-        />
+        {gameRoutes.map((route) => (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={
+              <GameLayout heading={route.heading} isWordle={route.isWordle}>
+                {route.component}
+              </GameLayout>
+            }
+          />
+        ))}
       </Routes>
     </AppContext.Provider>
   );
