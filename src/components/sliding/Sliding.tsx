@@ -3,17 +3,17 @@ import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { newMinStat } from "../../utils/Stats";
 import { Storage } from "../../utils/Storage";
+import { STORAGE_KEYS } from "../../constants/storage";
+import { Difficulty, NumberBoard } from "../../types/common";
 import "./Sliding.css";
-
-type Difficulty = "easy" | "hard";
 
 const Sliding: FC = () => {
   const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const [difficulty, setDifficulty] = useState(
-    (Storage.getString("sliding-difficulty") as Difficulty) || "easy"
+    (Storage.getString(STORAGE_KEYS.SLIDING_DIFFICULTY) as Difficulty) || "easy"
   );
-  const [board, setBoard] = useState<number[][]>([]);
+  const [board, setBoard] = useState<NumberBoard>([]);
   const [moves, setMoves] = useState<number>(0);
   const [solved, setSolved] = useState<boolean>(false);
 
@@ -21,9 +21,9 @@ const Sliding: FC = () => {
 
   // After the difficulty is set, load any saved state from local storage and initialise the game
   useEffect(() => {
-    const savedBoard = Storage.getItem<number[][]>("sliding-board", []);
-    const savedMoves = Storage.getNumber("sliding-currentMoves", 0);
-    const savedSolved = Storage.getBoolean("sliding-solved", false);
+    const savedBoard = Storage.getItem<NumberBoard>(STORAGE_KEYS.SLIDING_BOARD, []);
+    const savedMoves = Storage.getNumber(STORAGE_KEYS.SLIDING_MOVES, 0);
+    const savedSolved = Storage.getBoolean(STORAGE_KEYS.SLIDING_SOLVED, false);
 
     if (
       savedBoard.length > 0 &&
@@ -36,7 +36,7 @@ const Sliding: FC = () => {
       gameInitialisation();
     }
 
-    Storage.setString("sliding-difficulty", difficulty);
+    Storage.setString(STORAGE_KEYS.SLIDING_DIFFICULTY, difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -130,7 +130,7 @@ const Sliding: FC = () => {
   };
 
   // Find the empty cell in the board to determine whether a move is valid
-  const findEmptyCell = (board: number[][]) => {
+  const findEmptyCell = (board: NumberBoard) => {
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size; j++) {
         if (board[i][j] === 0) {
@@ -207,9 +207,9 @@ const Sliding: FC = () => {
 
   // Save the state of the game to local storage
   useEffect(() => {
-    Storage.setItem("sliding-board", board);
-    Storage.setNumber("sliding-currentMoves", moves);
-    Storage.setBoolean("sliding-solved", solved);
+    Storage.setItem(STORAGE_KEYS.SLIDING_BOARD, board);
+    Storage.setNumber(STORAGE_KEYS.SLIDING_MOVES, moves);
+    Storage.setBoolean(STORAGE_KEYS.SLIDING_SOLVED, solved);
   }, [board, moves, solved]);
 
   // Update the game statistics when the game is over
@@ -223,7 +223,7 @@ const Sliding: FC = () => {
     newMinStat(
       "Sliding Puzzle",
       statLabel,
-      `sliding-minTurns-${difficulty}`,
+      difficulty === "easy" ? STORAGE_KEYS.SLIDING_MIN_MOVES_EASY : STORAGE_KEYS.SLIDING_MIN_MOVES_HARD,
       moves,
       setGameStat
     );

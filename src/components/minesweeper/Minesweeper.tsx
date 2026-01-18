@@ -1,18 +1,17 @@
-import React, { FC, useContext, useEffect, useMemo, useState } from "react";
+import { FC, useContext, useEffect, useMemo, useState } from "react";
 import { AppContext } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { incrementStat, newMinTime } from "../../utils/Stats";
 import { Storage } from "../../utils/Storage";
+import { STORAGE_KEYS } from "../../constants/storage";
+import { Difficulty, StringBoard, NumberBoard, BoardPosition } from "../../types/common";
 import "./Minesweeper.css";
-
-type Difficulty = "easy" | "medium" | "hard";
-type Cell = { row: number; col: number };
 
 const Minesweeper: FC = () => {
   const { theme, setGameStat } = useContext(AppContext);
 
   const [difficulty, setDifficulty] = useState(
-    (Storage.getString("minesweeper-difficulty") as Difficulty) || "easy"
+    (Storage.getString(STORAGE_KEYS.MINESWEEPER_DIFFICULTY) as Difficulty) || "easy"
   );
   const size = useMemo<number>(
     () => (difficulty === "easy" ? 8 : difficulty === "medium" ? 12 : 16),
@@ -23,9 +22,9 @@ const Minesweeper: FC = () => {
     [difficulty]
   );
 
-  const [board, setBoard] = useState<string[][]>([]);
-  const [solution, setSolution] = useState<number[][]>([]);
-  const [revealedCells, setRevealedCells] = useState<Cell[]>([]);
+  const [board, setBoard] = useState<StringBoard>([]);
+  const [solution, setSolution] = useState<NumberBoard>([]);
+  const [revealedCells, setRevealedCells] = useState<BoardPosition[]>([]);
   const [gameStatus, setGameStatus] = useState<{
     inProgress: boolean;
     gameOver: boolean;
@@ -41,7 +40,7 @@ const Minesweeper: FC = () => {
 
   useEffect(() => {
     gameInitialisation();
-    Storage.setString("minesweeper-difficulty", difficulty);
+    Storage.setString(STORAGE_KEYS.MINESWEEPER_DIFFICULTY, difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -262,14 +261,14 @@ const Minesweeper: FC = () => {
         incrementStat(
           "Minesweeper",
           "Games Lost",
-          "minesweeper-lost",
+          STORAGE_KEYS.MINESWEEPER_LOST,
           setGameStat
         );
       } else {
         incrementStat(
           "Minesweeper",
           "Games Won",
-          "minesweeper-won",
+          STORAGE_KEYS.MINESWEEPER_WON,
           setGameStat
         );
 
@@ -284,7 +283,7 @@ const Minesweeper: FC = () => {
         newMinTime(
           "Minesweeper",
           prevMinTimeKey,
-          `minesweeper-minTime-${difficulty}`,
+          difficulty === "easy" ? STORAGE_KEYS.MINESWEEPER_MIN_TIME_EASY : difficulty === "medium" ? STORAGE_KEYS.MINESWEEPER_MIN_TIME_MEDIUM : STORAGE_KEYS.MINESWEEPER_MIN_TIME_HARD,
           timer,
           setGameStat
         );

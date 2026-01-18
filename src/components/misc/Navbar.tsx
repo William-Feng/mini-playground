@@ -1,13 +1,14 @@
 import { FC, useContext } from "react";
-import { AppContext, AppContextType } from "../../App";
 import { Link } from "react-router-dom";
 import { BsInfoCircle } from "react-icons/bs";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { RiArrowGoBackFill } from "react-icons/ri";
-import { Tooltip } from "react-tooltip";
 import ReactSwitch from "react-switch";
+import { Tooltip } from "react-tooltip";
 import { PieChart as RechartsPieChart, Pie, Cell, Legend } from "recharts";
+import { getDynamicKey } from "../../constants/storage";
 import { Storage } from "../../utils/Storage";
+import { AppContext, AppContextType } from "../../App";
 import "./Navbar.css";
 
 const Navbar: FC<{ heading: string }> = ({ heading }) => {
@@ -50,32 +51,32 @@ const Navbar: FC<{ heading: string }> = ({ heading }) => {
   const wordleData: WordleData[] = [
     {
       title: "1 Attempt",
-      value: Storage.getNumber("wordle-1attempts", 0),
+      value: Storage.getNumber(getDynamicKey.wordleAttempts(1), 0),
       color: "#fb8072",
     },
     {
       title: "2 Attempts",
-      value: Storage.getNumber("wordle-2attempts", 0),
+      value: Storage.getNumber(getDynamicKey.wordleAttempts(2), 0),
       color: "#ffffb3",
     },
     {
       title: "3 Attempts",
-      value: Storage.getNumber("wordle-3attempts", 0),
+      value: Storage.getNumber(getDynamicKey.wordleAttempts(3), 0),
       color: "#bebada",
     },
     {
       title: "4 Attempts",
-      value: Storage.getNumber("wordle-4attempts", 0),
+      value: Storage.getNumber(getDynamicKey.wordleAttempts(4), 0),
       color: "#b3de69",
     },
     {
       title: "5 Attempts",
-      value: Storage.getNumber("wordle-5attempts", 0),
+      value: Storage.getNumber(getDynamicKey.wordleAttempts(5), 0),
       color: "#fdb462",
     },
     {
       title: "6 Attempts",
-      value: Storage.getNumber("wordle-6attempts", 0),
+      value: Storage.getNumber(getDynamicKey.wordleAttempts(6), 0),
       color: "#80b1d3",
     },
   ].filter((data) => data.value !== 0);

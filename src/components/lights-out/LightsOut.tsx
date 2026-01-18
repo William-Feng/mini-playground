@@ -3,18 +3,18 @@ import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { newMinStat } from "../../utils/Stats";
 import { Storage } from "../../utils/Storage";
+import { STORAGE_KEYS } from "../../constants/storage";
+import { Difficulty, BooleanBoard } from "../../types/common";
 import "./LightsOut.css";
-
-type Difficulty = "easy" | "medium" | "hard";
 
 const LightsOut: FC = () => {
   const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const [difficulty, setDifficulty] = useState(
-    (Storage.getString("lights-difficulty") as Difficulty) || "easy"
+    (Storage.getString(STORAGE_KEYS.LIGHTS_DIFFICULTY) as Difficulty) || "easy"
   );
 
-  const [board, setBoard] = useState<boolean[][]>([]);
+  const [board, setBoard] = useState<BooleanBoard>([]);
   const [turns, setTurns] = useState<number>(0);
   const [solved, setSolved] = useState<boolean>(false);
 
@@ -25,9 +25,9 @@ const LightsOut: FC = () => {
 
   // After the difficulty is set, load any saved state from local storage and initialise the game
   useEffect(() => {
-    const savedBoard = Storage.getItem<boolean[][]>("lights-board", []);
-    const savedTurns = Storage.getNumber("lights-currentTurns", 0);
-    const savedSolved = Storage.getBoolean("lights-solved", false);
+    const savedBoard = Storage.getItem<BooleanBoard>(STORAGE_KEYS.LIGHTS_BOARD, []);
+    const savedTurns = Storage.getNumber(STORAGE_KEYS.LIGHTS_TURNS, 0);
+    const savedSolved = Storage.getBoolean(STORAGE_KEYS.LIGHTS_SOLVED, false);
 
     if (
       savedBoard.length > 0 &&
@@ -40,7 +40,7 @@ const LightsOut: FC = () => {
       gameInitialisation();
     }
 
-    Storage.setString("lights-difficulty", difficulty);
+    Storage.setString(STORAGE_KEYS.LIGHTS_DIFFICULTY, difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -110,9 +110,9 @@ const LightsOut: FC = () => {
 
   // Save the state of the game to local storage
   useEffect(() => {
-    Storage.setItem("lights-board", board);
-    Storage.setNumber("lights-currentTurns", turns);
-    Storage.setBoolean("lights-solved", solved);
+    Storage.setItem(STORAGE_KEYS.LIGHTS_BOARD, board);
+    Storage.setNumber(STORAGE_KEYS.LIGHTS_TURNS, turns);
+    Storage.setBoolean(STORAGE_KEYS.LIGHTS_SOLVED, solved);
   }, [board, turns, solved]);
 
   // Update the game statistics when the game is over
@@ -130,7 +130,7 @@ const LightsOut: FC = () => {
     newMinStat(
       "Lights Out",
       statLabel,
-      `lights-minTurns-${difficulty}`,
+      difficulty === "easy" ? STORAGE_KEYS.LIGHTS_MIN_TURNS_EASY : difficulty === "medium" ? STORAGE_KEYS.LIGHTS_MIN_TURNS_MEDIUM : STORAGE_KEYS.LIGHTS_MIN_TURNS_HARD,
       turns,
       setGameStat
     );

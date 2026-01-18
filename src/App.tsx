@@ -13,6 +13,7 @@ import { gameRoutes } from "./config/routes";
 import { GameStat, getInitialGameStat } from "./config/gameStats";
 import "./App.css";
 import { Storage } from "./utils/Storage";
+import { STORAGE_KEYS } from "./constants/storage";
 
 export type { GameStat } from "./config/gameStats";
 
@@ -31,24 +32,24 @@ export const AppContext = createContext<AppContextType>({
 });
 
 function App() {
-  const [theme, setTheme] = useState<string>(
-    () => Storage.getString("theme", "light")
+  const [theme, setTheme] = useState<string>(() =>
+    Storage.getString(STORAGE_KEYS.THEME, "light")
   );
 
   useEffect(() => {
-    Storage.setString("theme", theme);
+    Storage.setString(STORAGE_KEYS.THEME, theme);
   }, [theme]);
 
   const toggleTheme = () => {
     setTheme((curr) => (curr === "light" ? "dark" : "light"));
   };
 
-  const [gameStat, setGameStat] = useState<GameStat>(() => getInitialGameStat());
+  const [gameStat, setGameStat] = useState<GameStat>(() =>
+    getInitialGameStat()
+  );
 
   return (
-    <AppContext.Provider
-      value={{ theme, toggleTheme, gameStat, setGameStat }}
-    >
+    <AppContext.Provider value={{ theme, toggleTheme, gameStat, setGameStat }}>
       <Routes>
         <Route
           path="/"

@@ -2,6 +2,7 @@ import { FC, useContext, useEffect, useState } from "react";
 import { AppContext, AppContextType } from "../../App";
 import { incrementStat } from "../../utils/Stats";
 import { Storage } from "../../utils/Storage";
+import { STORAGE_KEYS } from "../../constants/storage";
 import "./Othello.css";
 import ModeTab from "../misc/ModeTab";
 
@@ -37,7 +38,7 @@ const Othello: FC = () => {
 
   const [board, setBoard] = useState<Cell[][]>(createInitialBoard());
   const [numPlayers, setNumPlayers] = useState<string>(
-    Storage.getString("othello-numPlayers", "1 player")
+    Storage.getString(STORAGE_KEYS.OTHELLO_NUM_PLAYERS, "1 player")
   );
   const [player, setPlayer] = useState<Player>("dark");
   const [winner, setWinner] = useState<Player | "draw" | null>(null);
@@ -47,7 +48,7 @@ const Othello: FC = () => {
 
   useEffect(() => {
     handleRestart();
-    Storage.setString("othello-numPlayers", numPlayers);
+    Storage.setString(STORAGE_KEYS.OTHELLO_NUM_PLAYERS, numPlayers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numPlayers]);
 
@@ -197,16 +198,16 @@ const Othello: FC = () => {
         incrementStat(
           "Othello",
           "Games Lost (1P)",
-          "othello-lost",
+          STORAGE_KEYS.OTHELLO_LOST,
           setGameStat
         );
       } else if (winner === "dark") {
-        incrementStat("Othello", "Games Won (1P)", "othello-won", setGameStat);
+        incrementStat("Othello", "Games Won (1P)", STORAGE_KEYS.OTHELLO_WON, setGameStat);
       } else {
         incrementStat(
           "Othello",
           "Games Drew (1P)",
-          "othello-drew",
+          STORAGE_KEYS.OTHELLO_DREW,
           setGameStat
         );
       }
@@ -215,21 +216,21 @@ const Othello: FC = () => {
         incrementStat(
           "Othello",
           "Light Won (2P)",
-          "othello-lightWon",
+          STORAGE_KEYS.OTHELLO_LIGHT_WON,
           setGameStat
         );
       } else if (winner === "dark") {
         incrementStat(
           "Othello",
           "Dark Won (2P)",
-          "othello-darkWon",
+          STORAGE_KEYS.OTHELLO_DARK_WON,
           setGameStat
         );
       } else {
         incrementStat(
           "Othello",
           "Players Drew (2P)",
-          "othello-drew2P",
+          STORAGE_KEYS.OTHELLO_DREW_2P,
           setGameStat
         );
       }

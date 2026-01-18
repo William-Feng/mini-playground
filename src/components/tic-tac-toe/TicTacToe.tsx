@@ -3,6 +3,8 @@ import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { incrementStat } from "../../utils/Stats";
 import { Storage } from "../../utils/Storage";
+import { TicTacToeBoard } from "../../types/common";
+import { STORAGE_KEYS } from "../../constants/storage";
 import "./TicTacToe.css";
 
 const TicTacToe: FC = () => {
@@ -10,9 +12,9 @@ const TicTacToe: FC = () => {
 
   const SIZE = 9;
   const [numPlayers, setNumPlayers] = useState<string>(
-    Storage.getString("tictactoe-numPlayers", "1 player")
+    Storage.getString(STORAGE_KEYS.TICTACTOE_NUM_PLAYERS, "1 player")
   );
-  const [board, setBoard] = useState<(string | null)[]>(Array(SIZE).fill(null));
+  const [board, setBoard] = useState<TicTacToeBoard>(Array(SIZE).fill(null));
   const [initialPlayer, setInitialPlayer] = useState<string>("X");
   const [turn, setTurn] = useState<string>("X");
   const [winner, setWinner] = useState<string | null>(null);
@@ -33,7 +35,7 @@ const TicTacToe: FC = () => {
 
   useEffect(() => {
     handleRestart();
-    Storage.setString("tictactoe-numPlayers", numPlayers);
+    Storage.setString(STORAGE_KEYS.TICTACTOE_NUM_PLAYERS, numPlayers);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numPlayers]);
 
@@ -195,14 +197,14 @@ const TicTacToe: FC = () => {
         incrementStat(
           "Tic Tac Toe",
           "Rounds Drew (1P)",
-          "tictactoe-drew",
+          STORAGE_KEYS.TICTACTOE_DREW,
           setGameStat
         );
       } else if (winner === "O") {
         incrementStat(
           "Tic Tac Toe",
           "Rounds Lost (1P)",
-          "tictactoe-lost",
+          STORAGE_KEYS.TICTACTOE_LOST,
           setGameStat
         );
       }
@@ -211,21 +213,21 @@ const TicTacToe: FC = () => {
         incrementStat(
           "Tic Tac Toe",
           "Player X Won (2P)",
-          "tictactoe-xWon",
+          STORAGE_KEYS.TICTACTOE_X_WON,
           setGameStat
         );
       } else if (winner === "O") {
         incrementStat(
           "Tic Tac Toe",
           "Player O Won (2P)",
-          "tictactoe-oWon",
+          STORAGE_KEYS.TICTACTOE_O_WON,
           setGameStat
         );
       } else {
         incrementStat(
           "Tic Tac Toe",
           "Players Drew (2P)",
-          "tictactoe-drew2P",
+          STORAGE_KEYS.TICTACTOE_DREW_2P,
           setGameStat
         );
       }

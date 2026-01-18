@@ -4,19 +4,14 @@ import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { newMinStat } from "../../utils/Stats";
 import { Storage } from "../../utils/Storage";
+import { STORAGE_KEYS } from "../../constants/storage";
+import { Difficulty, MemoryCell } from "../../types/common";
 import "./Memory.css";
 
-type Difficulty = "easy" | "medium" | "hard";
-type Colour = string;
 type Status = "hidden" | "stable" | "";
 
-interface Cell {
-  colour: Colour;
-  status: Status;
-}
-
 interface Previous {
-  colour: Colour;
+  colour: string;
   index: number;
 }
 
@@ -27,9 +22,9 @@ const Memory: FC = () => {
   const CELL_STABLE: Status = "stable";
 
   const [difficulty, setDifficulty] = useState<Difficulty>(
-    (Storage.getString("colour-difficulty", "easy") as Difficulty)
+    (Storage.getString(STORAGE_KEYS.COLOUR_DIFFICULTY, "easy") as Difficulty)
   );
-  const [board, setBoard] = useState<Cell[]>([]);
+  const [board, setBoard] = useState<MemoryCell[]>([]);
   const [previous, setPrevious] = useState<Previous | null>(null);
   const [lockBoard, setLockBoard] = useState<boolean>(false);
   const [turns, setTurns] = useState<number>(0);
@@ -38,7 +33,7 @@ const Memory: FC = () => {
 
   useEffect(() => {
     setBoard(gameInitialisation(difficulty));
-    Storage.setString("colour-difficulty", difficulty);
+    Storage.setString(STORAGE_KEYS.COLOUR_DIFFICULTY, difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -49,14 +44,14 @@ const Memory: FC = () => {
   };
 
   // Reset the board and all variables for a new game
-  const gameInitialisation = (difficulty: Difficulty): Cell[] => {
+  const gameInitialisation = (difficulty: Difficulty): MemoryCell[] => {
     setPrevious(null);
     setLockBoard(false);
     setTurns(0);
     setNumMatching(0);
     setSolved(false);
 
-    let colours: Colour[];
+    let colours: string[];
 
     if (difficulty === "easy") {
       colours = easyColours;
@@ -172,7 +167,7 @@ const Memory: FC = () => {
     newMinStat(
       "Colour Matching",
       statLabel,
-      `colour-minTurns-${difficulty}`,
+      difficulty === "easy" ? STORAGE_KEYS.COLOUR_MIN_TURNS_EASY : difficulty === "medium" ? STORAGE_KEYS.COLOUR_MIN_TURNS_MEDIUM : STORAGE_KEYS.COLOUR_MIN_TURNS_HARD,
       turns,
       setGameStat
     );

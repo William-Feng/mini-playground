@@ -3,16 +3,16 @@ import { useSwipeable } from "react-swipeable";
 import { AppContext, AppContextType } from "../../App";
 import { newMaxStat } from "../../utils/Stats";
 import { Storage } from "../../utils/Storage";
+import { STORAGE_KEYS } from "../../constants/storage";
+import { GameStatus, NumberBoard } from "../../types/common";
 import "./Game2048.css";
-
-type GameStatus = "in-progress" | "game-over" | "game-won";
 type NewCell = { row: number; column: number } | null;
 
 const Game2048: FC = () => {
   const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const SIZE = 4;
-  let prevBoard: number[][] = [];
+  let prevBoard: NumberBoard = [];
   const [score, setScore] = useState<number>(0);
   const [gameStatus, setGameStatus] = useState<GameStatus>("in-progress");
   const [newCell, setNewCell] = useState<NewCell>(null);
@@ -24,7 +24,7 @@ const Game2048: FC = () => {
   };
 
   // Generate two cells on an empty board
-  const initialiseBoard = (): number[][] => {
+  const initialiseBoard = (): NumberBoard => {
     let board = [...Array(SIZE)].map(() => Array(SIZE).fill(0));
     let cellsGenerated = 0;
 
@@ -45,10 +45,10 @@ const Game2048: FC = () => {
     }
   };
 
-  const [board, setBoard] = useState<number[][]>(() => gameInitialisation());
+  const [board, setBoard] = useState<NumberBoard>(() => gameInitialisation());
 
   // Create a copy of the 2D board by value
-  const cloneBoard = (board: number[][]) => {
+  const cloneBoard = (board: NumberBoard) => {
     const newBoard = [...board];
     newBoard.forEach((row, rowIndex) => (newBoard[rowIndex] = [...row]));
     return newBoard;
@@ -83,7 +83,7 @@ const Game2048: FC = () => {
   };
 
   // Return true if both boards are equivalent
-  const checkSame = (boardA: number[][], boardB: number[][]) => {
+  const checkSame = (boardA: NumberBoard, boardB: NumberBoard) => {
     let equal = true;
     for (let i = 0; i < SIZE; i++) {
       for (let j = 0; j < SIZE; j++) {
@@ -295,9 +295,9 @@ const Game2048: FC = () => {
 
   // On component mount, load any saved state from local storage
   useEffect(() => {
-    const savedBoard = Storage.getItem<number[][]>("2048-board", []);
-    const savedScore = Storage.getNumber("2048-currentScore", 0);
-    const savedGameStatus = Storage.getString("2048-gameStatus", "in-progress");
+    const savedBoard = Storage.getItem<NumberBoard>(STORAGE_KEYS.GAME_2048_BOARD, []);
+    const savedScore = Storage.getNumber(STORAGE_KEYS.GAME_2048_CURRENT_SCORE, 0);
+    const savedGameStatus = Storage.getString(STORAGE_KEYS.GAME_2048_STATUS, "in-progress");
 
     if (savedBoard.length > 0) {
       setBoard(savedBoard);
@@ -308,11 +308,11 @@ const Game2048: FC = () => {
 
   // Update the game statistics on each turn
   useEffect(() => {
-    Storage.setItem("2048-board", board);
-    Storage.setNumber("2048-currentScore", score);
-    Storage.setString("2048-gameStatus", gameStatus);
+    Storage.setItem(STORAGE_KEYS.GAME_2048_BOARD, board);
+    Storage.setNumber(STORAGE_KEYS.GAME_2048_CURRENT_SCORE, score);
+    Storage.setString(STORAGE_KEYS.GAME_2048_STATUS, gameStatus);
 
-    newMaxStat("2048", "Maximum Score", "2048-maxScore", score, setGameStat);
+    newMaxStat("2048", "Maximum Score", STORAGE_KEYS.GAME_2048_MAX_SCORE, score, setGameStat);
   }, [board, score, gameStatus, setGameStat]);
 
   return (

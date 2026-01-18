@@ -12,9 +12,10 @@ import GameOver from "./GameOver";
 import Grid from "./Grid";
 import Keyboard from "./Keyboard";
 import { generateWordbank } from "./Words";
-import "./Wordle.css";
 import { incrementStat } from "../../utils/Stats";
 import { Storage } from "../../utils/Storage";
+import { STORAGE_KEYS, getDynamicKey } from "../../constants/storage";
+import "./Wordle.css";
 
 export interface WordleContextType {
   grid: string[][];
@@ -90,15 +91,39 @@ const Wordle: FC = () => {
 
   // Load any saved state from local storage and initialise the game
   useEffect(() => {
-    const savedWordbank = Storage.getItem<string[]>("wordle-wordbank", []);
-    const savedSecret = Storage.getString("wordle-secret", "");
-    const savedGrid = Storage.getItem<string[][]>("wordle-grid", [...Array(6)].map(() => Array(5).fill("")));
-    const savedCurr = Storage.getItem<{ attempt: number; letterPos: number }>("wordle-curr", { attempt: 0, letterPos: 0 });
-    const savedCorrectLetters = Storage.getItem<string[]>("wordle-correctLetters", []);
-    const savedPartialLetters = Storage.getItem<string[]>("wordle-partialLetters", []);
-    const savedIncorrectLetters = Storage.getItem<string[]>("wordle-incorrectLetters", []);
-    const savedGameOver = Storage.getItem<{ gameOver: boolean; guessedWord: boolean }>("wordle-gameOver", { gameOver: false, guessedWord: false });
-    const statsUpdated = Storage.getString("wordle-statsUpdated", "");
+    const savedWordbank = Storage.getItem<string[]>(
+      STORAGE_KEYS.WORDLE_WORDBANK,
+      []
+    );
+    const savedSecret = Storage.getString(STORAGE_KEYS.WORDLE_SECRET, "");
+    const savedGrid = Storage.getItem<string[][]>(
+      STORAGE_KEYS.WORDLE_GRID,
+      [...Array(6)].map(() => Array(5).fill(""))
+    );
+    const savedCurr = Storage.getItem<{ attempt: number; letterPos: number }>(
+      STORAGE_KEYS.WORDLE_CURRENT,
+      { attempt: 0, letterPos: 0 }
+    );
+    const savedCorrectLetters = Storage.getItem<string[]>(
+      STORAGE_KEYS.WORDLE_CORRECT_LETTERS,
+      []
+    );
+    const savedPartialLetters = Storage.getItem<string[]>(
+      STORAGE_KEYS.WORDLE_PARTIAL_LETTERS,
+      []
+    );
+    const savedIncorrectLetters = Storage.getItem<string[]>(
+      STORAGE_KEYS.WORDLE_INCORRECT_LETTERS,
+      []
+    );
+    const savedGameOver = Storage.getItem<{
+      gameOver: boolean;
+      guessedWord: boolean;
+    }>(STORAGE_KEYS.WORDLE_GAME_OVER, { gameOver: false, guessedWord: false });
+    const statsUpdated = Storage.getString(
+      STORAGE_KEYS.WORDLE_STATS_UPDATED,
+      ""
+    );
 
     if (
       savedWordbank.length > 0 &&
@@ -185,15 +210,18 @@ const Wordle: FC = () => {
 
   // Save the state of the game to local storage
   useEffect(() => {
-    Storage.setItem("wordle-wordbank", [...wordbank]);
-    Storage.setString("wordle-secret", secret);
-    Storage.setItem("wordle-grid", grid);
-    Storage.setItem("wordle-curr", curr);
-    Storage.setItem("wordle-correctLetters", correctLetters);
-    Storage.setItem("wordle-partialLetters", partialLetters);
-    Storage.setItem("wordle-incorrectLetters", incorrectLetters);
-    Storage.setItem("wordle-gameOver", gameOver);
-    Storage.setString("wordle-statsUpdated", statsUpdated.toString());
+    Storage.setItem(STORAGE_KEYS.WORDLE_WORDBANK, [...wordbank]);
+    Storage.setString(STORAGE_KEYS.WORDLE_SECRET, secret);
+    Storage.setItem(STORAGE_KEYS.WORDLE_GRID, grid);
+    Storage.setItem(STORAGE_KEYS.WORDLE_CURRENT, curr);
+    Storage.setItem(STORAGE_KEYS.WORDLE_CORRECT_LETTERS, correctLetters);
+    Storage.setItem(STORAGE_KEYS.WORDLE_PARTIAL_LETTERS, partialLetters);
+    Storage.setItem(STORAGE_KEYS.WORDLE_INCORRECT_LETTERS, incorrectLetters);
+    Storage.setItem(STORAGE_KEYS.WORDLE_GAME_OVER, gameOver);
+    Storage.setString(
+      STORAGE_KEYS.WORDLE_STATS_UPDATED,
+      statsUpdated.toString()
+    );
   }, [
     secret,
     wordbank,
@@ -210,17 +238,33 @@ const Wordle: FC = () => {
   useEffect(() => {
     // Tracking the number of attempts is used for the nav bar pie chart display
     const incrementWordleAttempts = (attempts: number) => {
-      let savedAttemptCount = Storage.getNumber(`wordle-${attempts}attempts`, 0);
-      Storage.setNumber(`wordle-${attempts}attempts`, savedAttemptCount + 1);
+      let savedAttemptCount = Storage.getNumber(
+        getDynamicKey.wordleAttempts(attempts),
+        0
+      );
+      Storage.setNumber(
+        getDynamicKey.wordleAttempts(attempts),
+        savedAttemptCount + 1
+      );
     };
 
     if (gameOver.gameOver && !statsUpdated) {
       setStatsUpdated(true);
       if (gameOver.guessedWord) {
-        incrementStat("Wordle", "Words Guessed", "wordle-guessed", setGameStat);
+        incrementStat(
+          "Wordle",
+          "Words Guessed",
+          STORAGE_KEYS.WORDLE_GUESSED,
+          setGameStat
+        );
         incrementWordleAttempts(curr.attempt);
       } else {
-        incrementStat("Wordle", "Words Missed", "wordle-missed", setGameStat);
+        incrementStat(
+          "Wordle",
+          "Words Missed",
+          STORAGE_KEYS.WORDLE_MISSED,
+          setGameStat
+        );
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

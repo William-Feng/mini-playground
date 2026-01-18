@@ -4,17 +4,16 @@ import { AppContext, AppContextType } from "../../App";
 import ModeTab from "../misc/ModeTab";
 import { newMaxStat } from "../../utils/Stats";
 import { Storage } from "../../utils/Storage";
+import { STORAGE_KEYS } from "../../constants/storage";
+import { Difficulty, GameStatus, StringBoard } from "../../types/common";
 import "./Emoji.css";
-
-type Difficulty = "easy" | "medium" | "hard";
-type GameStatus = "in-progress" | "game-over" | "game-won";
 type LastClicked = { row: number; col: number } | null;
 
 const Emoji: FC = () => {
   const { theme, setGameStat } = useContext<AppContextType>(AppContext);
 
   const [difficulty, setDifficulty] = useState<Difficulty>(
-    (Storage.getString("emoji-difficulty", "easy") as Difficulty)
+    (Storage.getString(STORAGE_KEYS.EMOJI_DIFFICULTY, "easy") as Difficulty)
   );
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [streak, setStreak] = useState<number>(0);
@@ -33,7 +32,7 @@ const Emoji: FC = () => {
 
   useEffect(() => {
     setBoard(gameInitialisation(difficulty));
-    Storage.setString("emoji-difficulty", difficulty);
+    Storage.setString(STORAGE_KEYS.EMOJI_DIFFICULTY, difficulty);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [difficulty]);
 
@@ -44,7 +43,7 @@ const Emoji: FC = () => {
   };
 
   // Reset the board and all variables for a new game
-  const gameInitialisation = (difficulty: Difficulty) => {
+  const gameInitialisation = (difficulty: Difficulty): StringBoard => {
     setSelected(new Set());
     setStreak(0);
     setLives(3);
@@ -69,7 +68,7 @@ const Emoji: FC = () => {
   };
 
   // Randomise the order of the cells (Fisher-Yates shuffle algorithm)
-  const shuffleBoard = (emojis: string[]) => {
+  const shuffleBoard = (emojis: string[]): StringBoard => {
     for (let i = emojis.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [emojis[i], emojis[j]] = [emojis[j], emojis[i]];
@@ -87,7 +86,7 @@ const Emoji: FC = () => {
     return board;
   };
 
-  const [board, setBoard] = useState(() => gameInitialisation(difficulty));
+  const [board, setBoard] = useState<StringBoard>(() => gameInitialisation(difficulty));
 
   // Determine whether the cell has been selected before and update states accordingly
   const handleClick = (row: number, col: number) => {
@@ -136,7 +135,7 @@ const Emoji: FC = () => {
     newMaxStat(
       "Emoji Streak",
       statLabel,
-      `emoji-maxStreak-${difficulty}`,
+      difficulty === "easy" ? STORAGE_KEYS.EMOJI_MAX_STREAK_EASY : difficulty === "medium" ? STORAGE_KEYS.EMOJI_MAX_STREAK_MEDIUM : STORAGE_KEYS.EMOJI_MAX_STREAK_HARD,
       streak,
       setGameStat
     );
