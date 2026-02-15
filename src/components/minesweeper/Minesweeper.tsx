@@ -189,7 +189,7 @@ const Minesweeper: FC = () => {
 
   useEffect(() => {
     let startTime: number | null = null;
-    let intervalId: NodeJS.Timeout | null = null;
+    let intervalId: ReturnType<typeof setInterval> | null = null;
 
     const updateTimer = () => {
       let currentTime = new Date().getTime();
